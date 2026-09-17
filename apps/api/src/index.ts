@@ -61,7 +61,7 @@ import getAvatar from "./user/controllers/get-avatar";
 import { authenticateApiRequest } from "./utils/authenticate-api-request";
 import { authorizeAssetAccess } from "./utils/authorize-asset-access";
 import { getInvitationDetails } from "./utils/check-registration-allowed";
-import { ApiError } from "./utils/http-error";
+import { errorHandler } from "./utils/error-handler";
 import { migrateApiKeyReferenceId } from "./utils/migrate-apikey-reference-id";
 import { migrateNotificationPreferencesSchema } from "./utils/migrate-notification-preferences-schema";
 import { migrateSessionColumn } from "./utils/migrate-session-column";
@@ -144,26 +144,11 @@ function buildContentDisposition(filename: string, inline: boolean) {
 export function createApp() {
   const app = new Hono<AppVariables>();
 
-  app.onError((err, c) => {
-    if (err instanceof ApiError) {
-      // expected errors (401/404/...) are not reported; real failures are
-      if (err.status >= 500) {
-        Sentry.captureException(err);
-      }
-      return c.json({ message: err.message, code: err.code }, err.status);
-    }
+  app.onError(errorHandler);
 
-    if (err instanceof HTTPException) {
-      // expected errors (401/404/...) are not reported; real failures are
-      if (err.status >= 500) {
-        Sentry.captureException(err);
-      }
-      return err.getResponse();
-    }
-
-    Sentry.captureException(err);
-    return c.json({ message: "Internal Server Error" }, 500);
-  });
+  // Hono answers an unmatched path with text/plain, the one error the JSON
+  // envelope documented as ApiError would otherwise not cover.
+  app.notFound((c) => c.json({ message: "Not Found", code: "not_found" }, 404));
   const nodeWs = createNodeWebSocket({ app });
   const { upgradeWebSocket, injectWebSocket } = nodeWs;
   const corsOriginSource = [

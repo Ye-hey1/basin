@@ -10,6 +10,12 @@ import {
   createWorkspaceMember,
 } from "./helpers/fixtures";
 
+// The API answers every error with { message, code }; assert the code so a
+// reworded message cannot silently change the client contract.
+async function parseError(response: Response) {
+  return (await response.json()) as { message: string; code?: string };
+}
+
 describe("custom fields API", () => {
   beforeEach(async () => {
     await resetTestDatabase();
@@ -120,12 +126,12 @@ describe("custom fields API", () => {
       }),
     });
 
-    const body = await response.text();
+    const body = await parseError(response);
     expect(
       response.status,
-      `Expected 400, got ${response.status}: ${body}`,
+      `Expected 400, got ${response.status}: ${JSON.stringify(body)}`,
     ).toBe(400);
-    expect(body).toContain("valid number");
+    expect(body.code).toBe("invalid_default_value");
   });
 
   it("requires options for a dropdown field", async () => {
@@ -144,12 +150,12 @@ describe("custom fields API", () => {
       }),
     });
 
-    const body = await response.text();
+    const body = await parseError(response);
     expect(
       response.status,
-      `Expected 400, got ${response.status}: ${body}`,
+      `Expected 400, got ${response.status}: ${JSON.stringify(body)}`,
     ).toBe(400);
-    expect(body).toContain("at least one option");
+    expect(body.code).toBe("dropdown_field_requires_options");
   });
 
   it("rejects a required field without a default value", async () => {
@@ -168,12 +174,12 @@ describe("custom fields API", () => {
       }),
     });
 
-    const body = await response.text();
+    const body = await parseError(response);
     expect(
       response.status,
-      `Expected 400, got ${response.status}: ${body}`,
+      `Expected 400, got ${response.status}: ${JSON.stringify(body)}`,
     ).toBe(400);
-    expect(body).toContain("default value");
+    expect(body.code).toBe("required_field_requires_default");
   });
 
   it("sets and retrieves a custom field value for a task", async () => {
@@ -313,12 +319,12 @@ describe("custom fields API", () => {
       }),
     });
 
-    const body = await response.text();
+    const body = await parseError(response);
     expect(
       response.status,
-      `Expected 400, got ${response.status}: ${body}`,
+      `Expected 400, got ${response.status}: ${JSON.stringify(body)}`,
     ).toBe(400);
-    expect(body).toContain("true or false");
+    expect(body.code).toBe("invalid_custom_field_value");
   });
 
   it("rejects a field belonging to another project", async () => {
@@ -387,11 +393,11 @@ describe("custom fields API", () => {
       }),
     });
 
-    const responseBody = await response.text();
+    const body = await parseError(response);
     expect(
       response.status,
-      `Expected 404, got ${response.status}: ${responseBody}`,
+      `Expected 404, got ${response.status}: ${JSON.stringify(body)}`,
     ).toBe(404);
-    expect(responseBody).toContain("Custom field not found");
+    expect(body.code).toBe("custom_field_not_found");
   });
 });

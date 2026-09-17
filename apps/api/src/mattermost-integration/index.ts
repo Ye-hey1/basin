@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { deletedSchema, projectIdParam } from "../integrations/schema";
@@ -16,6 +15,7 @@ import {
   normalizeMattermostConfig,
   validateMattermostConfig,
 } from "../plugins/mattermost/config";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { mattermostIntegrationSchema } from "./response";
@@ -202,9 +202,11 @@ const mattermostIntegration = apiRouter<
 
     const validation = await validateMattermostConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_mattermost_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     const existing = await db.query.integrationTable.findFirst({
@@ -247,9 +249,11 @@ const mattermostIntegration = apiRouter<
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Mattermost integration not found",
-      });
+      throw httpError(
+        404,
+        "mattermost_integration_not_found",
+        "Mattermost integration not found",
+      );
     }
 
     const currentConfig = normalizeMattermostConfig(
@@ -272,9 +276,11 @@ const mattermostIntegration = apiRouter<
 
     const validation = await validateMattermostConfig(nextConfig);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_mattermost_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -303,9 +309,11 @@ const mattermostIntegration = apiRouter<
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Mattermost integration not found",
-      });
+      throw httpError(
+        404,
+        "mattermost_integration_not_found",
+        "Mattermost integration not found",
+      );
     }
 
     await db

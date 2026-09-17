@@ -9,6 +9,11 @@ import {
   createWorkspaceMember,
 } from "./helpers/fixtures";
 
+// The API answers every error with { message, code }; assert the code so a
+// reworded message cannot silently change the client contract.
+async function parseError(response: Response) {
+  return (await response.json()) as { message: string; code?: string };
+}
 const webhookUrl = "https://127.0.0.1/hooks/mattermost-secret-token";
 
 describe("API integration: Mattermost", () => {
@@ -37,10 +42,13 @@ describe("API integration: Mattermost", () => {
       });
 
     expect(await (await request("GET")).json()).toBeNull();
-    expect(
-      (await request("POST", { webhookUrl: "http://127.0.0.1/hooks/test" }))
-        .status,
-    ).toBe(400);
+    const invalidScheme = await request("POST", {
+      webhookUrl: "http://127.0.0.1/hooks/test",
+    });
+    expect(invalidScheme.status).toBe(400);
+    expect((await parseError(invalidScheme)).code).toBe(
+      "invalid_mattermost_config",
+    );
     const created = await request("POST", {
       webhookUrl,
       channelName: " Test channel ",
@@ -77,7 +85,11 @@ describe("API integration: Mattermost", () => {
         taskCommentCreated: true,
       },
     });
-    expect((await request("PATCH", { webhookUrl: "" })).status).toBe(400);
+    const blankWebhook = await request("PATCH", { webhookUrl: "" });
+    expect(blankWebhook.status).toBe(400);
+    expect((await parseError(blankWebhook)).code).toBe(
+      "invalid_mattermost_config",
+    );
     const stored = await db.query.integrationTable.findFirst({
       where: eq(schema.integrationTable.id, body.id),
     });
@@ -94,8 +106,16 @@ describe("API integration: Mattermost", () => {
     });
     expect((await request("DELETE")).status).toBe(200);
     expect(await (await request("GET")).json()).toBeNull();
-    expect((await request("PATCH", { isActive: true })).status).toBe(404);
-    expect((await request("DELETE")).status).toBe(404);
+    const missingUpdate = await request("PATCH", { isActive: true });
+    expect(missingUpdate.status).toBe(404);
+    expect((await parseError(missingUpdate)).code).toBe(
+      "mattermost_integration_not_found",
+    );
+    const missingDelete = await request("DELETE");
+    expect(missingDelete.status).toBe(404);
+    expect((await parseError(missingDelete)).code).toBe(
+      "mattermost_integration_not_found",
+    );
   });
 
   it("retains workspace permission checks for mutations", async () => {

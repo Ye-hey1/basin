@@ -1,12 +1,11 @@
 import { eq, sql } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
-
 import db from "../../database";
 import {
   customFieldDefinitionTable,
   customFieldValueTable,
   taskTable,
 } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function setCustomFieldValue(
   taskId: string,
@@ -22,9 +21,7 @@ async function setCustomFieldValue(
     .limit(1);
 
   if (!task) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   const [field] = await db
@@ -34,17 +31,17 @@ async function setCustomFieldValue(
     .limit(1);
 
   if (!field || field.projectId !== task.projectId) {
-    throw new HTTPException(404, {
-      message: "Custom field not found",
-    });
+    throw httpError(404, "custom_field_not_found", "Custom field not found");
   }
 
   const normalizedValue = value.trim();
 
   if (field.required && normalizedValue.length === 0) {
-    throw new HTTPException(400, {
-      message: "This custom field is required",
-    });
+    throw httpError(
+      400,
+      "custom_field_required",
+      "This custom field is required",
+    );
   }
 
   if (
@@ -53,9 +50,11 @@ async function setCustomFieldValue(
     Array.isArray(field.options) &&
     !field.options.includes(normalizedValue)
   ) {
-    throw new HTTPException(400, {
-      message: "Invalid option for this custom field",
-    });
+    throw httpError(
+      400,
+      "invalid_custom_field_option",
+      "Invalid option for this custom field",
+    );
   }
 
   if (
@@ -63,9 +62,11 @@ async function setCustomFieldValue(
     normalizedValue.length > 0 &&
     Number.isNaN(Number(normalizedValue))
   ) {
-    throw new HTTPException(400, {
-      message: "Value must be a valid number",
-    });
+    throw httpError(
+      400,
+      "invalid_custom_field_value",
+      "Value must be a valid number",
+    );
   }
 
   if (
@@ -74,9 +75,11 @@ async function setCustomFieldValue(
     normalizedValue !== "true" &&
     normalizedValue !== "false"
   ) {
-    throw new HTTPException(400, {
-      message: "Value must be true or false",
-    });
+    throw httpError(
+      400,
+      "invalid_custom_field_value",
+      "Value must be true or false",
+    );
   }
 
   const [result] = await db

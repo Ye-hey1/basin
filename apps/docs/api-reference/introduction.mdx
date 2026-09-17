@@ -27,15 +27,17 @@ https://your-kaneo-instance.com/api
 
 ## Errors
 
-Every error response is JSON, with a human-readable message and a stable
-machine-readable code:
+Every error response is JSON. Errors the API raises deliberately carry a stable
+machine-readable code alongside the human-readable message:
 
 ```json
 { "message": "Task not found", "code": "task_not_found" }
 ```
 
 Match on `code` rather than on `message`, and translate `message` for display or
-supply your own copy. Codes are stable; wording is not.
+supply your own copy. Codes are stable; wording is not. A few failures the
+framework raises before the API sees them carry a message only: a malformed JSON
+body, and an unexpected server failure (`{ "message": "Internal Server Error" }`).
 
 | Status | Meaning |
 | --- | --- |

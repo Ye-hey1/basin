@@ -1,5 +1,5 @@
 import { asc, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
+
 import db from "../database";
 import { columnTable, customFieldDefinitionTable } from "../database/schema";
 import { httpError } from "../utils/http-error";
@@ -94,9 +94,11 @@ export async function assertRequiredCustomFields(
 
   for (const cf of customFields) {
     if (!validFieldIds.has(cf.fieldId)) {
-      throw new HTTPException(400, {
-        message: `Field "${cf.fieldId}" does not belong to this project.`,
-      });
+      throw httpError(
+        400,
+        "custom_field_project_mismatch",
+        `Field "${cf.fieldId}" does not belong to this project.`,
+      );
     }
   }
 
@@ -113,7 +115,7 @@ export async function assertRequiredCustomFields(
     );
 
     if (error) {
-      throw new HTTPException(400, { message: error });
+      throw httpError(400, "invalid_custom_field_value", error);
     }
   }
 
@@ -127,9 +129,11 @@ export async function assertRequiredCustomFields(
       (field.defaultValue != null && field.defaultValue.trim() !== "");
 
     if (!isSatisfied) {
-      throw new HTTPException(400, {
-        message: `Custom field "${field.name}" is required to create a task.`,
-      });
+      throw httpError(
+        400,
+        "custom_field_required",
+        `Custom field "${field.name}" is required to create a task.`,
+      );
     }
   }
 }

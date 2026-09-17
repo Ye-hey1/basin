@@ -1,5 +1,4 @@
 import { eq, max } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   customFieldDefinitionTable,
@@ -7,6 +6,7 @@ import {
   projectTable,
   taskTable,
 } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function createCustomField(
   projectId: string,
@@ -23,7 +23,7 @@ async function createCustomField(
     .limit(1);
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   if (
@@ -32,9 +32,11 @@ async function createCustomField(
       defaultValue === null ||
       defaultValue.trim() === "")
   ) {
-    throw new HTTPException(400, {
-      message: "Required fields must have a default value",
-    });
+    throw httpError(
+      400,
+      "required_field_requires_default",
+      "Required fields must have a default value",
+    );
   }
 
   if (defaultValue !== undefined && defaultValue !== null) {
@@ -44,43 +46,49 @@ async function createCustomField(
       if (type === "number") {
         const numberRegex = /^-?\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i;
         if (!numberRegex.test(trimmedValue)) {
-          throw new HTTPException(400, {
-            message:
-              "Default value must be a valid number for number type fields",
-          });
+          throw httpError(
+            400,
+            "invalid_default_value",
+            "Default value must be a valid number for number type fields",
+          );
         }
         const parsed = Number(trimmedValue);
         if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
-          throw new HTTPException(400, {
-            message:
-              "Default value must be a valid number for number type fields",
-          });
+          throw httpError(
+            400,
+            "invalid_default_value",
+            "Default value must be a valid number for number type fields",
+          );
         }
       } else if (type === "boolean") {
         if (trimmedValue !== "true" && trimmedValue !== "false") {
-          throw new HTTPException(400, {
-            message:
-              "Default value must be 'true' or 'false' for boolean type fields",
-          });
+          throw httpError(
+            400,
+            "invalid_default_value",
+            "Default value must be 'true' or 'false' for boolean type fields",
+          );
         }
       } else if (type === "date") {
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dateRegex.test(trimmedValue)) {
           const parsedDate = new Date(trimmedValue);
           if (Number.isNaN(parsedDate.getTime())) {
-            throw new HTTPException(400, {
-              message:
-                "Default value must be a valid date in ISO format (YYYY-MM-DD)",
-            });
+            throw httpError(
+              400,
+              "invalid_default_value",
+              "Default value must be a valid date in ISO format (YYYY-MM-DD)",
+            );
           }
         }
       } else if (type === "dropdown") {
         if (options && options.length > 0) {
           const normalizedOptions = options.map((opt) => opt.trim());
           if (!normalizedOptions.includes(trimmedValue)) {
-            throw new HTTPException(400, {
-              message: "Default value must be one of the dropdown options",
-            });
+            throw httpError(
+              400,
+              "invalid_default_value",
+              "Default value must be one of the dropdown options",
+            );
           }
         }
       }
@@ -88,9 +96,11 @@ async function createCustomField(
   }
 
   if (type === "dropdown" && (!options || options.length === 0)) {
-    throw new HTTPException(400, {
-      message: "Dropdown fields must have at least one option",
-    });
+    throw httpError(
+      400,
+      "dropdown_field_requires_options",
+      "Dropdown fields must have at least one option",
+    );
   }
 
   const [maxPositionResult] = await db
@@ -113,9 +123,11 @@ async function createCustomField(
       .returning();
 
     if (!created) {
-      throw new HTTPException(500, {
-        message: "Failed to create custom field",
-      });
+      throw httpError(
+        500,
+        "failed_to_create_custom_field",
+        "Failed to create custom field",
+      );
     }
 
     if (defaultValue != null && defaultValue.trim() !== "") {
