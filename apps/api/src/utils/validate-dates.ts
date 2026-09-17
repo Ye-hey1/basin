@@ -1,4 +1,4 @@
-import { HTTPException } from "hono/http-exception";
+import { httpError } from "./http-error";
 
 /**
  * Validates and parses a date string. Throws an HTTPException if the string
@@ -6,15 +6,19 @@ import { HTTPException } from "hono/http-exception";
  */
 export function validateAndParseDate(dateStr: string, fieldName: string): Date {
   if (dateStr.trim() === "") {
-    throw new HTTPException(400, {
-      message: `${fieldName} cannot be an empty string. Please provide a valid date or omit the field.`,
-    });
+    throw httpError(
+      400,
+      "invalid_date",
+      `${fieldName} cannot be an empty string. Please provide a valid date or omit the field.`,
+    );
   }
   const parsed = new Date(dateStr);
   if (Number.isNaN(parsed.getTime())) {
-    throw new HTTPException(400, {
-      message: `Invalid ${fieldName} "${dateStr}". Please provide a valid date string (e.g. "2025-01-15" or "2025-01-15T10:30:00Z").`,
-    });
+    throw httpError(
+      400,
+      "invalid_date",
+      `Invalid ${fieldName} "${dateStr}". Please provide a valid date string (e.g. "2025-01-15" or "2025-01-15T10:30:00Z").`,
+    );
   }
   return parsed;
 }
@@ -28,9 +32,10 @@ export function validateDateRange(
   dueDate: Date | undefined | null,
 ): void {
   if (startDate && dueDate && startDate.getTime() > dueDate.getTime()) {
-    throw new HTTPException(400, {
-      message:
-        "Start date cannot be after due date. Please adjust the date range.",
-    });
+    throw httpError(
+      400,
+      "start_date_cannot_be_after_due_date_please_adjust_the_date_range",
+      "Start date cannot be after due date. Please adjust the date range.",
+    );
   }
 }

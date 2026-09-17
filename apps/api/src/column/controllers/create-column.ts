@@ -1,8 +1,8 @@
 import { eq, sql } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable } from "../../database/schema";
 import { VIRTUAL_STATUSES } from "../../task/validate-task-fields";
+import { httpError } from "../../utils/http-error";
 
 export function toSlug(name: string): string {
   const slug = name
@@ -31,15 +31,19 @@ async function createColumn({
   const slug = toSlug(name);
 
   if (!slug) {
-    throw new HTTPException(400, {
-      message: "Column name must contain at least one alphanumeric character",
-    });
+    throw httpError(
+      400,
+      "column_name_must_contain_at_least_one_alphanumeric_character",
+      "Column name must contain at least one alphanumeric character",
+    );
   }
 
   if ((VIRTUAL_STATUSES as readonly string[]).includes(slug)) {
-    throw new HTTPException(409, {
-      message: `Column slug "${slug}" is reserved for virtual task statuses`,
-    });
+    throw httpError(
+      409,
+      "column_slug_reserved",
+      `Column slug "${slug}" is reserved for virtual task statuses`,
+    );
   }
 
   const existing = await db
@@ -50,9 +54,11 @@ async function createColumn({
     );
 
   if (existing.length > 0) {
-    throw new HTTPException(409, {
-      message: `Column with slug "${slug}" already exists in this project`,
-    });
+    throw httpError(
+      409,
+      "column_slug_exists",
+      `Column with slug "${slug}" already exists in this project`,
+    );
   }
 
   const [maxPos] = await db
@@ -78,7 +84,7 @@ async function createColumn({
     .returning();
 
   if (!created) {
-    throw new HTTPException(500, { message: "Failed to create column" });
+    throw httpError(500, "failed_to_create_column", "Failed to create column");
   }
 
   return created;

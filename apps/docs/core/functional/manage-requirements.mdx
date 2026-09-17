@@ -1,0 +1,138 @@
+---
+title: Plan Requirements
+description: Capture what to build as a requirement tree, with versioned documents and acceptance criteria, before it becomes tasks
+---
+
+Requirements are Kaneo's planning layer. A requirement describes **what should be built and why**; tasks describe **who does what to build it**. Keeping them separate means the spec survives task churn.
+
+Requirements live at the **workspace** level, not inside a single project, because one requirement is often delivered by several projects. Each requirement is linked to one primary project plus any number of related ones.
+
+## When to use requirements
+
+Use requirements when you need to:
+
+- Agree on scope before work is split into tasks
+- Keep a written PRD next to the work it justifies
+- Break a large initiative into a tree of sub-requirements
+- Track acceptance criteria that outlive individual tasks
+- Report progress on outcomes rather than on task counts
+
+If a piece of work is executable and belongs to exactly one project, a task is the right tool. Requirements are for the layer above that.
+
+## The requirement tree
+
+Every requirement can have sub-requirements, and those can have their own. A typical shape is:
+
+- A root requirement carrying the requirement documents
+- One child per capability or module
+- Grandchildren for anything still too large to estimate
+
+The PRD lives in the requirement's **documents** (see below), not in a field on
+the node. Child nodes carry their own short description instead, so the tree
+stays readable without repeating the whole document.
+
+## Fields
+
+| Field | Purpose |
+| --- | --- |
+| Title | What this requirement delivers |
+| Description | Scoped context for this node |
+| Documents | The requirement's Markdown documents; the PRD is usually the first |
+| Status | `pending_review` → `reviewed` → `in_development` → `completed` |
+| Priority | `P0` (urgent) through `P4` (deferred) |
+| Type | `feature`, `optimization`, `bug`, or `tech_improvement` |
+| Source | `customer_feedback`, `internal_plan`, or `operational` |
+| Module | Free-text area, for grouping and filtering |
+| Assignee | The person accountable |
+| Expected date | When this should be delivered |
+
+Status does not have to advance in order here; requirement status records where the work stands, unlike a board column which registers a transition.
+
+## Acceptance criteria
+
+Each requirement holds its own list of acceptance criteria. A criterion is a short title plus the condition that proves it is met.
+
+Marking a criterion passed or failed records **who verified it and when**. Moving it back to pending clears that stamp, so an approval can never linger on something that is no longer verified.
+
+## Requirement documents
+
+A requirement can carry **several Markdown documents** — its PRD, integration
+notes, a rollout plan — and each one keeps its own version history. The
+**Documents** section of the requirement detail lists them and switches between
+them; the one with the lowest position opens by default.
+
+- **New document** creates an empty document. Everything you save afterwards is
+  kept as a version, so a document has history from the moment it exists.
+- **Edit** opens the Markdown editor for the current version. Saving stores a
+  new version and tells you which one you got.
+- **History** lists every version with its author and timestamp, and marks which
+  one is current.
+- **Reading a past version** shows its text with a banner. Nothing is changed
+  until you act: **Compare with current** puts the two side by side, and
+  **Restore this version** saves the old text as a *new* version.
+
+Saving text identical to the current version stores nothing and says so. A
+history is only useful while every entry in it marks a real change, so a no-op
+save is deliberately not recorded.
+
+## Linking tasks to a requirement
+
+A task can be linked to exactly one requirement. The link is deliberately a
+single reference rather than a many-to-many relation: a task delivers one piece
+of a requirement, and a requirement's progress should not double-count work.
+
+- **On the task** open the task detail view and pick the requirement from the
+  **Requirement** row. The row shows the current link, or *No requirement
+  linked*, and the arrow opens the requirement.
+- **On the requirement** the **Linked tasks** section lists every task linked to
+  it, across all projects in the workspace, together with a `done / total`
+  counter and a progress bar. Selecting a row opens that task in its own
+  project.
+
+Progress counts a task as done when it sits in a column marked **final**. Tasks
+in a virtual status (planned or archived) have no column, so they count towards
+the total but never towards done.
+
+Link tasks where the work actually belongs, not where the requirement lives:
+because a requirement spans projects, the requirement's task list is the only
+place that shows its full delivery state. The workspace task board and the
+requirement are two views of the same work, and the link keeps them consistent.
+
+Unlinking is immediate and does not touch the task itself. Deleting a
+requirement leaves its tasks in place and unlinks them.
+
+## Working with requirements
+
+1. Open your workspace and select the **Requirements** tab.
+2. Create a root requirement for the initiative.
+3. Write the requirement's documents — the PRD first.
+4. Add sub-requirements for the pieces of work.
+5. Add acceptance criteria for anything that must be provable.
+6. Link the projects that will deliver it.
+7. Link the tasks that will deliver it.
+8. Move status forward as the work progresses.
+
+## Rules worth knowing
+
+- **A requirement with sub-requirements cannot be deleted.** Delete or move its children first. This stops a single click from removing a whole subtree.
+- **A requirement cannot be moved under itself or under one of its own descendants.** The move is rejected rather than silently creating a loop.
+- **Every related project must belong to the same workspace.** Cross-workspace links are refused.
+- **Deleting a project unlinks it, and deleting a workspace removes its requirements entirely.**
+
+## Permissions
+
+Requirement access uses the standard workspace roles:
+
+| Action | viewer | member | admin / owner |
+| --- | --- | --- | --- |
+| Read requirements | Yes | Yes | Yes |
+| Create and update | No | Yes | Yes |
+| Delete | No | No | Yes |
+
+Roles are editable per workspace, so a workspace can grant a narrower or wider set.
+
+## Next
+
+- [Plan and execute tasks in Board/List](/core/functional/plan-and-execute-tasks)
+- [Plan work in Backlog](/core/functional/backlog-planning)
+- [Configure project workflows](/core/functional/configure-workflows)

@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { timeEntryTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 import { resolveDuration } from "../duration";
 
 type UpdateTimeEntryParams = {
@@ -20,9 +20,7 @@ async function updateTimeEntry(params: UpdateTimeEntryParams) {
     .where(eq(timeEntryTable.id, timeEntryId));
 
   if (!existingTimeEntry) {
-    throw new HTTPException(404, {
-      message: "Time entry not found",
-    });
+    throw httpError(404, "time_entry_not_found", "Time entry not found");
   }
 
   const effectiveEndTime = endTime ?? existingTimeEntry.endTime;

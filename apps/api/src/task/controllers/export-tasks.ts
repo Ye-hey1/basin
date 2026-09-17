@@ -1,5 +1,4 @@
 import { eq, inArray } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   labelTable,
@@ -7,6 +6,7 @@ import {
   taskTable,
   userTable,
 } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function exportTasks(projectId: string) {
   const project = await db.query.projectTable.findFirst({
@@ -14,9 +14,7 @@ async function exportTasks(projectId: string) {
   });
 
   if (!project) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const tasks = await db

@@ -34,15 +34,21 @@ type ReminderType = "trial_ending" | "trial_expired";
 
 const REMINDERS: {
   type: ReminderType;
-  subject: (workspaceName: string) => string;
+  subject: (workspaceName: string, locale?: string | null) => string;
 }[] = [
   {
     type: "trial_ending",
-    subject: (name) => `Your ${name} trial ends in 3 days`,
+    subject: (name, locale) =>
+      locale?.toLowerCase().startsWith("zh")
+        ? `你的 ${name} 试用期将在 3 天后结束`
+        : `Your ${name} trial ends in 3 days`,
   },
   {
     type: "trial_expired",
-    subject: (name) => `Your ${name} trial has ended`,
+    subject: (name, locale) =>
+      locale?.toLowerCase().startsWith("zh")
+        ? `你的 ${name} 试用期已结束`
+        : `Your ${name} trial has ended`,
   },
 ];
 
@@ -78,6 +84,7 @@ async function getWorkspacesNeedingReminder(type: ReminderType, now: Date) {
       workspaceName: workspaceTable.name,
       trialEndsAt: workspaceBillingTable.trialEndsAt,
       email: userTable.email,
+      locale: userTable.locale,
     })
     .from(workspaceBillingTable)
     .innerJoin(
@@ -179,11 +186,12 @@ export async function checkTrialReminders(): Promise<{ degraded: boolean }> {
 
       await sendTrialReminderEmail(
         row.email,
-        reminder.subject(row.workspaceName),
+        reminder.subject(row.workspaceName, row.locale),
         {
           workspaceName: row.workspaceName,
           daysLeft,
           billingUrl: `${clientUrl()}/dashboard/settings/workspace/billing`,
+          locale: row.locale,
         },
       );
       sent++;

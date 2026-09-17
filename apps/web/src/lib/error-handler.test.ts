@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { parseApiError } from "./error-handler";
+import { parseApiError, translateApiError } from "./error-handler";
+import { HttpError } from "./http-error";
 
 describe("parseApiError", () => {
   it("returns a generic message key for unknown Error instances instead of leaking error.message", () => {
@@ -36,5 +37,57 @@ describe("parseApiError", () => {
     expect(result.message).toBe("common:error.messages.network");
     expect(result.originalError).toBe(error);
     expect(result.originalError?.message).toBe(originalMessage);
+  });
+});
+
+describe("translateApiError", () => {
+  it("returns null for errors without an API code", () => {
+    expect(translateApiError(new Error("plain failure"))).toBeNull();
+    expect(translateApiError("some string")).toBeNull();
+    expect(translateApiError(undefined)).toBeNull();
+  });
+
+  it("translates coded HttpErrors and falls back to the API message", () => {
+    const error = new HttpError(404, "Task not found", "task_not_found");
+    const result = translateApiError(error);
+
+    // The i18n resources may not be loaded in unit tests; either the
+    // translation or the raw message is acceptable, never the key itself.
+    expect(result).toBeTruthy();
+    expect(result).not.toContain("error.codes");
+  });
+
+  it("reads a code from plain objects with a code field", () => {
+    const result = translateApiError({
+      message: "Boom",
+      code: "insufficient_permissions",
+    });
+    expect(result).toBeTruthy();
+  });
+});
+
+describe("HttpError.fromResponse", () => {
+  it("extracts message and code from an API error body", async () => {
+    const response = new Response(
+      JSON.stringify({ message: "Task not found", code: "task_not_found" }),
+      { status: 404 },
+    );
+
+    const error = await HttpError.fromResponse(response, "Request failed");
+
+    expect(error).toBeInstanceOf(HttpError);
+    expect(error.status).toBe(404);
+    expect(error.message).toBe("Task not found");
+    expect(error.code).toBe("task_not_found");
+  });
+
+  it("falls back when the body is not JSON", async () => {
+    const response = new Response("upstream error", { status: 502 });
+
+    const error = await HttpError.fromResponse(response, "Request failed");
+
+    expect(error.status).toBe(502);
+    expect(error.message).toBe("Request failed");
+    expect(error.code).toBeUndefined();
   });
 });

@@ -1,8 +1,8 @@
 import { createId } from "@paralleldrive/cuid2";
 import { count, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { workspaceUserTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 import {
   type BillingInterval,
   isBillingEnabled,
@@ -24,19 +24,21 @@ async function createCheckout({
   userEmail: string;
 }) {
   if (!isBillingEnabled()) {
-    throw new HTTPException(400, { message: "Billing is not enabled" });
+    throw httpError(400, "billing_is_not_enabled", "Billing is not enabled");
   }
 
   const productId = productIdFor(plan, interval);
   if (!productId) {
-    throw new HTTPException(400, { message: "Unknown plan" });
+    throw httpError(400, "unknown_plan", "Unknown plan");
   }
 
   const billing = await getOrCreateWorkspaceBilling(workspaceId);
   if (billing.status === "active") {
-    throw new HTTPException(400, {
-      message: "Workspace already has an active subscription",
-    });
+    throw httpError(
+      400,
+      "workspace_already_has_an_active_subscription",
+      "Workspace already has an active subscription",
+    );
   }
 
   let units = 1;

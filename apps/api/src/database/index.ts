@@ -2,12 +2,15 @@ import { config } from "dotenv-mono";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import {
+  acceptanceItemTableRelations,
   accountTableRelations,
   activityTableRelations,
   apikeyTableRelations,
   assetTableRelations,
   columnTableRelations,
   commentTableRelations,
+  customFieldDefinitionTableRelations,
+  customFieldValueTableRelations,
   externalLinkTableRelations,
   githubIntegrationTableRelations,
   integrationTableRelations,
@@ -15,6 +18,10 @@ import {
   labelTableRelations,
   notificationTableRelations,
   projectTableRelations,
+  requirementDocumentTableRelations,
+  requirementDocumentVersionTableRelations,
+  requirementProjectTableRelations,
+  requirementTableRelations,
   sessionTableRelations,
   taskRelationTableRelations,
   taskReminderSentTableRelations,
@@ -34,6 +41,7 @@ import {
 } from "./relations";
 import { resolveDatabaseConnectionString } from "./resolve-database-url";
 import {
+  acceptanceItemTable,
   accountTable,
   activityTable,
   apikeyTable,
@@ -42,6 +50,8 @@ import {
   billingReminderSentTable,
   columnTable,
   commentTable,
+  customFieldDefinitionTable,
+  customFieldValueTable,
   deviceCodeTable,
   externalLinkTable,
   githubIntegrationTable,
@@ -52,6 +62,10 @@ import {
   mcpOauthStateTable,
   notificationTable,
   projectTable,
+  requirementDocumentTable,
+  requirementDocumentVersionTable,
+  requirementProjectTable,
+  requirementTable,
   sessionTable,
   taskRelationTable,
   taskReminderSentTable,
@@ -77,6 +91,7 @@ config();
 
 export const schema = {
   accountTable,
+  acceptanceItemTable,
   assetTable,
   activityTable,
   apikeyTable,
@@ -95,6 +110,10 @@ export const schema = {
   mcpOauthStateTable,
   notificationTable,
   projectTable,
+  requirementProjectTable,
+  requirementTable,
+  requirementDocumentTable,
+  requirementDocumentVersionTable,
   sessionTable,
   taskRelationTable,
   taskReminderSentTable,
@@ -113,6 +132,7 @@ export const schema = {
   workspaceRoleTable,
   workspaceTable,
   workspaceUserTable,
+  acceptanceItemTableRelations,
   accountTableRelations,
   assetTableRelations,
   activityTableRelations,
@@ -126,6 +146,10 @@ export const schema = {
   labelTableRelations,
   notificationTableRelations,
   projectTableRelations,
+  requirementProjectTableRelations,
+  requirementTableRelations,
+  requirementDocumentTableRelations,
+  requirementDocumentVersionTableRelations,
   sessionTableRelations,
   taskRelationTableRelations,
   taskReminderSentTableRelations,
@@ -142,6 +166,10 @@ export const schema = {
   workspaceRoleTableRelations,
   workspaceTableRelations,
   workspaceUserTableRelations,
+  customFieldDefinitionTable,
+  customFieldValueTable,
+  customFieldDefinitionTableRelations,
+  customFieldValueTableRelations,
 };
 
 type DatabaseInstance = ReturnType<typeof drizzle<typeof schema>>;

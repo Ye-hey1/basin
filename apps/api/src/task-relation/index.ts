@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { projectTable, taskRelationTable, taskTable } from "../database/schema";
 import {
@@ -10,6 +9,7 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -39,7 +39,7 @@ async function workspaceIdOfTask(taskId: string) {
 function requireUserId(c: Context) {
   const userId = c.get("userId");
   if (!userId) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
   return userId as string;
 }
@@ -55,12 +55,16 @@ async function scopeToSourceTask(c: Context, next: Next) {
   const sourceTaskId =
     typeof body?.sourceTaskId === "string" ? body.sourceTaskId : null;
   if (!sourceTaskId) {
-    throw new HTTPException(400, { message: "sourceTaskId is required" });
+    throw httpError(
+      400,
+      "sourcetaskid_is_required",
+      "sourceTaskId is required",
+    );
   }
 
   const workspaceId = await workspaceIdOfTask(sourceTaskId);
   if (!workspaceId) {
-    throw new HTTPException(404, { message: "Source task not found" });
+    throw httpError(404, "source_task_not_found", "Source task not found");
   }
 
   await validateWorkspaceAccess(userId, workspaceId);
@@ -78,12 +82,12 @@ async function scopeToRelation(c: Context, next: Next) {
     .where(eq(taskRelationTable.id, id ?? ""))
     .limit(1);
   if (!rel) {
-    throw new HTTPException(404, { message: "Task relation not found" });
+    throw httpError(404, "task_relation_not_found", "Task relation not found");
   }
 
   const workspaceId = await workspaceIdOfTask(rel.sourceTaskId);
   if (!workspaceId) {
-    throw new HTTPException(404, { message: "Task not found" });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   await validateWorkspaceAccess(userId, workspaceId);
@@ -106,9 +110,8 @@ const getTaskRelationsRoute = createRoute({
       "Task relations with the linked task summaries",
       taskRelationWithTasksListSchema,
     ),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
   },
 });

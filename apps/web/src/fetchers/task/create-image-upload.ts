@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function createImageUpload({
   taskId,
@@ -24,8 +25,7 @@ async function createImageUpload({
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   return response.json();
@@ -58,8 +58,7 @@ export async function finalizeImageUpload({
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   return response.json();

@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import * as v from "valibot";
 import db from "../../database";
 import { integrationTable } from "../../database/schema";
@@ -10,6 +9,7 @@ import {
   type TelegramEventKey,
   telegramConfigSchema,
 } from "../../plugins/telegram/config";
+import { httpError } from "../../utils/http-error";
 
 // The HTTP body is validated by updateTelegramBody in ../schema; this is the
 // shape it produces. Every event toggle is genuinely optional -- a patch merges
@@ -105,9 +105,11 @@ export function parseTelegramIntegrationConfig(
       projectId: integration.projectId,
       sanitizedConfig: sanitizeTelegramConfigForLog(integration.config),
     });
-    throw new HTTPException(500, {
-      message: "Stored Telegram integration configuration is invalid",
-    });
+    throw httpError(
+      500,
+      "stored_telegram_integration_configuration_is_invalid",
+      "Stored Telegram integration configuration is invalid",
+    );
   }
 }
 

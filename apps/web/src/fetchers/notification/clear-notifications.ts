@@ -1,11 +1,11 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function clearNotifications() {
   const response = await client.notification["clear-all"].$delete();
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   const data = await response.json();

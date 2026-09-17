@@ -35,9 +35,8 @@ const getTaskLabelsRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("List of labels for the task", labelListSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
   },
 });
@@ -96,9 +95,8 @@ const getLabelRoute = createRoute({
   request: { params: labelParam },
   responses: {
     200: jsonResponse("Label details", labelSchema),
-    400: errorResponse(
-      "Unknown label, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown label"),
     403: errorResponse("No access to the label's workspace"),
   },
 });
@@ -123,13 +121,11 @@ const attachLabelToTaskRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Label attached to task successfully", labelSchema),
-    400: errorResponse(
-      "Unknown label, or label and task belong to different workspaces",
-    ),
+    400: errorResponse("Label and task belong to different workspaces"),
     403: errorResponse(
       "No workspace access, or missing label:update permission",
     ),
-    404: errorResponse("Task not found"),
+    404: errorResponse("Unknown label, or the task was not found"),
   },
 });
 
@@ -147,11 +143,11 @@ const detachLabelFromTaskRoute = createRoute({
   request: { params: labelParam },
   responses: {
     200: jsonResponse("Label detached from task successfully", labelSchema),
-    400: errorResponse("Unknown label, or label is not assigned to a task"),
+    400: errorResponse("Label is not assigned to a task"),
     403: errorResponse(
       "No workspace access, or missing label:update permission",
     ),
-    404: errorResponse("Task not found"),
+    404: errorResponse("Unknown label, or the task was not found"),
   },
 });
 
@@ -175,7 +171,8 @@ const updateLabelRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Label updated successfully", labelSchema),
-    400: errorResponse("Invalid body, or unknown label"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown label"),
     403: errorResponse(
       "No workspace access, or missing label:update permission",
     ),
@@ -196,13 +193,11 @@ const deleteLabelRoute = createRoute({
   request: { params: labelParam },
   responses: {
     200: jsonResponse("Label deleted successfully", labelSchema),
-    400: errorResponse(
-      "Unknown label, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing label:delete permission",
     ),
-    404: errorResponse("The label's task no longer exists"),
+    404: errorResponse("Unknown label, or its task no longer exists"),
   },
 });
 

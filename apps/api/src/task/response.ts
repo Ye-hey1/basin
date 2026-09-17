@@ -22,9 +22,16 @@ export const taskSchema = z
       description: "The slug of the column the task sits in.",
     }),
     priority: z.string().openapi({ description: priorityDescription }),
+    requirementId: z.string().nullable().openapi({
+      description:
+        "The requirement this task implements, if it was linked to one.",
+    }),
     startDate: nullableResponseTimestamp,
     dueDate: nullableResponseTimestamp,
     createdAt: responseTimestamp,
+    customFields: z
+      .array(z.object({ fieldId: z.string(), value: z.string() }))
+      .optional(),
   })
   .openapi("Task");
 
@@ -32,6 +39,10 @@ export const taskWithAssigneeSchema = taskSchema
   .extend({
     assigneeName: z.string().nullable(),
     assigneeId: z.string().nullable(),
+    requirementTitle: z.string().nullable().openapi({
+      description:
+        "Title of the linked requirement, resolved for display so the task view needs no second request.",
+    }),
   })
   .openapi("TaskWithAssignee");
 

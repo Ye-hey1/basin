@@ -1,5 +1,4 @@
 import { and, eq, inArray, or } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import {
   projectTable,
@@ -9,6 +8,7 @@ import {
   workspaceUserTable,
 } from "../database/schema";
 import { assertPublicWebhookDestination } from "../plugins/generic-webhook/config";
+import { httpError } from "../utils/http-error";
 import { decryptSecret, encryptSecret } from "./secrets";
 
 export type NotificationPreferenceProjectMode = "all" | "selected";
@@ -129,9 +129,11 @@ async function assertWorkspaceMembership(userId: string, workspaceId: string) {
     .limit(1);
 
   if (!membership) {
-    throw new HTTPException(403, {
-      message: "You don't have access to this workspace",
-    });
+    throw httpError(
+      403,
+      "you_don_t_have_access_to_this_workspace",
+      "You don't have access to this workspace",
+    );
   }
 }
 
@@ -140,9 +142,11 @@ export async function validateProjectSelection(
   selectedProjectIds: string[],
 ) {
   if (selectedProjectIds.length === 0) {
-    throw new HTTPException(400, {
-      message: "Select at least one project for selected project mode",
-    });
+    throw httpError(
+      400,
+      "select_at_least_one_project_for_selected_project_mode",
+      "Select at least one project for selected project mode",
+    );
   }
 
   const projects = await db
@@ -156,9 +160,11 @@ export async function validateProjectSelection(
     );
 
   if (projects.length !== selectedProjectIds.length) {
-    throw new HTTPException(400, {
-      message: "One or more selected projects are invalid",
-    });
+    throw httpError(
+      400,
+      "one_or_more_selected_projects_are_invalid",
+      "One or more selected projects are invalid",
+    );
   }
 }
 
@@ -315,61 +321,73 @@ export async function updateNotificationPreferences(
     input.webhookSecret !== undefined;
 
   if (emailEnabled && !emailAddress) {
-    throw new HTTPException(400, {
-      message: "Email notifications require an account email address",
-    });
+    throw httpError(
+      400,
+      "email_notifications_require_an_account_email_address",
+      "Email notifications require an account email address",
+    );
   }
 
   if (shouldValidateNtfy) {
     if (!ntfyServerUrl || !ntfyTopic) {
-      throw new HTTPException(400, {
-        message: "ntfy requires a server URL and topic",
-      });
+      throw httpError(
+        400,
+        "ntfy_requires_a_server_url_and_topic",
+        "ntfy requires a server URL and topic",
+      );
     }
 
     try {
       new URL(ntfyServerUrl);
       await assertPublicWebhookDestination(ntfyServerUrl);
     } catch (error) {
-      throw new HTTPException(400, {
-        message:
-          error instanceof Error ? error.message : "Invalid ntfy server URL",
-      });
+      throw httpError(
+        400,
+        "invalid_ntfy_url",
+        error instanceof Error ? error.message : "Invalid ntfy server URL",
+      );
     }
   }
 
   if (shouldValidateGotify) {
     if (!gotifyServerUrl || !gotifyToken) {
-      throw new HTTPException(400, {
-        message: "Gotify requires a server URL and app token",
-      });
+      throw httpError(
+        400,
+        "gotify_requires_a_server_url_and_app_token",
+        "Gotify requires a server URL and app token",
+      );
     }
 
     try {
       new URL(gotifyServerUrl);
       await assertPublicWebhookDestination(gotifyServerUrl);
     } catch (error) {
-      throw new HTTPException(400, {
-        message:
-          error instanceof Error ? error.message : "Invalid Gotify server URL",
-      });
+      throw httpError(
+        400,
+        "invalid_gotify_url",
+        error instanceof Error ? error.message : "Invalid Gotify server URL",
+      );
     }
   }
 
   if (shouldValidateWebhook) {
     if (!webhookUrl) {
-      throw new HTTPException(400, {
-        message: "Webhook notifications require an endpoint URL",
-      });
+      throw httpError(
+        400,
+        "webhook_notifications_require_an_endpoint_url",
+        "Webhook notifications require an endpoint URL",
+      );
     }
 
     try {
       new URL(webhookUrl);
       await assertPublicWebhookDestination(webhookUrl);
     } catch (error) {
-      throw new HTTPException(400, {
-        message: error instanceof Error ? error.message : "Invalid webhook URL",
-      });
+      throw httpError(
+        400,
+        "invalid_webhook_url",
+        error instanceof Error ? error.message : "Invalid webhook URL",
+      );
     }
   }
 
@@ -521,9 +539,11 @@ export async function upsertWorkspaceRule(
   });
 
   if (input.emailEnabled && (!preference?.emailEnabled || !emailAddress)) {
-    throw new HTTPException(400, {
-      message: "Enable email notifications globally before using them here",
-    });
+    throw httpError(
+      400,
+      "enable_email_notifications_globally_before_using_them_here",
+      "Enable email notifications globally before using them here",
+    );
   }
 
   if (
@@ -532,18 +552,22 @@ export async function upsertWorkspaceRule(
       !preference.ntfyServerUrl ||
       !preference.ntfyTopic)
   ) {
-    throw new HTTPException(400, {
-      message: "Enable ntfy notifications globally before using them here",
-    });
+    throw httpError(
+      400,
+      "enable_ntfy_notifications_globally_before_using_them_here",
+      "Enable ntfy notifications globally before using them here",
+    );
   }
 
   if (
     input.webhookEnabled &&
     (!preference?.webhookEnabled || !preference.webhookUrl)
   ) {
-    throw new HTTPException(400, {
-      message: "Enable webhook notifications globally before using them here",
-    });
+    throw httpError(
+      400,
+      "enable_webhook_notifications_globally_before_using_them_here",
+      "Enable webhook notifications globally before using them here",
+    );
   }
 
   if (
@@ -552,9 +576,11 @@ export async function upsertWorkspaceRule(
       !preference.gotifyServerUrl ||
       !preference.gotifyToken)
   ) {
-    throw new HTTPException(400, {
-      message: "Enable Gotify notifications globally before using them here",
-    });
+    throw httpError(
+      400,
+      "enable_gotify_notifications_globally_before_using_them_here",
+      "Enable Gotify notifications globally before using them here",
+    );
   }
 
   const existing = await db.query.userNotificationWorkspaceRuleTable.findFirst({
@@ -597,9 +623,11 @@ export async function upsertWorkspaceRule(
   }
 
   if (!ruleId) {
-    throw new HTTPException(500, {
-      message: "Failed to save notification workspace rule",
-    });
+    throw httpError(
+      500,
+      "failed_to_save_notification_workspace_rule",
+      "Failed to save notification workspace rule",
+    );
   }
 
   const workspaceRuleId = ruleId;
@@ -641,9 +669,11 @@ export async function deleteWorkspaceRule(
   });
 
   if (!existing) {
-    throw new HTTPException(404, {
-      message: "Workspace notification rule not found",
-    });
+    throw httpError(
+      404,
+      "workspace_notification_rule_not_found",
+      "Workspace notification rule not found",
+    );
   }
 
   await db

@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 import getProject from "./get-project";
 
 async function deleteProject(id: string, workspaceId: string) {
@@ -13,9 +13,11 @@ async function deleteProject(id: string, workspaceId: string) {
     .returning();
 
   if (!deletedProject) {
-    throw new HTTPException(500, {
-      message: "Failed to delete project",
-    });
+    throw httpError(
+      500,
+      "failed_to_delete_project",
+      "Failed to delete project",
+    );
   }
 
   return existingProject;

@@ -1,15 +1,15 @@
 import { eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { projectTable } from "../database/schema";
+import { httpError } from "../utils/http-error";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 
 // Route middleware runs before the validators, so c.req.valid() is unavailable.
 export async function scopeToProjectFromBody(c: Context, next: Next) {
   const userId = c.get("userId");
   if (!userId) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   const body = (await c.req.json().catch(() => ({}))) as {
@@ -17,7 +17,7 @@ export async function scopeToProjectFromBody(c: Context, next: Next) {
   };
   const projectId = typeof body?.projectId === "string" ? body.projectId : null;
   if (!projectId) {
-    throw new HTTPException(400, { message: "projectId is required" });
+    throw httpError(400, "projectid_is_required", "projectId is required");
   }
 
   const [project] = await db
@@ -27,7 +27,7 @@ export async function scopeToProjectFromBody(c: Context, next: Next) {
     .limit(1);
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   await validateWorkspaceAccess(

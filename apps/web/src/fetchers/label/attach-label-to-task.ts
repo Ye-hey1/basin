@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 export type AttachLabelToTaskRequest = {
   labelId: string;
@@ -15,7 +16,7 @@ async function attachLabelToTask({
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   return response.json();

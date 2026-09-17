@@ -29,6 +29,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import WorkspaceLayout from "@/components/common/workspace-layout";
+import WorkspaceTabs from "@/components/common/workspace-tabs";
 import PageTitle from "@/components/page-title";
 import CreateProjectModal from "@/components/shared/modals/create-project-modal";
 import { Badge } from "@/components/ui/badge";
@@ -309,6 +310,9 @@ function RouteComponent() {
             ) : null
           }
         >
+          <div className="mb-4">
+            <WorkspaceTabs workspaceId={workspaceId} active="projects" />
+          </div>
           <Empty className="min-h-[60vh]">
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -359,6 +363,9 @@ function RouteComponent() {
           ) : null
         }
       >
+        <div className="mb-4">
+          <WorkspaceTabs workspaceId={workspaceId} active="projects" />
+        </div>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}

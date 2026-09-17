@@ -18,7 +18,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import labelColors from "@/constants/label-colors";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import useGetGiteaIntegration from "@/hooks/queries/gitea-integration/use-get-gitea-integration";
 import useGetGithubIntegration from "@/hooks/queries/github-integration/use-get-github-integration";
@@ -27,6 +26,7 @@ import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
+import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { getColumnIcon } from "@/lib/column";
 import {
@@ -37,6 +37,7 @@ import {
 import { formatDateShort } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import { getPriorityLabel, getStatusDisplayLabel } from "@/lib/i18n/domain";
+import { resolveLabelColor } from "@/lib/label-color";
 import { getPriorityIcon } from "@/lib/priority";
 import { toast } from "@/lib/toast";
 import TaskAssigneePopover from "./task-assignee-popover";
@@ -46,6 +47,7 @@ import TaskMovePopover from "./task-move-popover";
 import TaskPriorityPopover from "./task-priority-popover";
 import TaskStartDatePopover from "./task-start-date-popover";
 import TaskStatusPopover from "./task-status-popover";
+import TaskTimeTracking from "./task-time-tracking";
 
 function slugify(text: string | undefined): string {
   if (!text) return "";
@@ -85,6 +87,7 @@ export default function TaskPropertiesSidebar({
   compact = false,
 }: TaskPropertiesSidebarProps) {
   const { t } = useTranslation();
+  const { canUpdateTasks } = useWorkspacePermission();
   const { data: task } = useGetTask(taskId ?? "");
   const { data: project } = useGetProject({ id: projectId, workspaceId });
   const { data: columns = [] } = useGetColumns(projectId);
@@ -96,6 +99,7 @@ export default function TaskPropertiesSidebar({
   const { data: workspaceProjects = [] } = useGetProjects({ workspaceId });
   const canMoveTask =
     Boolean(task) && workspaceProjects.some((p) => p.id !== task?.projectId);
+  const canEdit = canUpdateTasks();
   const statusColumn = columns.find(
     (column) => column.slug === task?.status || column.id === task?.status,
   );
@@ -736,9 +740,7 @@ export default function TaskPropertiesSidebar({
                         <span
                           className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                           style={{
-                            backgroundColor:
-                              labelColors.find((c) => c.value === label.color)
-                                ?.color || "var(--color-neutral-400)",
+                            backgroundColor: resolveLabelColor(label.color),
                           }}
                         />
                         <span className="truncate max-w-[60px]">
@@ -762,6 +764,8 @@ export default function TaskPropertiesSidebar({
               )}
             </div>
           </div>
+
+          <TaskTimeTracking taskId={taskId ?? ""} canEdit={canEdit} />
         </div>
       </div>
     </div>

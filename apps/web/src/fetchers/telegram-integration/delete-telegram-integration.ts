@@ -1,4 +1,5 @@
 import { getApiUrl } from "@/fetchers/get-api-url";
+import { HttpError } from "@/lib/http-error";
 
 async function deleteTelegramIntegration(projectId: string) {
   const response = await fetch(
@@ -10,8 +11,7 @@ async function deleteTelegramIntegration(projectId: string) {
   );
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   return (await response.json()) as { success: boolean };

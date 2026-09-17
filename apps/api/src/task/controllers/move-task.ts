@@ -1,5 +1,4 @@
 import { and, asc, eq, max } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   assetTable,
@@ -8,6 +7,7 @@ import {
   taskTable,
 } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 import { claimTaskNumber } from "./claim-task-numbers";
 
 type DbOrTx = typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0];
@@ -37,9 +37,11 @@ async function resolveDestinationStatus(
   const [firstColumn] = destinationColumns;
 
   if (!firstColumn) {
-    throw new HTTPException(400, {
-      message: "Destination project does not have a workflow",
-    });
+    throw httpError(
+      400,
+      "destination_project_does_not_have_a_workflow",
+      "Destination project does not have a workflow",
+    );
   }
 
   const requestedColumn = requestedStatus
@@ -47,9 +49,11 @@ async function resolveDestinationStatus(
     : null;
 
   if (requestedStatus && !requestedColumn) {
-    throw new HTTPException(400, {
-      message: "Selected status is not valid for the destination project",
-    });
+    throw httpError(
+      400,
+      "selected_status_is_not_valid_for_the_destination_project",
+      "Selected status is not valid for the destination project",
+    );
   }
 
   const matchingCurrentColumn = destinationColumns.find(
@@ -95,15 +99,15 @@ async function moveTask({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   if (isSameProjectMove(existingTask.projectId, destinationProjectId)) {
-    throw new HTTPException(400, {
-      message: "Task is already in that project",
-    });
+    throw httpError(
+      400,
+      "task_is_already_in_that_project",
+      "Task is already in that project",
+    );
   }
 
   const [sourceProject, destinationProject] = await Promise.all([
@@ -116,15 +120,15 @@ async function moveTask({
   ]);
 
   if (!sourceProject || !destinationProject) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   if (sourceProject.workspaceId !== destinationProject.workspaceId) {
-    throw new HTTPException(400, {
-      message: "Tasks can only be moved within the same workspace",
-    });
+    throw httpError(
+      400,
+      "tasks_can_only_be_moved_within_the_same_workspace",
+      "Tasks can only be moved within the same workspace",
+    );
   }
 
   const resolvedColumn = await resolveDestinationStatus(
@@ -157,9 +161,7 @@ async function moveTask({
       .returning();
 
     if (!updatedTask) {
-      throw new HTTPException(500, {
-        message: "Failed to move task",
-      });
+      throw httpError(500, "failed_to_move_task", "Failed to move task");
     }
 
     await tx

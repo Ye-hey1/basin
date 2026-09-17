@@ -8,7 +8,10 @@ export async function getPendingInvitations(): Promise<
   const response = await client.invitation.pending.$get();
 
   if (!response.ok) {
-    throw new HttpError(response.status, "Failed to get pending invitations");
+    throw await HttpError.fromResponse(
+      response,
+      "Failed to get pending invitations",
+    );
   }
 
   return response.json();

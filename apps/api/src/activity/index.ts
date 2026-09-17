@@ -33,9 +33,8 @@ const getActivitiesRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("List of activities for the task", activityListSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
   },
 });
@@ -60,7 +59,8 @@ const createActivityRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created activity", activitySchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -87,7 +87,8 @@ const createCommentRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created comment", activitySchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -110,9 +111,9 @@ const updateCommentRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated comment", activitySchema),
-    400: errorResponse("Invalid body, or unknown activity"),
+    400: errorResponse("Invalid body"),
     403: errorResponse("Not the author, or no access to the workspace"),
-    404: errorResponse("Comment not found"),
+    404: errorResponse("Comment not found, or not authored by you"),
   },
 });
 
@@ -132,9 +133,9 @@ const deleteCommentRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The deleted comment", activitySchema),
-    400: errorResponse("Invalid body, or unknown activity"),
+    400: errorResponse("Invalid body"),
     403: errorResponse("Not the author, or no access to the workspace"),
-    404: errorResponse("Comment not found"),
+    404: errorResponse("Comment not found, or not authored by you"),
   },
 });
 

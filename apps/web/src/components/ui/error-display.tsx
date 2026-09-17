@@ -4,6 +4,7 @@ import {
   getCorsTroubleshootingSteps,
   getNetworkTroubleshootingSteps,
   parseApiError,
+  translateApiError,
 } from "../../lib/error-handler";
 import { Button } from "./button";
 import {
@@ -30,6 +31,8 @@ export function ErrorDisplay({
   const { t } = useTranslation();
   const parsedError = parseApiError(error);
   const resolvedTitle = title ?? t("common:error.title");
+  const translatedError = translateApiError(error);
+  const resolvedMessage = translatedError ?? t(parsedError.message);
 
   const getTroubleshootingSteps = () => {
     switch (parsedError.type) {
@@ -55,7 +58,7 @@ export function ErrorDisplay({
           </div>
           <CardTitle className="text-lg">{resolvedTitle}</CardTitle>
           <CardDescription className="text-sm">
-            {t(parsedError.message)}
+            {resolvedMessage}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

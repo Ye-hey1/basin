@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { integrationTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function deleteGiteaIntegration(projectId: string) {
   const integration = await db.query.integrationTable.findFirst({
@@ -12,7 +12,11 @@ async function deleteGiteaIntegration(projectId: string) {
   });
 
   if (!integration) {
-    throw new HTTPException(404, { message: "Gitea integration not found" });
+    throw httpError(
+      404,
+      "gitea_integration_not_found",
+      "Gitea integration not found",
+    );
   }
 
   await db

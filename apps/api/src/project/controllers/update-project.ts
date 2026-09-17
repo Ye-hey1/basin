@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function updateProject(
   id: string,
@@ -22,10 +22,11 @@ async function updateProject(
   const isProjectExisting = Boolean(existingProject);
 
   if (!isProjectExisting) {
-    throw new HTTPException(404, {
-      message:
-        "Project doesn't exist or doesn't belong to the specified workspace",
-    });
+    throw httpError(
+      404,
+      "project_doesn_t_exist_or_doesn_t_belong_to_the_specified_workspace",
+      "Project doesn't exist or doesn't belong to the specified workspace",
+    );
   }
 
   const [updatedWorkspace] = await db

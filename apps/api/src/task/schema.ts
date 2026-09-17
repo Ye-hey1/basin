@@ -27,6 +27,10 @@ export const listTasksQuery = z.object({
     .optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),
   dueBefore: z.string().optional(),
+  requirementId: z.string().optional().openapi({
+    description:
+      "Only return tasks linked to this requirement. Unlike the other filters this is not project-scoped, because one requirement spans projects.",
+  }),
   dueAfter: z.string().optional(),
 });
 
@@ -55,6 +59,13 @@ export const createTaskBody = z.object({
   priority,
   status: z.string().openapi({ description: "The target column's slug." }),
   userId: z.string().optional().openapi({ description: "Assignee, if any." }),
+  requirementId: z.string().nullable().optional().openapi({
+    description:
+      "Link the new task to a requirement in the same workspace, if any.",
+  }),
+  customFields: z
+    .array(z.object({ fieldId: z.string(), value: z.string() }))
+    .optional(),
 });
 
 export const updateTaskBody = z.object({
@@ -67,6 +78,9 @@ export const updateTaskBody = z.object({
   projectId: z.string(),
   position: z.number(),
   userId: z.string().optional(),
+  requirementId: z.string().nullable().optional().openapi({
+    description: "Link the task to a requirement, or null to unlink it.",
+  }),
 });
 
 export const moveTaskBody = z.object({
@@ -92,6 +106,12 @@ export const importTasksBody = z.object({
 
 export const updateStatusBody = z.object({ status: z.string() });
 export const updatePriorityBody = z.object({ priority });
+export const updateTaskRequirementBody = z.object({
+  requirementId: z
+    .string()
+    .nullable()
+    .openapi({ description: "Null unlinks the task from its requirement." }),
+});
 export const updateAssigneeBody = z.object({
   userId: z.string().nullable().openapi({ description: "Null unassigns." }),
 });

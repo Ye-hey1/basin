@@ -123,6 +123,7 @@ function getLocaleKey(locale?: string | null) {
   if (normalized?.startsWith("de")) return "de";
   if (normalized?.startsWith("vi")) return "vi";
   if (normalized?.startsWith("ja")) return "ja";
+  if (normalized?.startsWith("zh")) return "zh";
   return "en";
 }
 
@@ -147,6 +148,13 @@ function getAuthEmailCopy(locale?: string | null) {
     return {
       magicLinkSubject: "Kaneo ログインリンク",
       otpSubject: "Kaneo 認証コード",
+    };
+  }
+
+  if (localeKey === "zh") {
+    return {
+      magicLinkSubject: "Kaneo 登录链接",
+      otpSubject: "Kaneo 验证码",
     };
   }
 

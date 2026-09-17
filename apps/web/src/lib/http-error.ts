@@ -1,10 +1,36 @@
 export class HttpError extends Error {
   status: number;
+  code?: string;
 
-  constructor(status: number, message: string) {
+  constructor(status: number, message: string, code?: string) {
     super(message);
     this.name = "HttpError";
     this.status = status;
+    this.code = code;
+  }
+
+  // Reads the API's { message, code } error body when present and falls back
+  // to `fallbackMessage` for non-JSON or unexpected responses.
+  static async fromResponse(
+    response: Response,
+    fallbackMessage: string,
+  ): Promise<HttpError> {
+    let message = fallbackMessage;
+    let code: string | undefined;
+
+    try {
+      const body = await response.json();
+      if (typeof body?.message === "string") {
+        message = body.message;
+      }
+      if (typeof body?.code === "string") {
+        code = body.code;
+      }
+    } catch {
+      // Non-JSON error bodies keep the fallback message.
+    }
+
+    return new HttpError(response.status, message, code);
   }
 }
 

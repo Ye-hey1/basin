@@ -15,6 +15,7 @@ import {
   GiteaApiError,
   verifyGiteaToken,
 } from "../../plugins/gitea/utils/gitea-api";
+import { httpError } from "../../utils/http-error";
 
 async function createGiteaIntegration({
   projectId,
@@ -34,7 +35,7 @@ async function createGiteaIntegration({
   });
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const normalizedBase = normalizeGiteaBaseUrl(baseUrl);
@@ -60,9 +61,11 @@ async function createGiteaIntegration({
   }
 
   if (!resolvedToken) {
-    throw new HTTPException(400, {
-      message: "Personal access token is required",
-    });
+    throw httpError(
+      400,
+      "personal_access_token_is_required",
+      "Personal access token is required",
+    );
   }
 
   try {
@@ -75,9 +78,11 @@ async function createGiteaIntegration({
     await client.getRepo(repositoryOwner, repositoryName);
   } catch (error) {
     if (error instanceof GiteaApiError) {
-      throw new HTTPException((error.status || 400) as ContentfulStatusCode, {
-        message: error.message,
-      });
+      throw httpError(
+        (error.status || 400) as ContentfulStatusCode,
+        "gitea_integration_error",
+        error.message,
+      );
     }
     throw error;
   }
@@ -104,9 +109,11 @@ async function createGiteaIntegration({
         cfg.repositoryOwner === repositoryOwner &&
         cfg.repositoryName === repositoryName
       ) {
-        throw new HTTPException(409, {
-          message: `Repository ${repositoryOwner}/${repositoryName} on this Gitea instance is already linked to another project`,
-        });
+        throw httpError(
+          409,
+          "repository_already_linked",
+          `Repository ${repositoryOwner}/${repositoryName} on this Gitea instance is already linked to another project`,
+        );
       }
     } catch (error) {
       if (error instanceof HTTPException) {
@@ -147,9 +154,11 @@ async function createGiteaIntegration({
 
   const validation = await validateGiteaConfig(config);
   if (!validation.valid) {
-    throw new HTTPException(400, {
-      message: validation.errors?.join(", ") ?? "Invalid config",
-    });
+    throw httpError(
+      400,
+      "invalid_config",
+      validation.errors?.join(", ") ?? "Invalid config",
+    );
   }
 
   if (existingIntegration) {
@@ -169,9 +178,11 @@ async function createGiteaIntegration({
       .returning();
 
     if (!updated) {
-      throw new HTTPException(500, {
-        message: "Failed to update Gitea integration",
-      });
+      throw httpError(
+        500,
+        "failed_to_update_gitea_integration",
+        "Failed to update Gitea integration",
+      );
     }
 
     return {
@@ -198,9 +209,11 @@ async function createGiteaIntegration({
     .returning();
 
   if (!newIntegration) {
-    throw new HTTPException(500, {
-      message: "Failed to create Gitea integration",
-    });
+    throw httpError(
+      500,
+      "failed_to_create_gitea_integration",
+      "Failed to create Gitea integration",
+    );
   }
 
   return {

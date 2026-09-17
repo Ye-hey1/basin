@@ -1,5 +1,5 @@
-import { HTTPException } from "hono/http-exception";
 import { getGithubApp } from "../../plugins/github/utils/github-app";
+import { httpError } from "../../utils/http-error";
 
 type VerificationResult = {
   isInstalled: boolean;
@@ -47,9 +47,11 @@ async function verifyGithubInstallation({
   const githubApp = getGithubApp();
 
   if (!githubApp) {
-    throw new HTTPException(500, {
-      message: "GitHub app not configured",
-    });
+    throw httpError(
+      500,
+      "github_app_not_configured",
+      "GitHub app not configured",
+    );
   }
 
   let installation: { id: number; permissions?: Record<string, string> };
@@ -76,9 +78,11 @@ async function verifyGithubInstallation({
       };
     }
 
-    throw new HTTPException(500, {
-      message: `Failed to verify GitHub installation: ${(error as Error).message || "Unknown error"}`,
-    });
+    throw httpError(
+      500,
+      "github_verify_failed",
+      `Failed to verify GitHub installation: ${(error as Error).message || "Unknown error"}`,
+    );
   }
 
   let repo: {
@@ -112,9 +116,11 @@ async function verifyGithubInstallation({
       };
     }
 
-    throw new HTTPException(500, {
-      message: `Failed to verify GitHub installation: ${(error as Error).message || "Unknown error"}`,
-    });
+    throw httpError(
+      500,
+      "github_verify_failed",
+      `Failed to verify GitHub installation: ${(error as Error).message || "Unknown error"}`,
+    );
   }
 
   const requiredPermissions = ["issues"];

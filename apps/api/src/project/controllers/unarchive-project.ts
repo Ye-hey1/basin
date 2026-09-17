@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function unarchiveProject(id: string, workspaceId: string) {
   const [existingProject] = await db
@@ -12,10 +12,11 @@ async function unarchiveProject(id: string, workspaceId: string) {
     );
 
   if (!existingProject) {
-    throw new HTTPException(404, {
-      message:
-        "Project doesn't exist or doesn't belong to the specified workspace",
-    });
+    throw httpError(
+      404,
+      "project_doesn_t_exist_or_doesn_t_belong_to_the_specified_workspace",
+      "Project doesn't exist or doesn't belong to the specified workspace",
+    );
   }
 
   const [unarchivedProject] = await db
@@ -25,9 +26,11 @@ async function unarchiveProject(id: string, workspaceId: string) {
     .returning();
 
   if (!unarchivedProject) {
-    throw new HTTPException(500, {
-      message: "Failed to unarchive project",
-    });
+    throw httpError(
+      500,
+      "failed_to_unarchive_project",
+      "Failed to unarchive project",
+    );
   }
 
   return unarchivedProject;

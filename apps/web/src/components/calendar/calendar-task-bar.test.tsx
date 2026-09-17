@@ -43,6 +43,7 @@ vi.mock("react-i18next", () => ({
       );
     },
   }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
 }));
 
 const segment = {
@@ -50,6 +51,7 @@ const segment = {
     id: "t1",
     title: "Design review",
     number: 12,
+    status: "in-review",
     scheduleStart: new Date(2026, 7, 10),
     scheduleEnd: new Date(2026, 7, 12),
   },
@@ -87,5 +89,28 @@ describe("CalendarTaskBar", () => {
     const label = screen.getByRole("button").getAttribute("aria-label") ?? "";
 
     expect(label).not.toMatch(/\{\{\w+\}\}/);
+  });
+
+  it.each([
+    ["to-do", "bg-slate-500/15"],
+    ["in-progress", "bg-blue-500/15"],
+    ["in-review", "bg-amber-500/15"],
+    ["done", "bg-emerald-500/15"],
+    ["custom-status", "bg-primary/12"],
+  ])("uses the %s status color", (status, expectedClass) => {
+    render(
+      <CalendarTaskBar
+        segment={{
+          ...segment,
+          task: { ...segment.task, status },
+        }}
+        projectSlug="KAN"
+        onOpenTask={vi.fn()}
+      />,
+    );
+
+    const taskBar = screen.getByRole("button");
+    expect(taskBar).toHaveAttribute("data-task-status", status);
+    expect(taskBar).toHaveClass(expectedClass);
   });
 });

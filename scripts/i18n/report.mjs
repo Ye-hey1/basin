@@ -28,6 +28,21 @@ const { staticKeys, dynamicCalls, dynamicPrefixes } = await collectUsedKeys(
   namespaces,
 );
 
+// Keys are also consumed outside the web app: the API reads invitation email
+// copy from the locale JSONs through property access, so those keys must not
+// be reported as unused.
+const backendFiles = [
+  ...(await collectSourceFiles(path.join(repoRoot, "apps", "api", "src"))),
+  ...(await collectSourceFiles(
+    path.join(repoRoot, "packages", "email", "src"),
+  )),
+];
+const backendPrefixes = await collectBackendKeyPrefixes(
+  backendFiles,
+  namespaces,
+);
+const allDynamicPrefixes = [...dynamicPrefixes, ...backendPrefixes];
+
 const missing = new Set(
   [...staticKeys].filter((key) => !isRepresentedByLocaleKeys(key, localeKeys)),
 );
@@ -35,7 +50,7 @@ const unused = new Set(
   [...localeKeys].filter(
     (key) =>
       !isLocaleKeyUsed(key, staticKeys) &&
-      !dynamicPrefixes.some((prefix) => key.startsWith(prefix)),
+      !allDynamicPrefixes.some((prefix) => key.startsWith(prefix)),
   ),
 );
 
@@ -83,11 +98,82 @@ for (const locale of locales) {
   }
 }
 
+// Heuristic for copy that went stale: an ASCII-only value that differs from
+// en-US but shares most of its content words with the current en-US wording
+// is usually the old reference copy, not a real translation. Translated
+// sentences share almost no content words with their source, and brand names
+// or placeholders have no English function words at all, so both stay below
+// the threshold.
+// Values below are real translations that legitimately share wording with
+// en-US (proper nouns, tech terms), not stale copy.
+const STALE_ALLOWLIST = new Set([
+  "auth:invitation.invitationFor",
+  "settings:giteaIntegration.webhookHint",
+]);
+const STOPWORDS =
+  /\b(the|and|to|your|this|is|are|with|for|not|cannot|a|an|of|on|in|you|be|will|was|were|it|that|have|has|account|delete|confirm|email)\b/gi;
+// Non-global twin for single-word tests: /g makes .test() stateful.
+const STOPWORD_TEST =
+  /\b(the|and|to|your|this|is|are|with|for|not|cannot|a|an|of|on|in|you|be|will|was|were|it|that|have|has|account|delete|confirm|email)\b/i;
+
+function contentWords(value) {
+  return new Set(
+    (
+      value
+        .replace(/\{\{\w+\}\}/gu, " ")
+        .toLowerCase()
+        .match(/[a-z]{3,}/gu) ?? []
+    ).filter((word) => !STOPWORD_TEST.test(word)),
+  );
+}
+
+const stale = new Map();
+for (const locale of locales) {
+  if (locale.locale === defaultLocale) {
+    continue;
+  }
+
+  const pending = [];
+  for (const key of flattenLocale(locale.data)) {
+    const value = getValueAtKey(locale.data, key);
+    if (typeof value !== "string") {
+      continue;
+    }
+    const source = getValueAtKey(reference.data, key) ?? referenceFallback(key);
+    if (typeof source !== "string" || source === value) {
+      continue;
+    }
+    if (STALE_ALLOWLIST.has(key)) {
+      continue;
+    }
+    if (!/^[\x20-\x7E]+$/u.test(value)) {
+      continue;
+    }
+
+    const stripped = value.replace(/\{\{\w+\}\}/gu, " ");
+    const stopwordHits = stripped.match(STOPWORDS)?.length ?? 0;
+    const localeWords = contentWords(stripped);
+    const sourceWords = contentWords(source);
+    const shared = [...localeWords].filter((word) => sourceWords.has(word));
+    const overlap =
+      shared.length / Math.max(localeWords.size, sourceWords.size, 1);
+
+    if (stopwordHits >= 2 && overlap >= 0.4) {
+      pending.push(key);
+    }
+  }
+
+  if (pending.length > 0) {
+    stale.set(locale.locale, pending);
+  }
+}
+
 if (
   missing.size === 0 &&
   unused.size === 0 &&
   dynamicCalls.length === 0 &&
-  untranslated.size === 0
+  untranslated.size === 0 &&
+  stale.size === 0
 ) {
   console.log("i18n report is clean.");
 } else {
@@ -115,6 +201,16 @@ if (
   if (untranslated.size > 0) {
     console.log("Untranslated (still identical to en-US):");
     for (const [locale, keys] of [...untranslated].sort()) {
+      console.log(`  ${locale}: ${keys.length}`);
+      for (const key of formatKeyList(new Set(keys))) {
+        console.log(`    - ${key}`);
+      }
+    }
+  }
+
+  if (stale.size > 0) {
+    console.log("Possibly stale (ASCII values differing from en-US):");
+    for (const [locale, keys] of [...stale].sort()) {
       console.log(`  ${locale}: ${keys.length}`);
       for (const key of formatKeyList(new Set(keys))) {
         console.log(`    - ${key}`);
@@ -231,4 +327,25 @@ function isLocaleKeyUsed(key, staticKeys) {
 
   const baseKey = key.replace(/_(zero|one|two|few|many|other)$/u, "");
   return baseKey !== key && staticKeys.has(baseKey);
+}
+
+// Locale JSONs consumed by the API are traversed with property access, e.g.
+// `deDE.invitations.email`. Treat every multi-segment path whose root matches
+// a namespace as a used-key prefix.
+async function collectBackendKeyPrefixes(files, knownNamespaces) {
+  const prefixes = new Set();
+
+  for (const file of files) {
+    const source = await fs.readFile(file, "utf8");
+
+    for (const match of source.matchAll(
+      /\b([a-z][a-z0-9-]*)\.([A-Za-z][\w-]*(?:\.[\w-]+)*)/gu,
+    )) {
+      if (knownNamespaces.has(match[1])) {
+        prefixes.add(`${match[1]}:${match[2]}`);
+      }
+    }
+  }
+
+  return [...prefixes];
 }

@@ -1,4 +1,5 @@
 import { getApiUrl } from "@/fetchers/get-api-url";
+import { HttpError } from "@/lib/http-error";
 
 export async function submitMcpAuthorizationDecision(
   requestId: string,
@@ -14,7 +15,10 @@ export async function submitMcpAuthorizationDecision(
     },
   );
   if (!response.ok) {
-    throw new Error("Could not complete the authorization request.");
+    throw await HttpError.fromResponse(
+      response,
+      "Could not complete the authorization request.",
+    );
   }
 
   const body = (await response.json()) as { redirect: string };

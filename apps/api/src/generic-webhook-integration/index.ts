@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { deletedSchema, projectIdParam } from "../integrations/schema";
@@ -16,6 +15,7 @@ import {
   normalizeGenericWebhookConfig,
   validateGenericWebhookConfig,
 } from "../plugins/generic-webhook/config";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { genericWebhookIntegrationSchema } from "./response";
@@ -92,9 +92,8 @@ const getGenericWebhookIntegrationRoute = createRoute({
       "Webhook integration details, or null",
       genericWebhookIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -121,6 +120,7 @@ const createGenericWebhookIntegrationRoute = createRoute({
       genericWebhookIntegrationSchema.nullable(),
     ),
     400: errorResponse("The webhook URL failed validation"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -167,13 +167,11 @@ const deleteGenericWebhookIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deletedSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Webhook integration not found"),
+    404: errorResponse("Unknown project, or the webhook integration not found"),
   },
 });
 
@@ -197,9 +195,11 @@ const genericWebhookIntegration = apiRouter<
 
     const validation = await validateGenericWebhookConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     const existing = await db.query.integrationTable.findFirst({
@@ -241,9 +241,11 @@ const genericWebhookIntegration = apiRouter<
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Generic webhook integration not found",
-      });
+      throw httpError(
+        404,
+        "generic_webhook_integration_not_found",
+        "Generic webhook integration not found",
+      );
     }
 
     const currentConfig = normalizeGenericWebhookConfig(
@@ -266,9 +268,11 @@ const genericWebhookIntegration = apiRouter<
 
     const validation = await validateGenericWebhookConfig(nextConfig);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -296,9 +300,11 @@ const genericWebhookIntegration = apiRouter<
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Generic webhook integration not found",
-      });
+      throw httpError(
+        404,
+        "generic_webhook_integration_not_found",
+        "Generic webhook integration not found",
+      );
     }
 
     await db

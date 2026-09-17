@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { notificationTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function markNotificationAsRead(id: string, userId: string) {
   const [notification] = await db
@@ -13,9 +13,7 @@ async function markNotificationAsRead(id: string, userId: string) {
     .returning();
 
   if (!notification) {
-    throw new HTTPException(404, {
-      message: "Notification not found",
-    });
+    throw httpError(404, "notification_not_found", "Notification not found");
   }
 
   return notification;

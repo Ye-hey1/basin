@@ -1,10 +1,10 @@
-import { HTTPException } from "hono/http-exception";
 import {
   apiRouter,
   createRoute,
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { httpError } from "../utils/http-error";
 import { MAX_AVATAR_BYTES } from "./avatar";
 import deleteAvatar from "./controllers/delete-avatar";
 import saveAvatar from "./controllers/save-avatar";
@@ -56,10 +56,11 @@ const user = apiRouter()
         200,
       );
     } catch (error) {
-      throw new HTTPException(400, {
-        message:
-          error instanceof Error ? error.message : "Invalid avatar upload",
-      });
+      throw httpError(
+        400,
+        "invalid_avatar_upload",
+        error instanceof Error ? error.message : "Invalid avatar upload",
+      );
     }
   })
   .openapi(deleteAvatarRoute, async (c) =>

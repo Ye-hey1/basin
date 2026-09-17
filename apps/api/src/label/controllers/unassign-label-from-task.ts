@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { labelTable, projectTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { removeLabelFromGitHub } from "../../plugins/github/utils/sync-label-to-github";
+import { httpError } from "../../utils/http-error";
 
 async function unassignLabelFromTask(id: string, userId: string) {
   const label = await db.query.labelTable.findFirst({
@@ -11,15 +11,15 @@ async function unassignLabelFromTask(id: string, userId: string) {
   });
 
   if (!label) {
-    throw new HTTPException(404, {
-      message: "Label not found",
-    });
+    throw httpError(404, "label_not_found", "Label not found");
   }
 
   if (!label.taskId) {
-    throw new HTTPException(400, {
-      message: "Label is not assigned to a task",
-    });
+    throw httpError(
+      400,
+      "label_is_not_assigned_to_a_task",
+      "Label is not assigned to a task",
+    );
   }
 
   const [task] = await db
@@ -34,9 +34,7 @@ async function unassignLabelFromTask(id: string, userId: string) {
     .limit(1);
 
   if (!task) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   const [deletedLabel] = await db
@@ -45,9 +43,11 @@ async function unassignLabelFromTask(id: string, userId: string) {
     .returning();
 
   if (!deletedLabel) {
-    throw new HTTPException(500, {
-      message: "Failed to detach label from task",
-    });
+    throw httpError(
+      500,
+      "failed_to_detach_label_from_task",
+      "Failed to detach label from task",
+    );
   }
 
   if (deletedLabel.taskId) {

@@ -1,8 +1,8 @@
 import { type BuiltInRoleName, builtInRoles } from "@kaneo/permissions";
 import { and, eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
-import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { httpError } from "./http-error";
 import { isInstanceAdmin } from "./is-instance-admin";
 
 type PermissionMap = Record<string, string[]>;
@@ -134,23 +134,33 @@ export async function hasWorkspacePermission(
 export function requireWorkspacePermission(permissions: PermissionMap) {
   return async (c: Context, next: Next) => {
     if (!c.get("workspaceId")) {
-      throw new HTTPException(500, {
-        message: "workspaceId not set in context",
-      });
+      throw httpError(
+        500,
+        "workspaceid_not_set_in_context",
+        "workspaceId not set in context",
+      );
     }
 
     const apiKey = c.get("apiKey") as
       | { permissions?: Record<string, string[]> | null }
       | undefined;
     if (apiKey?.permissions && !satisfies(apiKey.permissions, permissions)) {
-      throw new HTTPException(403, { message: "Insufficient API key scope" });
+      throw httpError(
+        403,
+        "insufficient_api_key_scope",
+        "Insufficient API key scope",
+      );
     }
 
     if (!(await hasWorkspacePermission(c, permissions))) {
       if (!c.get("userId")) {
-        throw new HTTPException(401, { message: "Unauthorized" });
+        throw httpError(401, "unauthorized", "Unauthorized");
       }
-      throw new HTTPException(403, { message: "Insufficient permissions" });
+      throw httpError(
+        403,
+        "insufficient_permissions",
+        "Insufficient permissions",
+      );
     }
 
     return next();

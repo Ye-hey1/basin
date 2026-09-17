@@ -1,10 +1,10 @@
 import { and, eq, isNotNull } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { labelTable, projectTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { removeLabelFromGitea } from "../../plugins/gitea/utils/sync-label-to-gitea";
 import { removeLabelFromGitHub } from "../../plugins/github/utils/sync-label-to-github";
+import { httpError } from "../../utils/http-error";
 
 async function deleteLabel(id: string, userId: string) {
   const label = await db.query.labelTable.findFirst({
@@ -12,9 +12,7 @@ async function deleteLabel(id: string, userId: string) {
   });
 
   if (!label) {
-    throw new HTTPException(404, {
-      message: "Label not found",
-    });
+    throw httpError(404, "label_not_found", "Label not found");
   }
 
   if (label.taskId) {
@@ -31,9 +29,7 @@ async function deleteLabel(id: string, userId: string) {
       .limit(1);
 
     if (!task) {
-      throw new HTTPException(404, {
-        message: "Task not found",
-      });
+      throw httpError(404, "task_not_found", "Task not found");
     }
 
     const [deletedLabel] = await db
@@ -42,9 +38,7 @@ async function deleteLabel(id: string, userId: string) {
       .returning();
 
     if (!deletedLabel) {
-      throw new HTTPException(404, {
-        message: "Label not found",
-      });
+      throw httpError(404, "label_not_found", "Label not found");
     }
 
     if (deletedLabel.taskId) {
@@ -74,9 +68,7 @@ async function deleteLabel(id: string, userId: string) {
     .returning();
 
   if (!deletedLabel) {
-    throw new HTTPException(404, {
-      message: "Label not found",
-    });
+    throw httpError(404, "label_not_found", "Label not found");
   }
 
   // Label without a workspace: the cascade filter below could never match

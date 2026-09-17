@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
-import { taskTable, userTable } from "../../database/schema";
+import { requirementTable, taskTable, userTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function getTask(taskId: string) {
   const task = await db
@@ -20,16 +20,22 @@ async function getTask(taskId: string) {
       assigneeName: userTable.name,
       assigneeId: userTable.id,
       projectId: taskTable.projectId,
+      requirementId: taskTable.requirementId,
+      // Resolved here so the task view can name its requirement without a
+      // second round trip; null whenever the task is not linked to one.
+      requirementTitle: requirementTable.title,
     })
     .from(taskTable)
     .leftJoin(userTable, eq(taskTable.userId, userTable.id))
+    .leftJoin(
+      requirementTable,
+      eq(taskTable.requirementId, requirementTable.id),
+    )
     .where(eq(taskTable.id, taskId))
     .limit(1);
 
   if (!task.length || !task[0]) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   return task[0];

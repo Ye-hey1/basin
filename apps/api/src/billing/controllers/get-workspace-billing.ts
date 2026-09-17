@@ -1,5 +1,4 @@
 import { and, eq, isNotNull, min } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   trialGrantTable,
@@ -8,6 +7,7 @@ import {
   workspaceTable,
   workspaceUserTable,
 } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 import { foundingCutoff, isBillingEnabled, trialDays } from "../config";
 import { hashTrialEmail } from "../trial-identity";
 
@@ -100,7 +100,7 @@ export async function getOrCreateWorkspaceBilling(workspaceId: string) {
   });
 
   if (!workspace) {
-    throw new HTTPException(404, { message: "Workspace not found" });
+    throw httpError(404, "workspace_not_found", "Workspace not found");
   }
 
   const cutoff = foundingCutoff();
@@ -127,9 +127,11 @@ export async function getOrCreateWorkspaceBilling(workspaceId: string) {
     .where(eq(workspaceBillingTable.workspaceId, workspaceId));
 
   if (!raced) {
-    throw new HTTPException(500, {
-      message: "Failed to initialize workspace billing",
-    });
+    throw httpError(
+      500,
+      "failed_to_initialize_workspace_billing",
+      "Failed to initialize workspace billing",
+    );
   }
   return raced;
 }

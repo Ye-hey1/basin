@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { deletedSchema, projectIdParam } from "../integrations/schema";
@@ -16,6 +15,7 @@ import {
   type SlackConfig,
   validateSlackConfig,
 } from "../plugins/slack/config";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { slackIntegrationSchema } from "./response";
@@ -97,9 +97,8 @@ const getSlackIntegrationRoute = createRoute({
       "Slack integration details, or null",
       slackIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -126,6 +125,7 @@ const createSlackIntegrationRoute = createRoute({
       slackIntegrationSchema.nullable(),
     ),
     400: errorResponse("The webhook URL failed validation"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -172,13 +172,11 @@ const deleteSlackIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deletedSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Slack integration not found"),
+    404: errorResponse("Unknown project, or the Slack integration not found"),
   },
 });
 
@@ -200,9 +198,11 @@ const slackIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = await validateSlackConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     const existing = await db.query.integrationTable.findFirst({
@@ -245,9 +245,11 @@ const slackIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Slack integration not found",
-      });
+      throw httpError(
+        404,
+        "slack_integration_not_found",
+        "Slack integration not found",
+      );
     }
 
     const currentConfig = normalizeSlackConfig(
@@ -267,9 +269,11 @@ const slackIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = await validateSlackConfig(nextConfig);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -298,9 +302,11 @@ const slackIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Slack integration not found",
-      });
+      throw httpError(
+        404,
+        "slack_integration_not_found",
+        "Slack integration not found",
+      );
     }
 
     await db

@@ -327,8 +327,8 @@ describe("API integration: task image upload finalize", () => {
     );
 
     expect(response.status).toBe(400);
-    const text = await response.text();
-    expect(text).toBe("Image upload key does not match the task context.");
+    const body = await response.json();
+    expect(body.code).toBe("image_upload_key_does_not_match_the_task_context");
   });
 
   it("rejects unauthenticated requests", async () => {
@@ -427,8 +427,7 @@ describe("API integration: task image upload finalize", () => {
     );
 
     expect(response.status).toBe(403);
-    await expect(response.text()).resolves.toBe(
-      "You don't have access to this workspace",
-    );
+    const body = await response.json();
+    expect(body.code).toBe("you_don_t_have_access_to_this_workspace");
   });
 });

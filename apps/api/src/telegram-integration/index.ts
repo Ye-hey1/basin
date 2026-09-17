@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { publishEvent } from "../events";
@@ -16,6 +15,7 @@ import {
   normalizeTelegramConfig,
   validateTelegramConfig,
 } from "../plugins/telegram/config";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import {
@@ -65,9 +65,8 @@ const getTelegramIntegrationRoute = createRoute({
       "Telegram integration details, or null",
       telegramIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -94,6 +93,7 @@ const createTelegramIntegrationRoute = createRoute({
       telegramIntegrationSchema.nullable(),
     ),
     400: errorResponse("The bot token or chat failed validation"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -140,13 +140,13 @@ const deleteTelegramIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deletedSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Telegram integration not found"),
+    404: errorResponse(
+      "Unknown project, or the Telegram integration not found",
+    ),
   },
 });
 
@@ -170,9 +170,11 @@ const telegramIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = validateTelegramConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     const priorIntegration = await db.query.integrationTable.findFirst({
@@ -201,9 +203,11 @@ const telegramIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const integration = await getTelegramIntegration(projectId);
     if (!integration) {
-      throw new HTTPException(500, {
-        message: "Failed to load Telegram integration after save",
-      });
+      throw httpError(
+        500,
+        "failed_to_load_telegram_integration_after_save",
+        "Failed to load Telegram integration after save",
+      );
     }
 
     const apiKey = c.get("apiKey");
@@ -232,9 +236,11 @@ const telegramIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Telegram integration not found",
-      });
+      throw httpError(
+        404,
+        "telegram_integration_not_found",
+        "Telegram integration not found",
+      );
     }
 
     const currentConfig = parseTelegramIntegrationConfig(existing);
@@ -254,9 +260,11 @@ const telegramIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = validateTelegramConfig(nextConfig);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -270,9 +278,11 @@ const telegramIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const integration = await getTelegramIntegration(projectId);
     if (!integration) {
-      throw new HTTPException(500, {
-        message: "Failed to load Telegram integration after update",
-      });
+      throw httpError(
+        500,
+        "failed_to_load_telegram_integration_after_update",
+        "Failed to load Telegram integration after update",
+      );
     }
 
     const apiKey = c.get("apiKey");
@@ -297,9 +307,11 @@ const telegramIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Telegram integration not found",
-      });
+      throw httpError(
+        404,
+        "telegram_integration_not_found",
+        "Telegram integration not found",
+      );
     }
 
     await db

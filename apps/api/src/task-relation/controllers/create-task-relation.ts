@@ -1,5 +1,4 @@
 import { and, eq, or } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   projectTable,
@@ -7,6 +6,7 @@ import {
   taskTable,
 } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 
 async function createTaskRelation({
   sourceTaskId,
@@ -22,9 +22,11 @@ async function createTaskRelation({
   workspaceId: string;
 }) {
   if (sourceTaskId === targetTaskId) {
-    throw new HTTPException(400, {
-      message: "Cannot create a relation between a task and itself",
-    });
+    throw httpError(
+      400,
+      "cannot_create_a_relation_between_a_task_and_itself",
+      "Cannot create a relation between a task and itself",
+    );
   }
 
   const [sourceTask] = await db
@@ -44,7 +46,7 @@ async function createTaskRelation({
     .limit(1);
 
   if (!sourceTask) {
-    throw new HTTPException(404, { message: "Source task not found" });
+    throw httpError(404, "source_task_not_found", "Source task not found");
   }
 
   const [targetTask] = await db
@@ -64,7 +66,7 @@ async function createTaskRelation({
     .limit(1);
 
   if (!targetTask) {
-    throw new HTTPException(404, { message: "Target task not found" });
+    throw httpError(404, "target_task_not_found", "Target task not found");
   }
 
   const existing = await db
@@ -88,9 +90,11 @@ async function createTaskRelation({
     .limit(1);
 
   if (existing.length > 0) {
-    throw new HTTPException(409, {
-      message: "This relation already exists",
-    });
+    throw httpError(
+      409,
+      "this_relation_already_exists",
+      "This relation already exists",
+    );
   }
 
   const [relation] = await db
@@ -103,9 +107,11 @@ async function createTaskRelation({
     .returning();
 
   if (!relation) {
-    throw new HTTPException(500, {
-      message: "Failed to create task relation",
-    });
+    throw httpError(
+      500,
+      "failed_to_create_task_relation",
+      "Failed to create task relation",
+    );
   }
 
   await publishEvent("task-relation.created", {

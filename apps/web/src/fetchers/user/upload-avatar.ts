@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function uploadAvatar({
   contentType,
@@ -12,7 +13,7 @@ async function uploadAvatar({
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   return response.json();

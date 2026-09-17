@@ -1,6 +1,5 @@
 import { constructWebhookEvent } from "creem/webhooks.js";
 import { and, eq, inArray } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { workspaceUserTable } from "../database/schema";
 import {
@@ -10,6 +9,7 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { httpError } from "../utils/http-error";
 import { validateWorkspaceAccess } from "../utils/validate-workspace-access";
 import { creemWebhookSecret, isBillingEnabled } from "./config";
 import createCheckout from "./controllers/create-checkout";
@@ -43,9 +43,11 @@ async function requireBillingManager(userId: string, workspaceId: string) {
     );
 
   if (!member) {
-    throw new HTTPException(403, {
-      message: "Only workspace owners and admins can manage billing",
-    });
+    throw httpError(
+      403,
+      "only_workspace_owners_and_admins_can_manage_billing",
+      "Only workspace owners and admins can manage billing",
+    );
   }
 }
 
@@ -134,7 +136,7 @@ const createPortalRoute = createRoute({
 const billing = apiRouter<BaseVariables>()
   .openapi(webhookRoute, async (c) => {
     if (!isBillingEnabled()) {
-      throw new HTTPException(404, { message: "Not found" });
+      throw httpError(404, "not_found", "Not found");
     }
 
     const rawBody = await c.req.text();
@@ -152,7 +154,7 @@ const billing = apiRouter<BaseVariables>()
       };
     } catch (error) {
       console.error("billing: webhook signature verification failed", error);
-      throw new HTTPException(400, { message: "Invalid signature" });
+      throw httpError(400, "invalid_signature", "Invalid signature");
     }
 
     return c.json(await handleWebhook(event), 200);
@@ -183,9 +185,11 @@ const billing = apiRouter<BaseVariables>()
 
     const billingRow = await getOrCreateWorkspaceBilling(workspaceId);
     if (!billingRow.creemCustomerId) {
-      throw new HTTPException(400, {
-        message: "No billing customer exists for this workspace yet",
-      });
+      throw httpError(
+        400,
+        "no_billing_customer_exists_for_this_workspace_yet",
+        "No billing customer exists for this workspace yet",
+      );
     }
 
     return c.json(

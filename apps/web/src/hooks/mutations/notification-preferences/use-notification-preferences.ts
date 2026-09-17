@@ -7,7 +7,15 @@ import updateNotificationPreferences, {
 import upsertNotificationWorkspaceRule, {
   type UpsertNotificationWorkspaceRuleRequest,
 } from "@/fetchers/notification-preferences/upsert-notification-workspace-rule";
+import { translateApiError } from "@/lib/error-handler";
 import { toast } from "@/lib/toast";
+
+function translatedError(error: unknown, fallbackKey: string): string {
+  return (
+    translateApiError(error) ??
+    (error instanceof Error ? error.message : i18n.t(fallbackKey))
+  );
+}
 
 export function useUpdateNotificationPreferences() {
   const queryClient = useQueryClient();
@@ -23,9 +31,10 @@ export function useUpdateNotificationPreferences() {
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n.t("settings:notificationsPage.toastPreferencesSaveFailed"),
+        translatedError(
+          error,
+          "settings:notificationsPage.toastPreferencesSaveFailed",
+        ),
       );
     },
   });
@@ -50,9 +59,10 @@ export function useUpsertNotificationWorkspaceRule() {
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n.t("settings:notificationsPage.toastRuleSaveFailed", {}),
+        translatedError(
+          error,
+          "settings:notificationsPage.toastRuleSaveFailed",
+        ),
       );
     },
   });
@@ -74,9 +84,10 @@ export function useDeleteNotificationWorkspaceRule() {
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : i18n.t("settings:notificationsPage.toastRuleRemoveFailed", {}),
+        translatedError(
+          error,
+          "settings:notificationsPage.toastRuleRemoveFailed",
+        ),
       );
     },
   });

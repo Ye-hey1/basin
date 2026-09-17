@@ -11,10 +11,12 @@
 			"remove": "Verwijderen",
 			"reset": "Herstellen",
 			"filter": "Filteren",
-			"clearAllFilters": "Alle filters wissen"
+			"clearAllFilters": "Alle filters wissen",
+			"dismiss": "Dismiss"
 		},
 		"a11y": {
-			"toggleSidebar": "Zijbalk in-/uitschakelen"
+			"toggleSidebar": "Zijbalk in-/uitschakelen",
+			"toggleTheme": "Toggle theme"
 		},
 		"sidebar": {
 			"title": "Zijbalk",
@@ -79,6 +81,155 @@
 					"tryRefresh": "Try refreshing the page",
 					"verifyApiRunning": "Verify the API server is running and accessible"
 				}
+			},
+			"codes": {
+				"all_tasks_must_belong_to_the_same_workspace": "All tasks must belong to the same workspace",
+				"asset_not_found": "Asset not found",
+				"asset_object_not_found": "Asset object not found",
+				"assignee_not_in_workspace": "Assignee is not a member of this workspace",
+				"avatar_not_found": "Avatar not found",
+				"billing_is_not_enabled": "Billing is not enabled",
+				"billing_provider_request_failed": "Billing provider request failed",
+				"cannot_create_a_relation_between_a_task_and_itself": "Cannot create a relation between a task and itself",
+				"cannot_delete_column_that_contains_tasks_move_or_delete_tasks_first": "Cannot delete column that contains tasks. Move or delete tasks first.",
+				"column_does_not_belong_to_the_provided_project": "Column does not belong to the provided project",
+				"column_name_must_contain_at_least_one_alphanumeric_character": "Column name must contain at least one alphanumeric character",
+				"column_not_found": "Column not found",
+				"column_not_in_project": "Column does not belong to this project",
+				"column_slug_exists": "Column with slug already exists in this project",
+				"column_slug_reserved": "Column slug is reserved for virtual task statuses",
+				"comment_not_found_or_you_are_not_the_author": "Comment not found or you are not the author",
+				"could_not_determine_workspace": "Could not determine workspace",
+				"destination_project_does_not_have_a_workflow": "Destination project does not have a workflow",
+				"discord_integration_not_found": "Discord integration not found",
+				"duplicate_project_ids_in_reorder_payload": "Duplicate project ids in reorder payload",
+				"email_notifications_require_an_account_email_address": "Email notifications require an account email address",
+				"enable_email_notifications_globally_before_using_them_here": "Enable email notifications globally before using them here",
+				"enable_gotify_notifications_globally_before_using_them_here": "Enable Gotify notifications globally before using them here",
+				"enable_ntfy_notifications_globally_before_using_them_here": "Enable ntfy notifications globally before using them here",
+				"enable_webhook_notifications_globally_before_using_them_here": "Enable webhook notifications globally before using them here",
+				"failed_to_archive_project": "Failed to archive project",
+				"failed_to_attach_label_to_task": "Failed to attach label to task",
+				"failed_to_create_activity": "Failed to create activity",
+				"failed_to_create_column": "Failed to create column",
+				"failed_to_create_gitea_integration": "Failed to create Gitea integration",
+				"failed_to_create_task": "Failed to create task",
+				"failed_to_create_task_relation": "Failed to create task relation",
+				"failed_to_create_time_entry": "Failed to create time entry",
+				"failed_to_create_workflow_rule": "Failed to create workflow rule",
+				"failed_to_decrypt_notification_secret": "Failed to decrypt notification secret",
+				"failed_to_delete_project": "Failed to delete project",
+				"failed_to_detach_label_from_task": "Failed to detach label from task",
+				"failed_to_fetch_repositories_from_github": "Failed to fetch repositories from GitHub",
+				"failed_to_initialize_workspace_billing": "Failed to initialize workspace billing",
+				"failed_to_load_integration": "Failed to load integration",
+				"failed_to_load_telegram_integration_after_save": "Failed to load Telegram integration after save",
+				"failed_to_load_telegram_integration_after_update": "Failed to load Telegram integration after update",
+				"failed_to_move_task": "Failed to move task",
+				"failed_to_save_asset": "Failed to save asset",
+				"failed_to_save_notification_workspace_rule": "Failed to save notification workspace rule",
+				"failed_to_unarchive_project": "Failed to unarchive project",
+				"failed_to_update_column": "Failed to update column",
+				"failed_to_update_gitea_integration": "Failed to update Gitea integration",
+				"failed_to_update_task": "Failed to update task",
+				"failed_to_update_task_assignee": "Failed to update task assignee",
+				"failed_to_update_task_description": "Failed to update task description",
+				"failed_to_update_task_due_date": "Failed to update task due date",
+				"failed_to_update_task_priority": "Failed to update task priority",
+				"failed_to_update_task_status": "Failed to update task status",
+				"failed_to_update_task_title": "Failed to update task title",
+				"failed_to_update_workflow_rule": "Failed to update workflow rule",
+				"generic_webhook_integration_not_found": "Generic webhook integration not found",
+				"gitea_access_token_or_base_url_not_configured": "Gitea access token or base URL not configured",
+				"gitea_integration_error": "Gitea integration error",
+				"gitea_integration_is_not_active": "Gitea integration is not active",
+				"gitea_integration_not_found": "Gitea integration not found",
+				"gitea_verify_failed": "Failed to verify Gitea access",
+				"github_app_not_configured": "GitHub app not configured",
+				"github_installation_id_not_configured": "GitHub installation ID not configured",
+				"github_integration_is_not_active": "GitHub integration is not active",
+				"github_integration_not_found": "GitHub integration not found",
+				"github_verify_failed": "Failed to verify GitHub installation",
+				"gotify_requires_a_server_url_and_app_token": "Gotify requires a server URL and app token",
+				"image_upload_key_does_not_match_the_task_context": "Image upload key does not match the task context.",
+				"image_uploads_not_configured": "Image uploads are not configured",
+				"insufficient_api_key_scope": "Insufficient API key scope",
+				"insufficient_permissions": "Insufficient permissions",
+				"internal_server_error": "Internal Server Error",
+				"invalid_api_key_for_this_workspace": "Invalid API key for this workspace",
+				"invalid_avatar_upload": "Invalid avatar upload",
+				"invalid_bulk_operation": "Invalid bulk operation",
+				"invalid_config": "Invalid config",
+				"invalid_date": "Invalid date",
+				"invalid_date_value": "Invalid date value",
+				"invalid_encrypted_notification_secret_payload": "Invalid encrypted notification secret payload",
+				"invalid_gitea_config": "Invalid Gitea integration config",
+				"invalid_gitea_token_or_could_not_reach_instance": "Invalid Gitea token or could not reach instance.",
+				"invalid_gitea_token_or_unauthorized": "Invalid Gitea token or unauthorized.",
+				"invalid_gotify_url": "Invalid Gotify server URL",
+				"invalid_image_upload": "Invalid image upload request",
+				"invalid_integration_config": "Invalid integration config",
+				"invalid_ntfy_url": "Invalid ntfy server URL",
+				"invalid_priority": "Invalid priority",
+				"invalid_request": "Invalid request",
+				"invalid_signature": "Invalid signature",
+				"invalid_status": "Invalid status",
+				"invalid_webhook_url": "Invalid webhook URL",
+				"label_and_task_must_belong_to_the_same_workspace": "Label and task must belong to the same workspace",
+				"label_and_tasks_must_belong_to_the_same_workspace": "Label and tasks must belong to the same workspace",
+				"label_id_is_required": "Label ID is required",
+				"label_is_not_assigned_to_a_task": "Label is not assigned to a task",
+				"label_not_found": "Label not found",
+				"no_billing_customer_exists_for_this_workspace_yet": "No billing customer exists for this workspace yet",
+				"no_tasks_found": "No tasks found",
+				"not_found": "Not found",
+				"notification_not_found": "Notification not found",
+				"notification_secret_encryption_key_is_required_to_store_encrypted_notification_s": "NOTIFICATION_SECRET_ENCRYPTION_KEY is required to store encrypted notification secrets",
+				"ntfy_requires_a_server_url_and_topic": "ntfy requires a server URL and topic",
+				"one_or_more_selected_projects_are_invalid": "One or more selected projects are invalid",
+				"only_workspace_owners_and_admins_can_manage_billing": "Only workspace owners and admins can manage billing",
+				"personal_access_token_is_required": "Personal access token is required",
+				"priority_value_is_required": "Priority value is required",
+				"project_doesn_t_exist_or_doesn_t_belong_to_the_specified_workspace": "Project doesn't exist or doesn't belong to the specified workspace",
+				"project_is_not_public": "Project is not public",
+				"project_not_found": "Project not found",
+				"project_not_in_workspace": "Project does not belong to this workspace",
+				"projectid_is_required": "projectId is required",
+				"repository_already_linked": "Repository is already linked to another project",
+				"select_at_least_one_project_for_selected_project_mode": "Select at least one project for selected project mode",
+				"selected_status_is_not_valid_for_the_destination_project": "Selected status is not valid for the destination project",
+				"slack_integration_not_found": "Slack integration not found",
+				"source_task_not_found": "Source task not found",
+				"sourcetaskid_is_required": "sourceTaskId is required",
+				"start_date_cannot_be_after_due_date_please_adjust_the_date_range": "Start date cannot be after due date. Please adjust the date range.",
+				"start_time_cannot_be_after_end_time_please_adjust_the_time_range": "Start time cannot be after end time. Please adjust the time range.",
+				"status_value_is_required": "Status value is required",
+				"stored_telegram_integration_configuration_is_invalid": "Stored Telegram integration configuration is invalid",
+				"target_task_not_found": "Target task not found",
+				"task_is_already_in_that_project": "Task is already in that project",
+				"task_not_found": "Task not found",
+				"task_relation_not_found": "Task relation not found",
+				"tasks_can_only_be_moved_within_the_same_workspace": "Tasks can only be moved within the same workspace",
+				"telegram_integration_not_found": "Telegram integration not found",
+				"the_time_range_is_too_long_to_record": "The time range is too long to record.",
+				"this_relation_already_exists": "This relation already exists",
+				"this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and": "This workspace's Kaneo Cloud plan has expired. Subscribe to continue creating and editing.",
+				"time_entry_not_found": "Time entry not found",
+				"unauthorized": "Unauthorized",
+				"unknown_bulk_operation": "Unknown operation",
+				"unknown_plan": "Unknown plan",
+				"use_the_task_move_endpoint_to_move_tasks_between_projects": "Use the task move endpoint to move tasks between projects",
+				"value_is_required_for_this_operation": "Value is required for this operation",
+				"webhook_notifications_require_an_endpoint_url": "Webhook notifications require an endpoint URL",
+				"workflow_rule_not_found": "Workflow rule not found",
+				"workspace_already_has_an_active_subscription": "Workspace already has an active subscription",
+				"workspace_id_could_not_be_determined": "Workspace ID could not be determined",
+				"workspace_not_found": "Workspace not found",
+				"workspace_notification_rule_not_found": "Workspace notification rule not found",
+				"workspaceid_not_set_in_context": "workspaceId not set in context",
+				"you_don_t_have_access_to_this_workspace": "You don't have access to this workspace",
+				"acceptance_item_not_found": "Acceptance criterion not found",
+				"requirement_not_found": "Requirement not found"
 			}
 		},
 		"formats": {
@@ -150,8 +301,21 @@
 					"terracotta": "Terracotta",
 					"rose": "Roos",
 					"crimson": "Karmozijn"
-				}
+				},
+				"discardTitle": "Taak verwerpen?",
+				"discardDescription": "Je niet-opgeslagen taakgegevens gaan verloren.",
+				"discardButton": "Taak verwerpen"
 			}
+		},
+		"demoAlert": {
+			"deployYourOwn": "Deploy your own",
+			"message": "This is a demo environment. All data will be automatically purged every hour."
+		},
+		"boolean": {
+			"false": "False",
+			"notSet": "Not Set",
+			"true": "True",
+			"undefined": "Undefined"
 		}
 	},
 	"auth": {
@@ -331,6 +495,46 @@
 				"nameRequired": "Naam is verplicht",
 				"nameShort": "Naam moet minimaal 2 tekens bevatten"
 			}
+		},
+		"device": {
+			"approve": "Approve",
+			"approveSubtitle": "A device is requesting access to your Kaneo account.",
+			"approveTitle": "Approve device",
+			"cancelled": "Request cancelled",
+			"checkingSession": "Checking session…",
+			"codePlaceholder": "e.g. ABCD-1234",
+			"connected": "Device connected",
+			"continue": "Continue",
+			"couldNotApprove": "Could not approve",
+			"couldNotDeny": "Could not deny",
+			"deny": "Deny",
+			"enterCode": "Enter a code",
+			"enterCodeError": "Enter the code shown on your device.",
+			"invalidCodeError": "Invalid or expired code",
+			"noCodeSubtitle": "No device code was provided.",
+			"pageTitle": "Connect a device",
+			"signIn": "Sign in",
+			"signInSubtitle": "Sign in to approve or deny this device request.",
+			"signInTitle": "Sign in to continue",
+			"subtitle": "Enter the code from your CLI or app to continue."
+		},
+		"mcpAuthorize": {
+			"accessWarning": "This client will be able to act as you and access your workspaces. Only continue if you initiated this connection.",
+			"approve": "Approve",
+			"authorizeTitle": "Authorize MCP client",
+			"checkingRequest": "Checking the authorization request.",
+			"clientFallback": "MCP client",
+			"clientNameLabel": "Client name (self-reported)",
+			"deny": "Deny",
+			"failedSubtitle": "This authorization request is invalid or has expired.",
+			"failedTitle": "Authorization failed",
+			"loadingSubtitle": "Loading request…",
+			"redirectUriLabel": "Redirect URI",
+			"returnToClient": "Return to your MCP client and start the connection again.",
+			"reviewSubtitle": "Review this request before granting access to your Kaneo account.",
+			"signIn": "Sign in",
+			"signInSubtitle": "Sign in before approving this MCP client.",
+			"signInTitle": "Sign in to continue"
 		}
 	},
 	"settings": {
@@ -369,10 +573,10 @@
 			},
 			"deleteAccount": {
 				"confirm": "Delete account",
-				"confirmLabel": "Confirm your email address",
+				"confirmLabel": "Typ {{email}} om te bevestigen",
 				"description": "Workspaces only you belong to are deleted with your account. Elsewhere, your tasks stay and become unassigned, and your comments are removed.",
 				"error": "Failed to delete account",
-				"modalDescription": "This cannot be undone. Type {{email}} to confirm.",
+				"modalDescription": "Hiermee wordt je account permanent verwijderd en dit kan niet ongedaan worden gemaakt.",
 				"modalTitle": "Delete your account?",
 				"sectionSubtitle": "Permanent actions that affect your whole account.",
 				"sectionTitle": "Danger zone",
@@ -585,7 +789,9 @@
 			"giteaSectionTitle": "Gitea Integratie",
 			"giteaSectionSubtitle": "Synchroniseer taken met een zelf-gehoste Gitea-instantie (issues, PR's, webhooks).",
 			"telegramSectionTitle": "Telegram Integratie",
-			"telegramSectionSubtitle": "Verstuur updates van projecttaken naar een Telegram-chat of -topic met een bot."
+			"telegramSectionSubtitle": "Verstuur updates van projecttaken naar een Telegram-chat of -topic met een bot.",
+			"mattermostSectionSubtitle": "Send project task updates into a Mattermost channel with an incoming webhook.",
+			"mattermostSectionTitle": "Mattermost Integration"
 		},
 		"projectVisibility": {
 			"pageTitle": "Projectzichtbaarheid",
@@ -609,7 +815,9 @@
 			"columnsTitle": "Kolommen",
 			"columnsDescription": "Beheer de kolommen op je bord. Sleep om de volgorde te wijzigen. Schakel \"Gereed-kolom\" in voor stadia die voltooid werk vertegenwoordigen.",
 			"automationTitle": "Automatiseringsregels",
-			"automationDescription": "Koppel integratie-gebeurtenissen aan kolommen. Bij een gebeurtenis verplaatst de taak automatisch naar de gekozen kolom."
+			"automationDescription": "Koppel integratie-gebeurtenissen aan kolommen. Bij een gebeurtenis verplaatst de taak automatisch naar de gekozen kolom.",
+			"customFieldsDescription": "Manage the custom fields for this project. Drag  to reorder.",
+			"customFieldsTitle": "Custom Fields"
 		},
 		"projectSwitcher": {
 			"selectProject": "Project selecteren",
@@ -1269,6 +1477,152 @@
 			"connect": "Verbind Telegram",
 			"saveChanges": "Wijzigingen opslaan",
 			"disconnect": "Ontkoppelen"
+		},
+		"billingPage": {
+			"accessEnds": "Access ends",
+			"billingPortalHint": "Update payment method, view invoices, or cancel anytime.",
+			"checkoutAdminOnly": "Only workspace owners and admins can manage billing.",
+			"checkoutNote": "Payments are securely processed by Creem. Prices exclude tax where applicable.",
+			"chooseButton": "Choose {{name}}",
+			"choosePlan": "Choose a plan",
+			"choosePlanAfterTrial": "Choose a plan below to continue after your trial.",
+			"choosePlanSubtitle": "Switch anytime. Cancel whenever you like.",
+			"cloudPlan": "Kaneo Cloud {{plan}}",
+			"currentPlan": "Current plan",
+			"currentPlanSubtitle": "Your workspace's active plan and billing status.",
+			"disabledDescription": "Billing isn't enabled on this instance. Self-hosted Kaneo includes every feature, free forever.",
+			"foundingFree": "Founding Free",
+			"foundingFreeDescription": "This workspace has free access to Kaneo Cloud as an early supporter. Thank you for being here from the start.",
+			"freeBadge": "Free",
+			"freeTrial": "Free trial",
+			"intervalAnnual": "Annual",
+			"intervalMonthly": "Monthly",
+			"manageBilling": "Manage billing",
+			"mostPopular": "Most popular",
+			"opening": "Opening…",
+			"plans": {
+				"personal": {
+					"featureBackups": "Automatic backups and updates",
+					"featureSingleUser": "Single user",
+					"featureSupport": "Email support",
+					"featureUnlimited": "Unlimited projects and tasks",
+					"name": "Personal",
+					"tagline": "For individuals"
+				},
+				"team": {
+					"featureBackups": "Automatic backups and updates",
+					"featureMembers": "Unlimited team members",
+					"featureRoles": "Workspace roles and permissions",
+					"featureSupport": "Priority email support",
+					"featureUnlimited": "Unlimited projects and tasks",
+					"name": "Team",
+					"tagline": "For teams working together"
+				}
+			},
+			"price": {
+				"billedMonthly": "Billed monthly",
+				"perMonth": "/ month",
+				"personalAnnualNote": "$3.33 / month, billed yearly",
+				"perUserPerMonth": "/ user / month",
+				"perUserPerYear": "/ user / year",
+				"perYear": "/ year",
+				"teamAnnualNote": "$4.17 / user / month, billed yearly"
+			},
+			"renews": "Renews",
+			"seats_one": "{{count}} seat",
+			"seats_other": "{{count}} seats",
+			"starting": "Starting…",
+			"status": {
+				"active": "Active",
+				"canceled": "Canceled",
+				"expired": "Expired",
+				"past_due": "Payment past due",
+				"paused": "Paused",
+				"scheduled_cancel": "Cancels soon",
+				"trialing": "Trial"
+			},
+			"subtitle": "Manage the Kaneo Cloud subscription for this workspace.",
+			"title": "Billing",
+			"trialDaysLeft_one": "You have {{count}} day left on your free trial. Choose a plan to continue without interruption.",
+			"trialDaysLeft_other": "You have {{count}} days left on your free trial. Choose a plan to continue without interruption.",
+			"trialEnded": "Your trial has ended",
+			"trialEndedDescription": "Subscribe to a plan below to keep creating and editing. Your data stays safe and exportable in the meantime.",
+			"twoMonthsFree": "2 months free",
+			"trialCard": {
+				"choosePlan": "Choose a plan",
+				"daysLeft_one": "{{count}} day left in trial",
+				"daysLeft_other": "{{count}} days left in trial",
+				"subscribePrompt": "Subscribe to keep creating and editing.",
+				"trialEnded": "Trial ended",
+				"upgradePrompt": "Upgrade anytime to keep your workspace after the trial.",
+				"viewPlans": "View plans"
+			},
+			"toastCheckoutFailed": "Could not start checkout",
+			"toastPortalFailed": "Could not open billing portal"
+		},
+		"mattermostIntegration": {
+			"channelHint": "Optional label for your reference. Mattermost controls the actual destination channel from the webhook setup.",
+			"channelLabel": "Channel name",
+			"channelPlaceholder": "#team-updates",
+			"connect": "Connect Mattermost",
+			"connected": "Connected",
+			"connectionHint": "Paste a Mattermost incoming webhook URL and choose which task events should be posted.",
+			"connectionTitle": "Mattermost webhook connection",
+			"disconnect": "Disconnect",
+			"events": {
+				"taskCommentCreated": "New comments",
+				"taskCreated": "New tasks",
+				"taskDescriptionChanged": "Description changes",
+				"taskPriorityChanged": "Priority changes",
+				"taskStatusChanged": "Status changes",
+				"taskTitleChanged": "Title changes"
+			},
+			"eventsHint": "Choose which project changes should post to Mattermost.",
+			"eventsTitle": "Event notifications",
+			"paused": "Paused",
+			"saveChanges": "Save changes",
+			"toast": {
+				"disabled": "Mattermost notifications paused",
+				"enabled": "Mattermost notifications enabled",
+				"removed": "Mattermost integration removed successfully",
+				"removeError": "Failed to remove Mattermost integration",
+				"saved": "Mattermost integration saved successfully",
+				"saveError": "Failed to save Mattermost integration",
+				"updateError": "Failed to update Mattermost integration"
+			},
+			"update": "Update Mattermost",
+			"validation": {
+				"webhookInvalid": "Enter a valid Mattermost webhook URL"
+			},
+			"webhookHint": "Create an Incoming Webhook in Mattermost and paste the generated URL here.",
+			"webhookLabel": "Incoming webhook URL",
+			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
+		},
+		"customFields": {
+			"addButton": "Add",
+			"createError": "Failed to create custom field.",
+			"createSuccess": "Custom field created.",
+			"creating": "Creating...",
+			"defaultLabel": "Default",
+			"defaultValuePlaceholder": "Default value",
+			"deleteButton": "Delete",
+			"deleteError": "Failed to delete custom field.",
+			"deleteSuccess": "Custom field deleted.",
+			"deleting": "Deleting...",
+			"empty": "No custom fields configured yet.",
+			"loading": "Loading custom fields...",
+			"namePlaceholder": "Field name",
+			"noOptionsPlaceholder": "No options",
+			"optionsPlaceholder": "Options separated by commas",
+			"required": "Required",
+			"typePlaceholder": "Select field type",
+			"types": {
+				"boolean": "Boolean",
+				"date": "Date",
+				"dropdown": "Dropdown",
+				"number": "Number",
+				"text": "Text"
+			}
 		}
 	},
 	"navigation": {
@@ -1327,7 +1681,8 @@
 		},
 		"settingsLayout": {
 			"toggleSidebar": "Zijbalk in-/uitschakelen",
-			"back": "Terug"
+			"back": "Terug",
+			"openSettingsMenu": "Open settings menu"
 		},
 		"userMenu": {
 			"signedOutSuccess": "Succesvol uitgelogd",
@@ -1584,7 +1939,8 @@
 			"selectTask": "Selecteer taak",
 			"loadingTask": "Taak laden...",
 			"taskNotFound": "Taak niet gevonden",
-			"taskNotFoundDescription": "De taak die u zoekt bestaat niet of is verwijderd."
+			"taskNotFoundDescription": "De taak die u zoekt bestaat niet of is verwijderd.",
+			"customFields": "Custom Fields"
 		},
 		"detail": {
 			"subtaskOf": "Subtaak van",
@@ -1690,7 +2046,9 @@
 				"mermaid": {
 					"renderFailed": "Mermaid-diagram kon niet worden weergegeven"
 				}
-			}
+			},
+			"customFieldUpdated": "Field updated",
+			"selectOption": "Select option"
 		},
 		"entity": {
 			"task": "Taak"
@@ -1838,7 +2196,11 @@
 			"operators": {
 				"isAnyOf": "is een van",
 				"includeAnyOf": "bevat een van"
-			}
+			},
+			"all": "All",
+			"allCustomFieldValues": "All values",
+			"noCustomFieldValues": "No custom field values",
+			"noValuesUsedYet": "No values used yet"
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -1854,7 +2216,8 @@
 			"updateDatesError": "Bijwerken taakdatums mislukt",
 			"resizeStart": "Startdatum wijzigen",
 			"resizeDue": "Einddatum wijzigen",
-			"taskAriaLabel": "{{title}}: openen of slepen om te verplaatsen"
+			"taskAriaLabel": "{{title}}: openen of slepen om te verplaatsen",
+			"jumpToToday": "Jump to today"
 		},
 		"delete": {
 			"title": "Taak verwijderen?",
@@ -1909,7 +2272,8 @@
 		"actions": {
 			"archive": "Archiveren",
 			"markAsPlanned": "Markeren als gepland",
-			"delete": "Verwijderen..."
+			"delete": "Verwijderen...",
+			"duplicate": "Duplicate"
 		},
 		"bulk": {
 			"selectedCount": "{{count}} geselecteerd",
@@ -1977,7 +2341,34 @@
 			"title": "Calendar",
 			"today": "Today",
 			"loadError": "Failed to load tasks."
-		}
+		},
+		"duplicate": {
+			"error": "Failed to duplicate task",
+			"success": "Task duplicated"
+		},
+		"time": {
+			"add": "Add time",
+			"addError": "Failed to add time entry",
+			"addSuccess": "Time entry added",
+			"deleteAria": "Delete time entry",
+			"deleteError": "Failed to remove time entry",
+			"deleteSuccess": "Time entry removed",
+			"descriptionPlaceholder": "What did you work on?",
+			"empty": "No time logged yet.",
+			"endAfterStart": "End time must be after the start time",
+			"startRequired": "Start time is required",
+			"title": "Time tracking"
+		},
+		"requirement": {
+			"empty": "No matching requirements",
+			"none": "No requirement linked",
+			"open": "Open requirement",
+			"searchPlaceholder": "Search requirements...",
+			"title": "Requirement",
+			"unlink": "Unlink requirement",
+			"updateError": "Failed to update the requirement link"
+		},
+		"title": "Taken"
 	},
 	"invitations": {
 		"email": {
@@ -2062,6 +2453,27 @@
 			"submit": "Werkruimte maken",
 			"success": "Werkruimte succesvol aangemaakt",
 			"error": "Aanmaken werkruimte mislukt"
+		},
+		"overview": {
+			"assigneesTitle": "Open tasks by assignee",
+			"completedTasks": "Completed",
+			"dueSoonTasks": "Due within 7 days",
+			"emptyDescription": "Create a project and add tasks to see an overview of your workspace.",
+			"emptyTitle": "Nothing here yet",
+			"loadError": "Failed to load workspace overview",
+			"openTasks": "{{count}} open",
+			"overdueTasks": "Overdue",
+			"pageTitle": "Overview",
+			"progressColumn": "Progress",
+			"projectColumn": "Project",
+			"projectsTitle": "Projects",
+			"tasksColumn": "Tasks",
+			"totalTasks": "Total tasks"
+		},
+		"myTasks": {
+			"emptyDescription": "Tasks assigned to you across this workspace's projects will show up here.",
+			"emptyTitle": "No open tasks assigned to you",
+			"pageTitle": "My tasks"
 		}
 	},
 	"team": {
@@ -2157,6 +2569,173 @@
 		},
 		"branding": {
 			"poweredBy": "Mogelijk gemaakt door"
+		}
+	},
+	"requirements": {
+		"acceptance": {
+			"add": "Add criterion",
+			"criterionPlaceholder": "How do we know this is done?",
+			"empty": "No acceptance criteria yet.",
+			"markFailed": "Fail",
+			"markPassed": "Pass",
+			"notePlaceholder": "Notes",
+			"reset": "Reset",
+			"title": "Acceptance criteria",
+			"verifiedBy": "Verified by {{name}}"
+		},
+		"acceptanceStatus": {
+			"failed": "Failed",
+			"passed": "Passed",
+			"pending": "Pending"
+		},
+		"actions": {
+			"addChild": "Add sub-requirement",
+			"cancel": "Cancel",
+			"delete": "Delete",
+			"edit": "Edit",
+			"move": "Move",
+			"save": "Save"
+		},
+		"deleteDialog": {
+			"confirm": "Delete",
+			"description": "Delete \"{{title}}\"? This cannot be undone.",
+			"title": "Delete requirement"
+		},
+		"detail": {
+			"children": "Sub-requirements",
+			"createdBy": "Created by {{name}}",
+			"noChildren": "No sub-requirements.",
+			"selectPrompt": "Select a requirement to see its details."
+		},
+		"emptyDescription": "Create a requirement to plan the work behind your tasks.",
+		"emptyFiltered": "No requirement matches these filters.",
+		"emptyTitle": "No requirements yet",
+		"errors": {
+			"cycle": "A requirement cannot be moved under one of its own sub-requirements.",
+			"hasChildren": "Move or delete its sub-requirements first.",
+			"titleRequired": "Title is required"
+		},
+		"fields": {
+			"assignee": "Assignee",
+			"description": "Description",
+			"expectedDate": "Expected date",
+			"module": "Module",
+			"noDate": "No date",
+			"parent": "Parent requirement",
+			"priority": "Priority",
+			"projects": "Projects",
+			"source": "Source",
+			"status": "Status",
+			"title": "Title",
+			"topLevel": "Top level",
+			"type": "Type",
+			"unassigned": "Unassigned"
+		},
+		"filters": {
+			"all": "All",
+			"assignee": "Assignee",
+			"clear": "Clear filters",
+			"priority": "Priority",
+			"project": "Project",
+			"status": "Status",
+			"type": "Type"
+		},
+		"form": {
+			"createChildTitle": "New sub-requirement",
+			"createTitle": "New requirement",
+			"descriptionPlaceholder": "Add context, constraints, and links.",
+			"editTitle": "Edit requirement",
+			"parentPlaceholder": "Select a parent requirement",
+			"projectPlaceholder": "Select a project",
+			"save": "Save changes",
+			"submit": "Create",
+			"titlePlaceholder": "What needs to be built?"
+		},
+		"move": {
+			"description": "Choose a new parent, or leave empty to move it to the top level.",
+			"submit": "Move",
+			"title": "Move requirement",
+			"toRoot": "Top level"
+		},
+		"new": "New requirement",
+		"newChild": "New sub-requirement",
+		"pageTitle": "Requirements",
+		"priority": {
+			"P0": "P0 · Urgent",
+			"P1": "P1 · High",
+			"P2": "P2 · Normal",
+			"P3": "P3 · Low",
+			"P4": "P4 · Deferred"
+		},
+		"searchPlaceholder": "Search requirements…",
+		"source": {
+			"customer_feedback": "Customer feedback",
+			"internal_plan": "Internal plan",
+			"operational": "Operational"
+		},
+		"status": {
+			"completed": "Completed",
+			"in_development": "In development",
+			"pending_review": "Pending review",
+			"reviewed": "Reviewed"
+		},
+		"subtitle": "Plan what to build, then turn it into tasks.",
+		"title": "Requirements",
+		"toast": {
+			"acceptanceAdded": "Criterion added",
+			"acceptanceRemoved": "Criterion removed",
+			"created": "Requirement created",
+			"deleted": "Requirement deleted",
+			"error": "Something went wrong",
+			"moved": "Requirement moved",
+			"statusUpdated": "Status updated",
+			"updated": "Requirement updated"
+		},
+		"type": {
+			"bug": "Bug",
+			"feature": "Feature",
+			"optimization": "Optimization",
+			"tech_improvement": "Tech improvement"
+		},
+		"tasks": {
+			"empty": "No tasks linked yet. Link this requirement from a task's detail view.",
+			"progress": "{{done}}/{{total}} done",
+			"title": "Linked tasks"
+		},
+		"documents": {
+			"backToCurrent": "Back to the current version",
+			"compareWithCurrent": "Compare with current",
+			"createConfirm": "Create",
+			"created": "Document created",
+			"createDescription": "The document is created empty. Everything you save afterwards is kept as a version.",
+			"createError": "Failed to create the document",
+			"createTitle": "New requirement document",
+			"current": "Current",
+			"deleteConfirm": "Delete",
+			"deleted": "Document deleted",
+			"deleteDescription": "Delete “{{title}}” and its {{total}} saved versions? This cannot be undone.",
+			"deleteTitle": "Delete document",
+			"editorPlaceholder": "Write the requirement: scope, behaviour, and what proves it is done.",
+			"empty": "No documents yet. A requirement can carry several — its PRD first among them — and each one keeps its own version history.",
+			"emptyBody": "This document is empty.",
+			"history": "History",
+			"new": "New document",
+			"noChanges": "No changes, so no new version",
+			"rename": "Rename",
+			"renamed": "Document renamed",
+			"restore": "Restore this version",
+			"restored": "Restored v{{from}} as v{{version}}",
+			"savedAsVersion": "Saved as v{{version}}",
+			"saveError": "Failed to save the document",
+			"title": "Documents",
+			"titleLabel": "Document title",
+			"titlePlaceholder": "e.g. Product requirements",
+			"versionBadge": "v{{version}}",
+			"versionTotal": "{{total}} versions",
+			"viewingPastVersion": "Viewing v{{version}}, a past version"
+		},
+		"tree": {
+			"documents": "Documents"
 		}
 	}
 }

@@ -1,5 +1,4 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   activityTable,
@@ -9,6 +8,7 @@ import {
 } from "../../database/schema";
 import { publishEvent } from "../../events";
 import createNotification from "../../notification/controllers/create-notification";
+import { httpError } from "../../utils/http-error";
 import { parseMentionIds } from "../../utils/parse-mentions";
 
 async function createComment(
@@ -34,9 +34,11 @@ async function createComment(
     .returning();
 
   if (!activity) {
-    throw new HTTPException(500, {
-      message: "Failed to create activity",
-    });
+    throw httpError(
+      500,
+      "failed_to_create_activity",
+      "Failed to create activity",
+    );
   }
 
   const [user] = await db

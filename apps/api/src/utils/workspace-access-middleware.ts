@@ -1,8 +1,66 @@
 import { and, eq, inArray } from "drizzle-orm";
 import type { Context, Next } from "hono";
-import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { httpError } from "./http-error";
 import { validateWorkspaceAccess } from "./validate-workspace-access";
+
+type LookupResource =
+  | "project"
+  | "task"
+  | "label"
+  | "timeEntry"
+  | "activity"
+  | "comment"
+  | "column"
+  | "workflowRule"
+  | "customField"
+  | "requirement"
+  | "requirementDocument"
+  | "acceptanceItem";
+
+// A comment is an activity row, and the comment routes deliberately do not say
+// whether a comment is missing or simply not the caller's. Both lookups answer
+// with that same merged code so the middleware cannot contradict the route.
+const COMMENT_NOT_FOUND = {
+  code: "comment_not_found_or_you_are_not_the_author",
+  message: "Comment not found or you are not the author",
+};
+
+// A looked-up id that resolves to nothing means the caller named a resource
+// that does not exist, so the middleware answers 404 with that resource's own
+// code rather than the generic 400 for an undeterminable workspace.
+const NOT_FOUND_BY_RESOURCE: Record<
+  LookupResource,
+  { code: string; message: string }
+> = {
+  project: { code: "project_not_found", message: "Project not found" },
+  task: { code: "task_not_found", message: "Task not found" },
+  label: { code: "label_not_found", message: "Label not found" },
+  requirementDocument: {
+    code: "requirement_document_not_found",
+    message: "Requirement document not found",
+  },
+  timeEntry: { code: "time_entry_not_found", message: "Time entry not found" },
+  activity: COMMENT_NOT_FOUND,
+  comment: COMMENT_NOT_FOUND,
+  column: { code: "column_not_found", message: "Column not found" },
+  workflowRule: {
+    code: "workflow_rule_not_found",
+    message: "Workflow rule not found",
+  },
+  customField: {
+    code: "custom_field_not_found",
+    message: "Custom field not found",
+  },
+  requirement: {
+    code: "requirement_not_found",
+    message: "Requirement not found",
+  },
+  acceptanceItem: {
+    code: "acceptance_item_not_found",
+    message: "Acceptance item not found",
+  },
+};
 
 type WorkspaceIdSource =
   | { type: "query"; key: string }
@@ -10,15 +68,7 @@ type WorkspaceIdSource =
   | { type: "param"; key: string }
   | {
       type: "lookup";
-      resource:
-        | "project"
-        | "task"
-        | "label"
-        | "timeEntry"
-        | "activity"
-        | "comment"
-        | "column"
-        | "workflowRule";
+      resource: LookupResource;
       idKey: string;
     }
   | {
@@ -48,10 +98,11 @@ export function workspaceAccessMiddleware(
     const userId = c.get("userId");
 
     if (!userId) {
-      throw new HTTPException(401, { message: "Unauthorized" });
+      throw httpError(401, "unauthorized", "Unauthorized");
     }
 
     let workspaceId: string | null = null;
+    let missingResource: LookupResource | null = null;
 
     for (const source of config.sources) {
       if (source.type === "query") {
@@ -73,6 +124,9 @@ export function workspaceAccessMiddleware(
         const id = c.req.param(source.idKey) || idFromBody;
         if (id) {
           workspaceId = await lookupWorkspaceId(source.resource, id);
+          if (!workspaceId && !missingResource) {
+            missingResource = source.resource;
+          }
         }
       } else if (source.type === "lookupMany") {
         const body = await readJsonObjectBody(c);
@@ -94,12 +148,14 @@ export function workspaceAccessMiddleware(
               ...new Set(tasks.map((task) => task.workspaceId)),
             ];
             if (workspaceIds.length === 0) {
-              throw new HTTPException(404, { message: "No tasks found" });
+              throw httpError(404, "no_tasks_found", "No tasks found");
             }
             if (workspaceIds.length > 1) {
-              throw new HTTPException(400, {
-                message: "All tasks must belong to the same workspace",
-              });
+              throw httpError(
+                400,
+                "all_tasks_must_belong_to_the_same_workspace",
+                "All tasks must belong to the same workspace",
+              );
             }
             workspaceId = workspaceIds[0] ?? null;
           }
@@ -112,9 +168,19 @@ export function workspaceAccessMiddleware(
     }
 
     if (!workspaceId) {
-      throw new HTTPException(400, {
-        message: "Workspace ID could not be determined",
-      });
+      // A named resource that does not exist is a 404, not a 400: the request
+      // was well formed and the workspace simply could not be derived from an
+      // id that is genuinely absent. The 400 below stays for requests that
+      // never named anything resolvable at all.
+      if (missingResource) {
+        const { code, message } = NOT_FOUND_BY_RESOURCE[missingResource];
+        throw httpError(404, code, message);
+      }
+      throw httpError(
+        400,
+        "workspace_id_could_not_be_determined",
+        "Workspace ID could not be determined",
+      );
     }
 
     const apiKey = c.get("apiKey");
@@ -129,15 +195,7 @@ export function workspaceAccessMiddleware(
 }
 
 async function lookupWorkspaceId(
-  resource:
-    | "project"
-    | "task"
-    | "label"
-    | "timeEntry"
-    | "activity"
-    | "comment"
-    | "column"
-    | "workflowRule",
+  resource: LookupResource,
   id: string,
 ): Promise<string | null> {
   try {
@@ -267,12 +325,73 @@ async function lookupWorkspaceId(
         return workflowRule?.workspaceId || null;
       }
 
+      case "customField": {
+        const [field] = await db
+          .select({
+            workspaceId: schema.projectTable.workspaceId,
+          })
+          .from(schema.customFieldDefinitionTable)
+          .innerJoin(
+            schema.projectTable,
+            eq(
+              schema.customFieldDefinitionTable.projectId,
+              schema.projectTable.id,
+            ),
+          )
+          .where(eq(schema.customFieldDefinitionTable.id, id))
+          .limit(1);
+        return field?.workspaceId || null;
+      }
+
+      case "requirement": {
+        const [requirement] = await db
+          .select({ workspaceId: schema.requirementTable.workspaceId })
+          .from(schema.requirementTable)
+          .where(eq(schema.requirementTable.id, id))
+          .limit(1);
+        return requirement?.workspaceId || null;
+      }
+
+      case "acceptanceItem": {
+        const [item] = await db
+          .select({ workspaceId: schema.requirementTable.workspaceId })
+          .from(schema.acceptanceItemTable)
+          .innerJoin(
+            schema.requirementTable,
+            eq(
+              schema.acceptanceItemTable.requirementId,
+              schema.requirementTable.id,
+            ),
+          )
+          .where(eq(schema.acceptanceItemTable.id, id))
+          .limit(1);
+        return item?.workspaceId || null;
+      }
+
+      case "requirementDocument": {
+        const [row] = await db
+          .select({ workspaceId: schema.requirementTable.workspaceId })
+          .from(schema.requirementDocumentTable)
+          .innerJoin(
+            schema.requirementTable,
+            eq(
+              schema.requirementDocumentTable.requirementId,
+              schema.requirementTable.id,
+            ),
+          )
+          .where(eq(schema.requirementDocumentTable.id, id))
+          .limit(1);
+        return row?.workspaceId || null;
+      }
       default:
         return null;
     }
   } catch (error) {
+    // A failed lookup is not a missing resource. Swallowing the error here would
+    // report an existing resource as absent on a transient database failure, so
+    // it is rethrown and answered as a 500 by the global error handler.
     console.error(`Error looking up workspaceId for ${resource}:`, error);
-    return null;
+    throw error;
   }
 }
 
@@ -319,7 +438,6 @@ export const workspaceAccess = {
         { type: "query", key: "workspaceId" },
       ],
     }),
-
   fromTimeEntry: (idKey = "id") =>
     workspaceAccessMiddleware({
       sources: [
@@ -356,6 +474,43 @@ export const workspaceAccess = {
     workspaceAccessMiddleware({
       sources: [
         { type: "lookup", resource: "workflowRule", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  fromCustomField: (idKey = "id") =>
+    workspaceAccessMiddleware({
+      sources: [{ type: "lookup", resource: "customField", idKey }],
+    }),
+
+  fromProjectId: (idKey = "projectId") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "project", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  fromRequirement: (idKey = "id") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "requirement", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  fromAcceptanceItem: (idKey = "itemId") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "acceptanceItem", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  fromRequirementDocument: (idKey = "documentId") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "requirementDocument", idKey },
         { type: "query", key: "workspaceId" },
       ],
     }),

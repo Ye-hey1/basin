@@ -31,7 +31,8 @@ describe("API integration: labels", () => {
     });
 
     expect(response.status).toBe(401);
-    await expect(response.text()).resolves.toBe("Unauthorized");
+    const body = await response.json();
+    expect(body.code).toBe("unauthorized");
   });
 
   it("creates a label in a workspace for a member", async () => {
@@ -103,9 +104,8 @@ describe("API integration: labels", () => {
     });
 
     expect(response.status).toBe(403);
-    await expect(response.text()).resolves.toBe(
-      "You don't have access to this workspace",
-    );
+    const body = await response.json();
+    expect(body.code).toBe("you_don_t_have_access_to_this_workspace");
 
     const persisted = await db.query.labelTable.findFirst({
       where: eq(schema.labelTable.name, "Blocked"),

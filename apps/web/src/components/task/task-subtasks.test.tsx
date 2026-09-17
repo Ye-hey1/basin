@@ -22,6 +22,7 @@ vi.mock("framer-motion", () => ({
 }));
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
 }));
 vi.mock("@/hooks/mutations/task/use-create-task", () => ({
   default: () => ({ mutateAsync: mocks.createTask, isPending: false }),

@@ -1,10 +1,10 @@
-import { HTTPException } from "hono/http-exception";
 import { normalizeGiteaBaseUrl } from "../../plugins/gitea/config";
 import {
   createGiteaClient,
   GiteaApiError,
   verifyGiteaToken,
 } from "../../plugins/gitea/utils/gitea-api";
+import { httpError } from "../../utils/http-error";
 
 async function verifyGiteaAccess({
   baseUrl,
@@ -102,17 +102,18 @@ async function verifyGiteaAccess({
     }
 
     if (err.status === 401) {
-      throw new HTTPException(401, {
-        message: "Invalid Gitea token or unauthorized.",
-      });
+      throw httpError(
+        401,
+        "invalid_gitea_token_or_unauthorized",
+        "Invalid Gitea token or unauthorized.",
+      );
     }
 
-    throw new HTTPException(500, {
-      message:
-        error instanceof Error
-          ? error.message
-          : "Failed to verify Gitea access",
-    });
+    throw httpError(
+      500,
+      "gitea_verify_failed",
+      error instanceof Error ? error.message : "Failed to verify Gitea access",
+    );
   }
 }
 

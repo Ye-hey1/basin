@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { deletedSchema, projectIdParam } from "../integrations/schema";
@@ -16,6 +15,7 @@ import {
   normalizeDiscordConfig,
   validateDiscordConfig,
 } from "../plugins/discord/config";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import { discordIntegrationSchema } from "./response";
@@ -99,9 +99,8 @@ const getDiscordIntegrationRoute = createRoute({
       "Discord integration details, or null",
       discordIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -128,6 +127,7 @@ const createDiscordIntegrationRoute = createRoute({
       discordIntegrationSchema.nullable(),
     ),
     400: errorResponse("The webhook URL failed validation"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -174,13 +174,11 @@ const deleteDiscordIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deletedSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Discord integration not found"),
+    404: errorResponse("Unknown project, or the Discord integration not found"),
   },
 });
 
@@ -202,9 +200,11 @@ const discordIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = await validateDiscordConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -239,9 +239,11 @@ const discordIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Discord integration not found",
-      });
+      throw httpError(
+        404,
+        "discord_integration_not_found",
+        "Discord integration not found",
+      );
     }
 
     const currentConfig = normalizeDiscordConfig(
@@ -261,9 +263,11 @@ const discordIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = await validateDiscordConfig(nextConfig);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -292,9 +296,11 @@ const discordIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
 
     if (!existing) {
-      throw new HTTPException(404, {
-        message: "Discord integration not found",
-      });
+      throw httpError(
+        404,
+        "discord_integration_not_found",
+        "Discord integration not found",
+      );
     }
 
     await db

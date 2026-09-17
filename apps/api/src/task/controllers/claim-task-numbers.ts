@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 type DbOrTx = typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0];
 
@@ -19,9 +19,7 @@ async function claimTaskNumbers(
     .returning({ lastTaskNumber: projectTable.lastTaskNumber });
 
   if (!updated) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   return updated.lastTaskNumber - count + 1;

@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskRelationTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 
 async function deleteTaskRelation(id: string, userId: string) {
   const [rel] = await db
@@ -15,9 +15,7 @@ async function deleteTaskRelation(id: string, userId: string) {
     .limit(1);
 
   if (!rel) {
-    throw new HTTPException(404, {
-      message: "Task relation not found",
-    });
+    throw httpError(404, "task_relation_not_found", "Task relation not found");
   }
 
   const [task] = await db
@@ -32,9 +30,7 @@ async function deleteTaskRelation(id: string, userId: string) {
     .returning();
 
   if (!relation) {
-    throw new HTTPException(404, {
-      message: "Task relation not found",
-    });
+    throw httpError(404, "task_relation_not_found", "Task relation not found");
   }
 
   if (task) {

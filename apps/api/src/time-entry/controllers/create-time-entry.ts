@@ -1,9 +1,9 @@
 import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskTable, timeEntryTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 import { resolveDuration } from "../duration";
 
 async function createTimeEntry({
@@ -35,9 +35,11 @@ async function createTimeEntry({
     .returning();
 
   if (!createdTimeEntry) {
-    throw new HTTPException(500, {
-      message: "Failed to create time entry",
-    });
+    throw httpError(
+      500,
+      "failed_to_create_time_entry",
+      "Failed to create time entry",
+    );
   }
 
   const [task] = await db

@@ -4,6 +4,7 @@ import db from "../../database";
 import { columnTable, projectTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { filterAssignableUsers } from "../../utils/assert-assignable-user";
+import { httpError } from "../../utils/http-error";
 import {
   coercePriority,
   coerceStatus,
@@ -31,9 +32,7 @@ async function importTasks(
   });
 
   if (!project) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const assigneeIds = [

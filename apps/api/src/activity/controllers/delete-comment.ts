@@ -1,9 +1,9 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { activityTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { deleteOrphanedAssets } from "../../storage/cleanup-assets";
+import { httpError } from "../../utils/http-error";
 
 async function deleteComment(userId: string, id: string) {
   const [existing] = await db
@@ -23,9 +23,11 @@ async function deleteComment(userId: string, id: string) {
     .limit(1);
 
   if (!existing) {
-    throw new HTTPException(404, {
-      message: "Comment not found or you are not the author",
-    });
+    throw httpError(
+      404,
+      "comment_not_found_or_you_are_not_the_author",
+      "Comment not found or you are not the author",
+    );
   }
 
   const [deletedComment] = await db
@@ -40,9 +42,11 @@ async function deleteComment(userId: string, id: string) {
     .returning();
 
   if (!deletedComment) {
-    throw new HTTPException(404, {
-      message: "Comment not found or you are not the author",
-    });
+    throw httpError(
+      404,
+      "comment_not_found_or_you_are_not_the_author",
+      "Comment not found or you are not the author",
+    );
   }
 
   const [task] = await db

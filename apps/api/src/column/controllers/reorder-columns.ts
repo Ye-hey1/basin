@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function reorderColumns(
   projectId: string,
@@ -17,9 +17,11 @@ async function reorderColumns(
       .returning({ id: columnTable.id });
 
     if (!updated) {
-      throw new HTTPException(400, {
-        message: `Column ${col.id} does not belong to this project`,
-      });
+      throw httpError(
+        400,
+        "column_not_in_project",
+        `Column ${col.id} does not belong to this project`,
+      );
     }
   }
 

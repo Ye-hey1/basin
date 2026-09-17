@@ -29,7 +29,8 @@ describe("API integration: project creation", () => {
     });
 
     expect(response.status).toBe(401);
-    await expect(response.text()).resolves.toBe("Unauthorized");
+    const body = await response.json();
+    expect(body.code).toBe("unauthorized");
   });
 
   it("creates a project for a workspace member and seeds default columns", async () => {
@@ -123,8 +124,7 @@ describe("API integration: project creation", () => {
     });
 
     expect(response.status).toBe(403);
-    await expect(response.text()).resolves.toBe(
-      "You don't have access to this workspace",
-    );
+    const body = await response.json();
+    expect(body.code).toBe("you_don_t_have_access_to_this_workspace");
   });
 });

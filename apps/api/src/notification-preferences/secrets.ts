@@ -5,6 +5,7 @@ import {
   randomBytes,
 } from "node:crypto";
 import { HTTPException } from "hono/http-exception";
+import { httpError } from "../utils/http-error";
 
 const SECRET_PREFIX = "enc:v1:";
 const SECRET_ALGORITHM = "aes-256-gcm";
@@ -22,10 +23,11 @@ function getSecretEncryptionKey() {
 function requireSecretEncryptionKey() {
   const key = getSecretEncryptionKey();
   if (!key) {
-    throw new HTTPException(500, {
-      message:
-        "NOTIFICATION_SECRET_ENCRYPTION_KEY is required to store encrypted notification secrets",
-    });
+    throw httpError(
+      500,
+      "notification_secret_encryption_key_is_required_to_store_encrypted_notification_s",
+      "NOTIFICATION_SECRET_ENCRYPTION_KEY is required to store encrypted notification secrets",
+    );
   }
 
   return key;
@@ -89,9 +91,11 @@ export function decryptSecret(
   const [iv, authTag, encrypted] = payload.split(".");
 
   if (!iv || !authTag || !encrypted) {
-    throw new HTTPException(500, {
-      message: "Invalid encrypted notification secret payload",
-    });
+    throw httpError(
+      500,
+      "invalid_encrypted_notification_secret_payload",
+      "Invalid encrypted notification secret payload",
+    );
   }
 
   try {
@@ -110,8 +114,10 @@ export function decryptSecret(
     if (error instanceof HTTPException) {
       throw error;
     }
-    throw new HTTPException(500, {
-      message: "Failed to decrypt notification secret",
-    });
+    throw httpError(
+      500,
+      "failed_to_decrypt_notification_secret",
+      "Failed to decrypt notification secret",
+    );
   }
 }

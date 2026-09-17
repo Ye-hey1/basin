@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { workflowRuleTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function deleteWorkflowRule(id: string) {
   const existing = await db.query.workflowRuleTable.findFirst({
@@ -9,7 +9,7 @@ async function deleteWorkflowRule(id: string) {
   });
 
   if (!existing) {
-    throw new HTTPException(404, { message: "Workflow rule not found" });
+    throw httpError(404, "workflow_rule_not_found", "Workflow rule not found");
   }
 
   await db.delete(workflowRuleTable).where(eq(workflowRuleTable.id, id));

@@ -1,7 +1,7 @@
 import { and, eq, isNotNull } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { labelTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function updateLabel(id: string, name: string, color: string) {
   return db.transaction(async (tx) => {
@@ -10,9 +10,7 @@ async function updateLabel(id: string, name: string, color: string) {
     });
 
     if (!label) {
-      throw new HTTPException(404, {
-        message: "Label not found",
-      });
+      throw httpError(404, "label_not_found", "Label not found");
     }
 
     const [updatedLabel] = await tx

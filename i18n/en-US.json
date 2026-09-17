@@ -11,10 +11,12 @@
 			"remove": "Remove",
 			"reset": "Reset",
 			"filter": "Filter",
-			"clearAllFilters": "Clear all filters"
+			"clearAllFilters": "Clear all filters",
+			"dismiss": "Dismiss"
 		},
 		"a11y": {
-			"toggleSidebar": "Toggle sidebar"
+			"toggleSidebar": "Toggle sidebar",
+			"toggleTheme": "Toggle theme"
 		},
 		"sidebar": {
 			"title": "Sidebar",
@@ -79,6 +81,155 @@
 					"tryRefresh": "Try refreshing the page",
 					"checkFirewall": "Check if there are any firewall or proxy issues"
 				}
+			},
+			"codes": {
+				"all_tasks_must_belong_to_the_same_workspace": "All tasks must belong to the same workspace",
+				"asset_not_found": "Asset not found",
+				"asset_object_not_found": "Asset object not found",
+				"assignee_not_in_workspace": "Assignee is not a member of this workspace",
+				"avatar_not_found": "Avatar not found",
+				"billing_is_not_enabled": "Billing is not enabled",
+				"billing_provider_request_failed": "Billing provider request failed",
+				"cannot_create_a_relation_between_a_task_and_itself": "Cannot create a relation between a task and itself",
+				"cannot_delete_column_that_contains_tasks_move_or_delete_tasks_first": "Cannot delete column that contains tasks. Move or delete tasks first.",
+				"column_does_not_belong_to_the_provided_project": "Column does not belong to the provided project",
+				"column_name_must_contain_at_least_one_alphanumeric_character": "Column name must contain at least one alphanumeric character",
+				"column_not_found": "Column not found",
+				"column_not_in_project": "Column does not belong to this project",
+				"column_slug_exists": "Column with slug already exists in this project",
+				"column_slug_reserved": "Column slug is reserved for virtual task statuses",
+				"comment_not_found_or_you_are_not_the_author": "Comment not found or you are not the author",
+				"could_not_determine_workspace": "Could not determine workspace",
+				"destination_project_does_not_have_a_workflow": "Destination project does not have a workflow",
+				"discord_integration_not_found": "Discord integration not found",
+				"duplicate_project_ids_in_reorder_payload": "Duplicate project ids in reorder payload",
+				"email_notifications_require_an_account_email_address": "Email notifications require an account email address",
+				"enable_email_notifications_globally_before_using_them_here": "Enable email notifications globally before using them here",
+				"enable_gotify_notifications_globally_before_using_them_here": "Enable Gotify notifications globally before using them here",
+				"enable_ntfy_notifications_globally_before_using_them_here": "Enable ntfy notifications globally before using them here",
+				"enable_webhook_notifications_globally_before_using_them_here": "Enable webhook notifications globally before using them here",
+				"failed_to_archive_project": "Failed to archive project",
+				"failed_to_attach_label_to_task": "Failed to attach label to task",
+				"failed_to_create_activity": "Failed to create activity",
+				"failed_to_create_column": "Failed to create column",
+				"failed_to_create_gitea_integration": "Failed to create Gitea integration",
+				"failed_to_create_task": "Failed to create task",
+				"failed_to_create_task_relation": "Failed to create task relation",
+				"failed_to_create_time_entry": "Failed to create time entry",
+				"failed_to_create_workflow_rule": "Failed to create workflow rule",
+				"failed_to_decrypt_notification_secret": "Failed to decrypt notification secret",
+				"failed_to_delete_project": "Failed to delete project",
+				"failed_to_detach_label_from_task": "Failed to detach label from task",
+				"failed_to_fetch_repositories_from_github": "Failed to fetch repositories from GitHub",
+				"failed_to_initialize_workspace_billing": "Failed to initialize workspace billing",
+				"failed_to_load_integration": "Failed to load integration",
+				"failed_to_load_telegram_integration_after_save": "Failed to load Telegram integration after save",
+				"failed_to_load_telegram_integration_after_update": "Failed to load Telegram integration after update",
+				"failed_to_move_task": "Failed to move task",
+				"failed_to_save_asset": "Failed to save asset",
+				"failed_to_save_notification_workspace_rule": "Failed to save notification workspace rule",
+				"failed_to_unarchive_project": "Failed to unarchive project",
+				"failed_to_update_column": "Failed to update column",
+				"failed_to_update_gitea_integration": "Failed to update Gitea integration",
+				"failed_to_update_task": "Failed to update task",
+				"failed_to_update_task_assignee": "Failed to update task assignee",
+				"failed_to_update_task_description": "Failed to update task description",
+				"failed_to_update_task_due_date": "Failed to update task due date",
+				"failed_to_update_task_priority": "Failed to update task priority",
+				"failed_to_update_task_status": "Failed to update task status",
+				"failed_to_update_task_title": "Failed to update task title",
+				"failed_to_update_workflow_rule": "Failed to update workflow rule",
+				"generic_webhook_integration_not_found": "Generic webhook integration not found",
+				"gitea_access_token_or_base_url_not_configured": "Gitea access token or base URL not configured",
+				"gitea_integration_error": "Gitea integration error",
+				"gitea_integration_is_not_active": "Gitea integration is not active",
+				"gitea_integration_not_found": "Gitea integration not found",
+				"gitea_verify_failed": "Failed to verify Gitea access",
+				"github_app_not_configured": "GitHub app not configured",
+				"github_installation_id_not_configured": "GitHub installation ID not configured",
+				"github_integration_is_not_active": "GitHub integration is not active",
+				"github_integration_not_found": "GitHub integration not found",
+				"github_verify_failed": "Failed to verify GitHub installation",
+				"gotify_requires_a_server_url_and_app_token": "Gotify requires a server URL and app token",
+				"image_upload_key_does_not_match_the_task_context": "Image upload key does not match the task context.",
+				"image_uploads_not_configured": "Image uploads are not configured",
+				"insufficient_api_key_scope": "Insufficient API key scope",
+				"insufficient_permissions": "Insufficient permissions",
+				"internal_server_error": "Internal Server Error",
+				"invalid_api_key_for_this_workspace": "Invalid API key for this workspace",
+				"invalid_avatar_upload": "Invalid avatar upload",
+				"invalid_bulk_operation": "Invalid bulk operation",
+				"invalid_config": "Invalid config",
+				"invalid_date": "Invalid date",
+				"invalid_date_value": "Invalid date value",
+				"invalid_encrypted_notification_secret_payload": "Invalid encrypted notification secret payload",
+				"invalid_gitea_config": "Invalid Gitea integration config",
+				"invalid_gitea_token_or_could_not_reach_instance": "Invalid Gitea token or could not reach instance.",
+				"invalid_gitea_token_or_unauthorized": "Invalid Gitea token or unauthorized.",
+				"invalid_gotify_url": "Invalid Gotify server URL",
+				"invalid_image_upload": "Invalid image upload request",
+				"invalid_integration_config": "Invalid integration config",
+				"invalid_ntfy_url": "Invalid ntfy server URL",
+				"invalid_priority": "Invalid priority",
+				"invalid_request": "Invalid request",
+				"invalid_signature": "Invalid signature",
+				"invalid_status": "Invalid status",
+				"invalid_webhook_url": "Invalid webhook URL",
+				"label_and_task_must_belong_to_the_same_workspace": "Label and task must belong to the same workspace",
+				"label_and_tasks_must_belong_to_the_same_workspace": "Label and tasks must belong to the same workspace",
+				"label_id_is_required": "Label ID is required",
+				"label_is_not_assigned_to_a_task": "Label is not assigned to a task",
+				"label_not_found": "Label not found",
+				"no_billing_customer_exists_for_this_workspace_yet": "No billing customer exists for this workspace yet",
+				"no_tasks_found": "No tasks found",
+				"not_found": "Not found",
+				"notification_not_found": "Notification not found",
+				"notification_secret_encryption_key_is_required_to_store_encrypted_notification_s": "NOTIFICATION_SECRET_ENCRYPTION_KEY is required to store encrypted notification secrets",
+				"ntfy_requires_a_server_url_and_topic": "ntfy requires a server URL and topic",
+				"one_or_more_selected_projects_are_invalid": "One or more selected projects are invalid",
+				"only_workspace_owners_and_admins_can_manage_billing": "Only workspace owners and admins can manage billing",
+				"personal_access_token_is_required": "Personal access token is required",
+				"priority_value_is_required": "Priority value is required",
+				"project_doesn_t_exist_or_doesn_t_belong_to_the_specified_workspace": "Project doesn't exist or doesn't belong to the specified workspace",
+				"project_is_not_public": "Project is not public",
+				"project_not_found": "Project not found",
+				"project_not_in_workspace": "Project does not belong to this workspace",
+				"projectid_is_required": "projectId is required",
+				"repository_already_linked": "Repository is already linked to another project",
+				"select_at_least_one_project_for_selected_project_mode": "Select at least one project for selected project mode",
+				"selected_status_is_not_valid_for_the_destination_project": "Selected status is not valid for the destination project",
+				"slack_integration_not_found": "Slack integration not found",
+				"source_task_not_found": "Source task not found",
+				"sourcetaskid_is_required": "sourceTaskId is required",
+				"start_date_cannot_be_after_due_date_please_adjust_the_date_range": "Start date cannot be after due date. Please adjust the date range.",
+				"start_time_cannot_be_after_end_time_please_adjust_the_time_range": "Start time cannot be after end time. Please adjust the time range.",
+				"status_value_is_required": "Status value is required",
+				"stored_telegram_integration_configuration_is_invalid": "Stored Telegram integration configuration is invalid",
+				"target_task_not_found": "Target task not found",
+				"task_is_already_in_that_project": "Task is already in that project",
+				"task_not_found": "Task not found",
+				"task_relation_not_found": "Task relation not found",
+				"tasks_can_only_be_moved_within_the_same_workspace": "Tasks can only be moved within the same workspace",
+				"telegram_integration_not_found": "Telegram integration not found",
+				"the_time_range_is_too_long_to_record": "The time range is too long to record.",
+				"this_relation_already_exists": "This relation already exists",
+				"this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and": "This workspace's Kaneo Cloud plan has expired. Subscribe to continue creating and editing.",
+				"time_entry_not_found": "Time entry not found",
+				"unauthorized": "Unauthorized",
+				"unknown_bulk_operation": "Unknown operation",
+				"unknown_plan": "Unknown plan",
+				"use_the_task_move_endpoint_to_move_tasks_between_projects": "Use the task move endpoint to move tasks between projects",
+				"value_is_required_for_this_operation": "Value is required for this operation",
+				"webhook_notifications_require_an_endpoint_url": "Webhook notifications require an endpoint URL",
+				"workflow_rule_not_found": "Workflow rule not found",
+				"workspace_already_has_an_active_subscription": "Workspace already has an active subscription",
+				"workspace_id_could_not_be_determined": "Workspace ID could not be determined",
+				"workspace_not_found": "Workspace not found",
+				"workspace_notification_rule_not_found": "Workspace notification rule not found",
+				"workspaceid_not_set_in_context": "workspaceId not set in context",
+				"you_don_t_have_access_to_this_workspace": "You don't have access to this workspace",
+				"requirement_not_found": "Requirement not found",
+				"acceptance_item_not_found": "Acceptance criterion not found"
 			}
 		},
 		"formats": {
@@ -150,8 +301,21 @@
 					"terracotta": "Terracotta",
 					"rose": "Rose",
 					"crimson": "Crimson"
-				}
+				},
+				"discardTitle": "Discard task?",
+				"discardDescription": "Your unsaved task details will be lost.",
+				"discardButton": "Discard task"
 			}
+		},
+		"demoAlert": {
+			"message": "This is a demo environment. All data will be automatically purged every hour.",
+			"deployYourOwn": "Deploy your own"
+		},
+		"boolean": {
+			"true": "True",
+			"false": "False",
+			"undefined": "Undefined",
+			"notSet": "Not Set"
 		}
 	},
 	"auth": {
@@ -331,6 +495,46 @@
 				"nameRequired": "Name is required",
 				"nameShort": "Name must be at least 2 characters"
 			}
+		},
+		"device": {
+			"pageTitle": "Connect a device",
+			"subtitle": "Enter the code from your CLI or app to continue.",
+			"codePlaceholder": "e.g. ABCD-1234",
+			"continue": "Continue",
+			"enterCodeError": "Enter the code shown on your device.",
+			"invalidCodeError": "Invalid or expired code",
+			"approveTitle": "Approve device",
+			"checkingSession": "Checking session…",
+			"noCodeSubtitle": "No device code was provided.",
+			"enterCode": "Enter a code",
+			"signInTitle": "Sign in to continue",
+			"signInSubtitle": "Sign in to approve or deny this device request.",
+			"signIn": "Sign in",
+			"approveSubtitle": "A device is requesting access to your Kaneo account.",
+			"approve": "Approve",
+			"deny": "Deny",
+			"connected": "Device connected",
+			"couldNotApprove": "Could not approve",
+			"couldNotDeny": "Could not deny",
+			"cancelled": "Request cancelled"
+		},
+		"mcpAuthorize": {
+			"failedTitle": "Authorization failed",
+			"failedSubtitle": "This authorization request is invalid or has expired.",
+			"returnToClient": "Return to your MCP client and start the connection again.",
+			"authorizeTitle": "Authorize MCP client",
+			"loadingSubtitle": "Loading request…",
+			"checkingRequest": "Checking the authorization request.",
+			"signInTitle": "Sign in to continue",
+			"signInSubtitle": "Sign in before approving this MCP client.",
+			"signIn": "Sign in",
+			"reviewSubtitle": "Review this request before granting access to your Kaneo account.",
+			"accessWarning": "This client will be able to act as you and access your workspaces. Only continue if you initiated this connection.",
+			"clientNameLabel": "Client name (self-reported)",
+			"clientFallback": "MCP client",
+			"redirectUriLabel": "Redirect URI",
+			"approve": "Approve",
+			"deny": "Deny"
 		}
 	},
 	"settings": {
@@ -850,7 +1054,9 @@
 			"slackSectionTitle": "Slack Integration",
 			"slackSectionSubtitle": "Send project task updates into a Slack channel with an incoming webhook.",
 			"telegramSectionTitle": "Telegram Integration",
-			"telegramSectionSubtitle": "Send project task updates into a Telegram chat or topic with a bot."
+			"telegramSectionSubtitle": "Send project task updates into a Telegram chat or topic with a bot.",
+			"mattermostSectionTitle": "Mattermost Integration",
+			"mattermostSectionSubtitle": "Send project task updates into a Mattermost channel with an incoming webhook."
 		},
 		"projectVisibility": {
 			"pageTitle": "Project Visibility",
@@ -874,7 +1080,9 @@
 			"columnsTitle": "Columns",
 			"columnsDescription": "Manage the columns that appear on your board. Drag to reorder. Turn on \"Done column\" for stages that represent completed work.",
 			"automationTitle": "Automation Rules",
-			"automationDescription": "Map integration events to columns. When an event occurs, the linked task moves to the specified column."
+			"automationDescription": "Map integration events to columns. When an event occurs, the linked task moves to the specified column.",
+			"customFieldsTitle": "Custom Fields",
+			"customFieldsDescription": "Manage the custom fields for this project. Drag  to reorder."
 		},
 		"projectSwitcher": {
 			"selectProject": "Select project",
@@ -1269,6 +1477,152 @@
 			"merged": "Merged",
 			"draft": "Draft",
 			"open": "Open"
+		},
+		"billingPage": {
+			"title": "Billing",
+			"disabledDescription": "Billing isn't enabled on this instance. Self-hosted Kaneo includes every feature, free forever.",
+			"subtitle": "Manage the Kaneo Cloud subscription for this workspace.",
+			"currentPlan": "Current plan",
+			"currentPlanSubtitle": "Your workspace's active plan and billing status.",
+			"foundingFree": "Founding Free",
+			"freeBadge": "Free",
+			"foundingFreeDescription": "This workspace has free access to Kaneo Cloud as an early supporter. Thank you for being here from the start.",
+			"cloudPlan": "Kaneo Cloud {{plan}}",
+			"accessEnds": "Access ends",
+			"renews": "Renews",
+			"billingPortalHint": "Update payment method, view invoices, or cancel anytime.",
+			"manageBilling": "Manage billing",
+			"opening": "Opening…",
+			"trialEnded": "Your trial has ended",
+			"freeTrial": "Free trial",
+			"trialEndedDescription": "Subscribe to a plan below to keep creating and editing. Your data stays safe and exportable in the meantime.",
+			"trialDaysLeft_one": "You have {{count}} day left on your free trial. Choose a plan to continue without interruption.",
+			"trialDaysLeft_other": "You have {{count}} days left on your free trial. Choose a plan to continue without interruption.",
+			"choosePlanAfterTrial": "Choose a plan below to continue after your trial.",
+			"choosePlan": "Choose a plan",
+			"choosePlanSubtitle": "Switch anytime. Cancel whenever you like.",
+			"intervalMonthly": "Monthly",
+			"intervalAnnual": "Annual",
+			"twoMonthsFree": "2 months free",
+			"mostPopular": "Most popular",
+			"chooseButton": "Choose {{name}}",
+			"starting": "Starting…",
+			"checkoutNote": "Payments are securely processed by Creem. Prices exclude tax where applicable.",
+			"checkoutAdminOnly": "Only workspace owners and admins can manage billing.",
+			"seats_one": "{{count}} seat",
+			"seats_other": "{{count}} seats",
+			"status": {
+				"active": "Active",
+				"trialing": "Trial",
+				"past_due": "Payment past due",
+				"scheduled_cancel": "Cancels soon",
+				"canceled": "Canceled",
+				"expired": "Expired",
+				"paused": "Paused"
+			},
+			"plans": {
+				"personal": {
+					"name": "Personal",
+					"tagline": "For individuals",
+					"featureSingleUser": "Single user",
+					"featureUnlimited": "Unlimited projects and tasks",
+					"featureBackups": "Automatic backups and updates",
+					"featureSupport": "Email support"
+				},
+				"team": {
+					"name": "Team",
+					"tagline": "For teams working together",
+					"featureMembers": "Unlimited team members",
+					"featureUnlimited": "Unlimited projects and tasks",
+					"featureRoles": "Workspace roles and permissions",
+					"featureBackups": "Automatic backups and updates",
+					"featureSupport": "Priority email support"
+				}
+			},
+			"price": {
+				"perMonth": "/ month",
+				"perYear": "/ year",
+				"perUserPerMonth": "/ user / month",
+				"perUserPerYear": "/ user / year",
+				"billedMonthly": "Billed monthly",
+				"personalAnnualNote": "$3.33 / month, billed yearly",
+				"teamAnnualNote": "$4.17 / user / month, billed yearly"
+			},
+			"trialCard": {
+				"trialEnded": "Trial ended",
+				"daysLeft_one": "{{count}} day left in trial",
+				"daysLeft_other": "{{count}} days left in trial",
+				"subscribePrompt": "Subscribe to keep creating and editing.",
+				"upgradePrompt": "Upgrade anytime to keep your workspace after the trial.",
+				"choosePlan": "Choose a plan",
+				"viewPlans": "View plans"
+			},
+			"toastCheckoutFailed": "Could not start checkout",
+			"toastPortalFailed": "Could not open billing portal"
+		},
+		"customFields": {
+			"namePlaceholder": "Field name",
+			"typePlaceholder": "Select field type",
+			"noOptionsPlaceholder": "No options",
+			"defaultValuePlaceholder": "Default value",
+			"optionsPlaceholder": "Options separated by commas",
+			"required": "Required",
+			"addButton": "Add",
+			"creating": "Creating...",
+			"loading": "Loading custom fields...",
+			"empty": "No custom fields configured yet.",
+			"defaultLabel": "Default",
+			"createSuccess": "Custom field created.",
+			"createError": "Failed to create custom field.",
+			"deleteButton": "Delete",
+			"deleting": "Deleting...",
+			"deleteSuccess": "Custom field deleted.",
+			"deleteError": "Failed to delete custom field.",
+			"types": {
+				"text": "Text",
+				"number": "Number",
+				"date": "Date",
+				"dropdown": "Dropdown",
+				"boolean": "Boolean"
+			}
+		},
+		"mattermostIntegration": {
+			"validation": {
+				"webhookInvalid": "Enter a valid Mattermost webhook URL"
+			},
+			"toast": {
+				"saved": "Mattermost integration saved successfully",
+				"saveError": "Failed to save Mattermost integration",
+				"enabled": "Mattermost notifications enabled",
+				"disabled": "Mattermost notifications paused",
+				"updateError": "Failed to update Mattermost integration",
+				"removed": "Mattermost integration removed successfully",
+				"removeError": "Failed to remove Mattermost integration"
+			},
+			"connectionTitle": "Mattermost webhook connection",
+			"connectionHint": "Paste a Mattermost incoming webhook URL and choose which task events should be posted.",
+			"connected": "Connected",
+			"paused": "Paused",
+			"webhookLabel": "Incoming webhook URL",
+			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/...",
+			"webhookHint": "Create an Incoming Webhook in Mattermost and paste the generated URL here.",
+			"channelLabel": "Channel name",
+			"channelPlaceholder": "#team-updates",
+			"channelHint": "Optional label for your reference. Mattermost controls the actual destination channel from the webhook setup.",
+			"eventsTitle": "Event notifications",
+			"eventsHint": "Choose which project changes should post to Mattermost.",
+			"events": {
+				"taskCreated": "New tasks",
+				"taskStatusChanged": "Status changes",
+				"taskPriorityChanged": "Priority changes",
+				"taskTitleChanged": "Title changes",
+				"taskDescriptionChanged": "Description changes",
+				"taskCommentCreated": "New comments"
+			},
+			"connect": "Connect Mattermost",
+			"saveChanges": "Save changes",
+			"update": "Update Mattermost",
+			"disconnect": "Disconnect"
 		}
 	},
 	"navigation": {
@@ -1327,7 +1681,8 @@
 		},
 		"settingsLayout": {
 			"toggleSidebar": "Toggle sidebar",
-			"back": "Back"
+			"back": "Back",
+			"openSettingsMenu": "Open settings menu"
 		},
 		"userMenu": {
 			"signedOutSuccess": "Signed out successfully",
@@ -1584,7 +1939,8 @@
 			"selectTask": "Select task",
 			"loadingTask": "Loading task...",
 			"taskNotFound": "Task not found",
-			"taskNotFoundDescription": "The task you are looking for does not exist or has been deleted."
+			"taskNotFoundDescription": "The task you are looking for does not exist or has been deleted.",
+			"customFields": "Custom Fields"
 		},
 		"detail": {
 			"subtaskOf": "Subtask of",
@@ -1690,7 +2046,9 @@
 				"mermaid": {
 					"renderFailed": "Mermaid diagram couldn't be rendered"
 				}
-			}
+			},
+			"customFieldUpdated": "Field updated",
+			"selectOption": "Select option"
 		},
 		"entity": {
 			"task": "Task"
@@ -1849,7 +2207,11 @@
 			"operators": {
 				"isAnyOf": "is any of",
 				"includeAnyOf": "include any of"
-			}
+			},
+			"noValuesUsedYet": "No values used yet",
+			"noCustomFieldValues": "No custom field values",
+			"allCustomFieldValues": "All values",
+			"all": "All"
 		},
 		"calendar": {
 			"pageTitle": "{{name}} – Calendar",
@@ -1878,7 +2240,8 @@
 			"updateDatesError": "Failed to update task dates",
 			"resizeStart": "Resize start date",
 			"resizeDue": "Resize due date",
-			"taskAriaLabel": "{{title}}: open or drag to move"
+			"taskAriaLabel": "{{title}}: open or drag to move",
+			"jumpToToday": "Jump to today"
 		},
 		"delete": {
 			"title": "Delete Task?",
@@ -1933,7 +2296,8 @@
 		"actions": {
 			"archive": "Archive",
 			"markAsPlanned": "Mark as planned",
-			"delete": "Delete..."
+			"delete": "Delete...",
+			"duplicate": "Duplicate"
 		},
 		"bulk": {
 			"selectedCount": "{{count}} selected",
@@ -1977,7 +2341,34 @@
 				"deleteRow": "Delete row",
 				"deleteTable": "Delete table"
 			}
-		}
+		},
+		"duplicate": {
+			"success": "Task duplicated",
+			"error": "Failed to duplicate task"
+		},
+		"time": {
+			"title": "Time tracking",
+			"empty": "No time logged yet.",
+			"add": "Add time",
+			"descriptionPlaceholder": "What did you work on?",
+			"addSuccess": "Time entry added",
+			"addError": "Failed to add time entry",
+			"deleteSuccess": "Time entry removed",
+			"deleteError": "Failed to remove time entry",
+			"deleteAria": "Delete time entry",
+			"startRequired": "Start time is required",
+			"endAfterStart": "End time must be after the start time"
+		},
+		"requirement": {
+			"title": "Requirement",
+			"none": "No requirement linked",
+			"open": "Open requirement",
+			"searchPlaceholder": "Search requirements...",
+			"empty": "No matching requirements",
+			"unlink": "Unlink requirement",
+			"updateError": "Failed to update the requirement link"
+		},
+		"title": "Tasks"
 	},
 	"invitations": {
 		"email": {
@@ -2062,6 +2453,27 @@
 			"submit": "Create workspace",
 			"success": "Workspace created successfully",
 			"error": "Failed to create workspace"
+		},
+		"overview": {
+			"pageTitle": "Overview",
+			"totalTasks": "Total tasks",
+			"completedTasks": "Completed",
+			"overdueTasks": "Overdue",
+			"dueSoonTasks": "Due within 7 days",
+			"projectsTitle": "Projects",
+			"projectColumn": "Project",
+			"tasksColumn": "Tasks",
+			"progressColumn": "Progress",
+			"assigneesTitle": "Open tasks by assignee",
+			"openTasks": "{{count}} open",
+			"emptyTitle": "Nothing here yet",
+			"emptyDescription": "Create a project and add tasks to see an overview of your workspace.",
+			"loadError": "Failed to load workspace overview"
+		},
+		"myTasks": {
+			"pageTitle": "My tasks",
+			"emptyTitle": "No open tasks assigned to you",
+			"emptyDescription": "Tasks assigned to you across this workspace's projects will show up here."
 		}
 	},
 	"team": {
@@ -2157,6 +2569,173 @@
 		},
 		"branding": {
 			"poweredBy": "Powered by"
+		}
+	},
+	"requirements": {
+		"pageTitle": "Requirements",
+		"title": "Requirements",
+		"subtitle": "Plan what to build, then turn it into tasks.",
+		"new": "New requirement",
+		"newChild": "New sub-requirement",
+		"searchPlaceholder": "Search requirements…",
+		"emptyTitle": "No requirements yet",
+		"emptyDescription": "Create a requirement to plan the work behind your tasks.",
+		"emptyFiltered": "No requirement matches these filters.",
+		"fields": {
+			"title": "Title",
+			"description": "Description",
+			"status": "Status",
+			"priority": "Priority",
+			"type": "Type",
+			"source": "Source",
+			"module": "Module",
+			"assignee": "Assignee",
+			"expectedDate": "Expected date",
+			"projects": "Projects",
+			"parent": "Parent requirement",
+			"topLevel": "Top level",
+			"unassigned": "Unassigned",
+			"noDate": "No date"
+		},
+		"status": {
+			"pending_review": "Pending review",
+			"reviewed": "Reviewed",
+			"in_development": "In development",
+			"completed": "Completed"
+		},
+		"priority": {
+			"P0": "P0 · Urgent",
+			"P1": "P1 · High",
+			"P2": "P2 · Normal",
+			"P3": "P3 · Low",
+			"P4": "P4 · Deferred"
+		},
+		"type": {
+			"feature": "Feature",
+			"optimization": "Optimization",
+			"bug": "Bug",
+			"tech_improvement": "Tech improvement"
+		},
+		"source": {
+			"customer_feedback": "Customer feedback",
+			"internal_plan": "Internal plan",
+			"operational": "Operational"
+		},
+		"filters": {
+			"all": "All",
+			"status": "Status",
+			"priority": "Priority",
+			"type": "Type",
+			"project": "Project",
+			"assignee": "Assignee",
+			"clear": "Clear filters"
+		},
+		"form": {
+			"createTitle": "New requirement",
+			"createChildTitle": "New sub-requirement",
+			"editTitle": "Edit requirement",
+			"titlePlaceholder": "What needs to be built?",
+			"descriptionPlaceholder": "Add context, constraints, and links.",
+			"parentPlaceholder": "Select a parent requirement",
+			"projectPlaceholder": "Select a project",
+			"submit": "Create",
+			"save": "Save changes"
+		},
+		"actions": {
+			"edit": "Edit",
+			"delete": "Delete",
+			"move": "Move",
+			"addChild": "Add sub-requirement",
+			"cancel": "Cancel",
+			"save": "Save"
+		},
+		"move": {
+			"title": "Move requirement",
+			"description": "Choose a new parent, or leave empty to move it to the top level.",
+			"toRoot": "Top level",
+			"submit": "Move"
+		},
+		"acceptance": {
+			"title": "Acceptance criteria",
+			"add": "Add criterion",
+			"empty": "No acceptance criteria yet.",
+			"criterionPlaceholder": "How do we know this is done?",
+			"notePlaceholder": "Notes",
+			"markPassed": "Pass",
+			"markFailed": "Fail",
+			"reset": "Reset",
+			"verifiedBy": "Verified by {{name}}"
+		},
+		"acceptanceStatus": {
+			"pending": "Pending",
+			"passed": "Passed",
+			"failed": "Failed"
+		},
+		"detail": {
+			"children": "Sub-requirements",
+			"noChildren": "No sub-requirements.",
+			"selectPrompt": "Select a requirement to see its details.",
+			"createdBy": "Created by {{name}}"
+		},
+		"deleteDialog": {
+			"title": "Delete requirement",
+			"description": "Delete \"{{title}}\"? This cannot be undone.",
+			"confirm": "Delete"
+		},
+		"toast": {
+			"created": "Requirement created",
+			"updated": "Requirement updated",
+			"deleted": "Requirement deleted",
+			"moved": "Requirement moved",
+			"statusUpdated": "Status updated",
+			"acceptanceAdded": "Criterion added",
+			"acceptanceRemoved": "Criterion removed",
+			"error": "Something went wrong"
+		},
+		"errors": {
+			"hasChildren": "Move or delete its sub-requirements first.",
+			"cycle": "A requirement cannot be moved under one of its own sub-requirements.",
+			"titleRequired": "Title is required"
+		},
+		"tasks": {
+			"title": "Linked tasks",
+			"progress": "{{done}}/{{total}} done",
+			"empty": "No tasks linked yet. Link this requirement from a task's detail view."
+		},
+		"documents": {
+			"title": "Documents",
+			"new": "New document",
+			"empty": "No documents yet. A requirement can carry several — its PRD first among them — and each one keeps its own version history.",
+			"createTitle": "New requirement document",
+			"createDescription": "The document is created empty. Everything you save afterwards is kept as a version.",
+			"titleLabel": "Document title",
+			"titlePlaceholder": "e.g. Product requirements",
+			"createConfirm": "Create",
+			"created": "Document created",
+			"createError": "Failed to create the document",
+			"versionBadge": "v{{version}}",
+			"versionTotal": "{{total}} versions",
+			"current": "Current",
+			"history": "History",
+			"rename": "Rename",
+			"renamed": "Document renamed",
+			"deleteTitle": "Delete document",
+			"deleteDescription": "Delete “{{title}}” and its {{total}} saved versions? This cannot be undone.",
+			"deleteConfirm": "Delete",
+			"deleted": "Document deleted",
+			"saveError": "Failed to save the document",
+			"savedAsVersion": "Saved as v{{version}}",
+			"noChanges": "No changes, so no new version",
+			"restored": "Restored v{{from}} as v{{version}}",
+			"viewingPastVersion": "Viewing v{{version}}, a past version",
+			"compareWithCurrent": "Compare with current",
+			"restore": "Restore this version",
+			"backToCurrent": "Back to the current version",
+			"emptyBody": "This document is empty.",
+			"editorPlaceholder": "Write the requirement: scope, behaviour, and what proves it is done."
+		},
+		"tree": {
+			"documents": "Documents"
 		}
 	}
 }

@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import {
+  type AnyPgColumn,
   boolean,
   customType,
   foreignKey,
@@ -423,6 +424,16 @@ export const taskTable = pgTable(
       onDelete: "set null",
       onUpdate: "cascade",
     }),
+    // Optional link to the planning layer. Nullable because most tasks are not
+    // part of a planned requirement, and `set null` because deleting a
+    // requirement must not delete work already done against it.
+    requirementId: text("requirement_id").references(
+      () => requirementTable.id,
+      {
+        onDelete: "set null",
+        onUpdate: "cascade",
+      },
+    ),
     priority: text("priority").default("low").notNull(),
     startDate: timestamp("start_date", { mode: "date" }),
     dueDate: timestamp("due_date", { mode: "date" }),
@@ -434,6 +445,7 @@ export const taskTable = pgTable(
   },
   (table) => [
     index("task_projectId_idx").on(table.projectId),
+    index("task_requirementId_idx").on(table.requirementId),
     index("task_dueDate_idx").on(table.dueDate),
     index("task_assigneeId_idx").on(table.userId),
     index("task_columnId_idx").on(table.columnId),
@@ -1176,4 +1188,258 @@ export const organizationRoleRelations = relations(
       references: [workspace.id],
     }),
   }),
+);
+
+export const customFieldDefinitionTable = pgTable(
+  "custom_field_definition",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    type: text("type").notNull(), // 'text' | 'number' | 'date' | 'dropdown' | 'boolean'
+    required: boolean("required").default(false).notNull(),
+    defaultValue: text("default_value"),
+    options: jsonb("options"),
+    position: integer("position").default(0).notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("custom_field_def_projectId_idx").on(table.projectId)],
+);
+
+export const customFieldValueTable = pgTable(
+  "custom_field_value",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    taskId: text("task_id")
+      .notNull()
+      .references(() => taskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    fieldId: text("field_id")
+      .notNull()
+      .references(() => customFieldDefinitionTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    value: text("value"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("custom_field_value_taskId_idx").on(table.taskId),
+    index("custom_field_value_fieldId_idx").on(table.fieldId),
+    unique("custom_field_value_task_field_unique").on(
+      table.taskId,
+      table.fieldId,
+    ),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// Requirements — the product-planning layer.
+//
+// A requirement is workspace-scoped and forms a tree through `parentId`. It is
+// implemented by one primary project and may relate to others, so project links
+// live in their own table rather than a single `projectId` column. Its
+// documents — the PRD first among them — hang off `requirement_document`.
+// ---------------------------------------------------------------------------
+
+export const requirementTable = pgTable(
+  "requirement",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    parentId: text("parent_id").references(
+      (): AnyPgColumn => requirementTable.id,
+      {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      },
+    ),
+    title: text("title").notNull(),
+    description: text("description"),
+    status: text("status").notNull().default("pending_review"),
+    priority: text("priority").notNull().default("P2"),
+    type: text("type").notNull().default("feature"),
+    source: text("source"),
+    module: text("module"),
+    assigneeId: text("assignee_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    expectedDate: timestamp("expected_date", { mode: "date" }),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    position: integer("position").default(0),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("requirement_workspaceId_idx").on(table.workspaceId),
+    index("requirement_parentId_idx").on(table.parentId),
+    index("requirement_status_idx").on(table.status),
+    index("requirement_assigneeId_idx").on(table.assigneeId),
+  ],
+);
+
+export const requirementProjectTable = pgTable(
+  "requirement_project",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    requirementId: text("requirement_id")
+      .notNull()
+      .references(() => requirementTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    isPrimary: boolean("is_primary").default(false).notNull(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("requirement_project_requirementId_idx").on(table.requirementId),
+    index("requirement_project_projectId_idx").on(table.projectId),
+    unique("requirement_project_unique").on(
+      table.requirementId,
+      table.projectId,
+    ),
+  ],
+);
+
+export const acceptanceItemTable = pgTable(
+  "acceptance_item",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    requirementId: text("requirement_id")
+      .notNull()
+      .references(() => requirementTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    title: text("title").notNull(),
+    criterion: text("criterion"),
+    status: text("status").notNull().default("pending"),
+    note: text("note"),
+    verifiedBy: text("verified_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    verifiedAt: timestamp("verified_at", { mode: "date" }),
+    position: integer("position").default(0),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("acceptance_item_requirementId_idx").on(table.requirementId),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// Requirement documents — the documents that hang off a requirement.
+//
+// A requirement can carry several: its PRD, supporting notes, an integration
+// spec. Content lives only in the version rows, so a document *is* its history
+// and the current text is its highest version. Keeping a single copy is what
+// makes "save" unable to leave the current text and the history disagreeing.
+// ---------------------------------------------------------------------------
+
+export const requirementDocumentTable = pgTable(
+  "requirement_document",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    requirementId: text("requirement_id")
+      .notNull()
+      .references(() => requirementTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    title: text("title").notNull(),
+    position: integer("position").default(0),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("requirement_document_requirementId_idx").on(table.requirementId),
+  ],
+);
+
+export const requirementDocumentVersionTable = pgTable(
+  "requirement_document_version",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    documentId: text("document_id")
+      .notNull()
+      .references(() => requirementDocumentTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    version: integer("version").notNull(),
+    content: text("content").notNull(),
+    createdBy: text("created_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("requirement_document_version_documentId_idx").on(table.documentId),
+    // Two rows can never claim the same version, so the current text is always
+    // unambiguous even if two saves race.
+    unique("requirement_document_version_unique").on(
+      table.documentId,
+      table.version,
+    ),
+  ],
 );

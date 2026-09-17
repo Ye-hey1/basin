@@ -1,5 +1,4 @@
 import { and, eq, inArray } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   columnTable,
@@ -13,6 +12,7 @@ import { publishEvent } from "../../events";
 import { removeLabelFromGitea } from "../../plugins/gitea/utils/sync-label-to-gitea";
 import { removeLabelFromGitHub } from "../../plugins/github/utils/sync-label-to-github";
 import { assertAssignableUser } from "../../utils/assert-assignable-user";
+import { httpError } from "../../utils/http-error";
 import {
   assertValidPriority,
   assertValidTaskStatus,
@@ -52,25 +52,27 @@ async function bulkUpdateTasks({
     .where(inArray(taskTable.id, taskIds));
 
   if (tasks.length === 0) {
-    throw new HTTPException(404, {
-      message: "No tasks found",
-    });
+    throw httpError(404, "no_tasks_found", "No tasks found");
   }
 
   const workspaceIds = [...new Set(tasks.map((t) => t.workspaceId))];
 
   if (workspaceIds.length > 1) {
-    throw new HTTPException(400, {
-      message: "All tasks must belong to the same workspace",
-    });
+    throw httpError(
+      400,
+      "all_tasks_must_belong_to_the_same_workspace",
+      "All tasks must belong to the same workspace",
+    );
   }
 
   const workspaceId = workspaceIds[0];
 
   if (!workspaceId) {
-    throw new HTTPException(400, {
-      message: "Could not determine workspace",
-    });
+    throw httpError(
+      400,
+      "could_not_determine_workspace",
+      "Could not determine workspace",
+    );
   }
 
   const [membership] = await db
@@ -85,9 +87,11 @@ async function bulkUpdateTasks({
     .limit(1);
 
   if (!membership) {
-    throw new HTTPException(403, {
-      message: "You don't have access to this workspace",
-    });
+    throw httpError(
+      403,
+      "you_don_t_have_access_to_this_workspace",
+      "You don't have access to this workspace",
+    );
   }
 
   const foundIds = tasks.map((t) => t.id);
@@ -96,7 +100,11 @@ async function bulkUpdateTasks({
   switch (operation) {
     case "updateStatus": {
       if (!value) {
-        throw new HTTPException(400, { message: "Status value is required" });
+        throw httpError(
+          400,
+          "status_value_is_required",
+          "Status value is required",
+        );
       }
       const projectIds = [...new Set(tasks.map((t) => t.projectId))];
 
@@ -141,7 +149,11 @@ async function bulkUpdateTasks({
 
     case "updatePriority": {
       if (!value) {
-        throw new HTTPException(400, { message: "Priority value is required" });
+        throw httpError(
+          400,
+          "priority_value_is_required",
+          "Priority value is required",
+        );
       }
       assertValidPriority(value);
 
@@ -226,7 +238,7 @@ async function bulkUpdateTasks({
 
     case "addLabel": {
       if (!value) {
-        throw new HTTPException(400, { message: "Label ID is required" });
+        throw httpError(400, "label_id_is_required", "Label ID is required");
       }
 
       const label = await db.query.labelTable.findFirst({
@@ -234,13 +246,15 @@ async function bulkUpdateTasks({
       });
 
       if (!label) {
-        throw new HTTPException(404, { message: "Label not found" });
+        throw httpError(404, "label_not_found", "Label not found");
       }
 
       if (label.workspaceId && label.workspaceId !== workspaceId) {
-        throw new HTTPException(400, {
-          message: "Label and tasks must belong to the same workspace",
-        });
+        throw httpError(
+          400,
+          "label_and_tasks_must_belong_to_the_same_workspace",
+          "Label and tasks must belong to the same workspace",
+        );
       }
 
       for (const task of tasks) {
@@ -278,7 +292,7 @@ async function bulkUpdateTasks({
 
     case "removeLabel": {
       if (!value) {
-        throw new HTTPException(400, { message: "Label ID is required" });
+        throw httpError(400, "label_id_is_required", "Label ID is required");
       }
 
       const label = await db.query.labelTable.findFirst({
@@ -286,7 +300,7 @@ async function bulkUpdateTasks({
       });
 
       if (!label) {
-        throw new HTTPException(404, { message: "Label not found" });
+        throw httpError(404, "label_not_found", "Label not found");
       }
 
       const deletedLabels = await db
@@ -336,9 +350,11 @@ async function bulkUpdateTasks({
       if (value) {
         parsedDate = new Date(value);
         if (Number.isNaN(parsedDate.getTime())) {
-          throw new HTTPException(400, {
-            message: `Invalid date value "${value}"`,
-          });
+          throw httpError(
+            400,
+            "invalid_date_value",
+            `Invalid date value "${value}"`,
+          );
         }
       }
 
@@ -364,9 +380,11 @@ async function bulkUpdateTasks({
     }
 
     default: {
-      throw new HTTPException(400, {
-        message: `Unknown operation "${operation}"`,
-      });
+      throw httpError(
+        400,
+        "unknown_bulk_operation",
+        `Unknown operation "${operation}"`,
+      );
     }
   }
 

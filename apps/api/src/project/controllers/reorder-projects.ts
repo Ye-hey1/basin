@@ -1,7 +1,7 @@
 import { asc, eq, sql } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function reorderProjects(
   workspaceId: string,
@@ -11,9 +11,11 @@ async function reorderProjects(
   const uniqueIds = new Set(ids);
 
   if (uniqueIds.size !== ids.length) {
-    throw new HTTPException(400, {
-      message: "Duplicate project ids in reorder payload",
-    });
+    throw httpError(
+      400,
+      "duplicate_project_ids_in_reorder_payload",
+      "Duplicate project ids in reorder payload",
+    );
   }
 
   return db.transaction(async (tx) => {
@@ -44,9 +46,11 @@ async function reorderProjects(
     const foreignId = ids.find((id) => !ownedIds.has(id));
 
     if (foreignId) {
-      throw new HTTPException(400, {
-        message: `Project ${foreignId} does not belong to this workspace`,
-      });
+      throw httpError(
+        400,
+        "project_not_in_workspace",
+        `Project ${foreignId} does not belong to this workspace`,
+      );
     }
 
     // Positions are derived server-side rather than trusted from the client:

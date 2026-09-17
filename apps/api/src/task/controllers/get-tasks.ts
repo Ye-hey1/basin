@@ -9,7 +9,6 @@ import {
   type SQL,
   sql,
 } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   columnTable,
@@ -19,6 +18,7 @@ import {
   taskTable,
   userTable,
 } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 type GetTasksOptions = {
   assigneeId?: string;
@@ -27,6 +27,7 @@ type GetTasksOptions = {
   limit?: number;
   page?: number;
   priority?: string;
+  requirementId?: string;
   sortBy?:
     | "createdAt"
     | "priority"
@@ -74,9 +75,7 @@ async function getTasks(projectId: string, options: GetTasksOptions = {}) {
   });
 
   if (!project) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const conditions = [eq(taskTable.projectId, projectId)];
@@ -91,6 +90,10 @@ async function getTasks(projectId: string, options: GetTasksOptions = {}) {
 
   if (options.assigneeId) {
     conditions.push(eq(taskTable.userId, options.assigneeId));
+  }
+
+  if (options.requirementId) {
+    conditions.push(eq(taskTable.requirementId, options.requirementId));
   }
 
   if (options.dueBefore) {
@@ -136,6 +139,7 @@ async function getTasks(projectId: string, options: GetTasksOptions = {}) {
     assigneeId: userTable.id,
     assigneeImage: userTable.image,
     projectId: taskTable.projectId,
+    requirementId: taskTable.requirementId,
   };
 
   const query = db

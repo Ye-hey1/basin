@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function updateColumn(
   id: string,
@@ -17,7 +17,7 @@ async function updateColumn(
   });
 
   if (!existing) {
-    throw new HTTPException(404, { message: "Column not found" });
+    throw httpError(404, "column_not_found", "Column not found");
   }
 
   const [updated] = await db
@@ -32,7 +32,7 @@ async function updateColumn(
     .returning();
 
   if (!updated) {
-    throw new HTTPException(500, { message: "Failed to update column" });
+    throw httpError(500, "failed_to_update_column", "Failed to update column");
   }
 
   return updated;

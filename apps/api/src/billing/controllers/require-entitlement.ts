@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 import { isBillingEnabled } from "../config";
 import {
   computeEntitlement,
@@ -17,10 +17,11 @@ export async function requireWorkspaceEntitlement(workspaceId: string) {
   const entitlement = computeEntitlement(billing);
 
   if (!entitlement.active) {
-    throw new HTTPException(402, {
-      message:
-        "This workspace's Kaneo Cloud plan has expired. Subscribe to continue creating and editing.",
-    });
+    throw httpError(
+      402,
+      "this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and",
+      "This workspace's Kaneo Cloud plan has expired. Subscribe to continue creating and editing.",
+    );
   }
 }
 

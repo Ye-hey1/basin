@@ -1,9 +1,35 @@
+import { HttpError } from "@/lib/http-error";
+import { i18n } from "@/lib/i18n";
+
 export type ApiError = {
   message: string;
   type: "network" | "cors" | "auth" | "server" | "unknown";
   status?: number;
   originalError?: Error;
 };
+
+// The API pairs most errors with a stable code in the response body; the web
+// keeps an i18n key per code under common.error.codes. Returns the translated
+// message when the error carries a code, falling back to the API's raw
+// message for codes without a key yet.
+export function translateApiError(error: unknown): string | null {
+  const code =
+    error instanceof HttpError
+      ? error.code
+      : error && typeof error === "object" && "code" in error
+        ? String((error as { code: unknown }).code)
+        : null;
+  if (!code) {
+    return null;
+  }
+  const fallback =
+    error instanceof Error && error.message
+      ? error.message
+      : error && typeof error === "object" && "message" in error
+        ? String((error as { message: unknown }).message)
+        : "";
+  return i18n.t(`common:error.codes.${code}`, { defaultValue: fallback });
+}
 
 export function parseApiError(error: unknown): ApiError {
   if (error instanceof Error) {

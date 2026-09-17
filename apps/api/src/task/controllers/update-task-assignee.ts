@@ -1,5 +1,4 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskTable, userTable } from "../../database/schema";
 import { publishEvent } from "../../events";
@@ -7,6 +6,7 @@ import {
   assertAssignableUser,
   getProjectWorkspaceId,
 } from "../../utils/assert-assignable-user";
+import { httpError } from "../../utils/http-error";
 
 async function updateTaskAssignee({
   id,
@@ -22,9 +22,7 @@ async function updateTaskAssignee({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   const nextAssigneeId = userId?.trim() || null;
@@ -46,9 +44,11 @@ async function updateTaskAssignee({
     .returning();
 
   if (!updatedTask) {
-    throw new HTTPException(500, {
-      message: "Failed to update task assignee",
-    });
+    throw httpError(
+      500,
+      "failed_to_update_task_assignee",
+      "Failed to update task assignee",
+    );
   }
 
   const newAssigneeName = nextAssigneeId

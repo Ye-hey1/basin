@@ -1,6 +1,6 @@
 import { and, eq, or } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { httpError } from "./http-error";
 
 export async function validateWorkspaceAccess(
   userId: string,
@@ -24,9 +24,11 @@ export async function validateWorkspaceAccess(
       .limit(1);
 
     if (apiKey.length === 0) {
-      throw new HTTPException(403, {
-        message: "Invalid API key for this workspace",
-      });
+      throw httpError(
+        403,
+        "invalid_api_key_for_this_workspace",
+        "Invalid API key for this workspace",
+      );
     }
   }
 
@@ -52,8 +54,10 @@ export async function validateWorkspaceAccess(
     .limit(1);
 
   if (membership.length === 0) {
-    throw new HTTPException(403, {
-      message: "You don't have access to this workspace",
-    });
+    throw httpError(
+      403,
+      "you_don_t_have_access_to_this_workspace",
+      "You don't have access to this workspace",
+    );
   }
 }

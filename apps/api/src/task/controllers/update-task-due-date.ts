@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskReminderSentTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 
 async function updateTaskDueDate({
   id,
@@ -18,9 +18,7 @@ async function updateTaskDueDate({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   // Clear sent reminders so new due date triggers fresh notifications
@@ -35,9 +33,11 @@ async function updateTaskDueDate({
     .returning();
 
   if (!updatedTask) {
-    throw new HTTPException(500, {
-      message: "Failed to update task due date",
-    });
+    throw httpError(
+      500,
+      "failed_to_update_task_due_date",
+      "Failed to update task due date",
+    );
   }
 
   await publishEvent("task.due_date_changed", {

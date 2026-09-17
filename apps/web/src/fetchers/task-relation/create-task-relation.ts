@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function createTaskRelation({
   sourceTaskId,
@@ -18,8 +19,7 @@ async function createTaskRelation({
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   const data = await response.json();

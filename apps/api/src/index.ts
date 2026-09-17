@@ -1,3 +1,4 @@
+import { httpError } from "./utils/http-error";
 import "./instrument";
 
 import { dirname } from "node:path";
@@ -20,6 +21,7 @@ import billing from "./billing";
 import column from "./column";
 import comment from "./comment";
 import config from "./config";
+import customField from "./custom-field";
 import db, { getDatabase, schema } from "./database";
 import { prepareDatabaseStartup } from "./database/prepare-database-startup";
 import { waitForDatabase } from "./database/wait-for-database";
@@ -34,6 +36,7 @@ import githubIntegration, {
 import getInstanceStatus from "./instance/controllers/get-instance-status";
 import invitation from "./invitation";
 import label from "./label";
+import mattermostIntegration from "./mattermost-integration";
 import mcpRoutes, { mcpWellKnownRoutes } from "./mcp";
 import { migrateColumns } from "./migrations/column-migration";
 import notification from "./notification";
@@ -44,6 +47,7 @@ import { initializePlugins } from "./plugins";
 import { migrateGitHubIntegration } from "./plugins/github/migration";
 import project from "./project";
 import { getPublicProject } from "./project/controllers/get-public-project";
+import requirement from "./requirement";
 import { initializeScheduler, shutdownScheduler } from "./scheduler";
 import search from "./search";
 import slackIntegration from "./slack-integration";
@@ -57,6 +61,7 @@ import getAvatar from "./user/controllers/get-avatar";
 import { authenticateApiRequest } from "./utils/authenticate-api-request";
 import { authorizeAssetAccess } from "./utils/authorize-asset-access";
 import { getInvitationDetails } from "./utils/check-registration-allowed";
+import { ApiError } from "./utils/http-error";
 import { migrateApiKeyReferenceId } from "./utils/migrate-apikey-reference-id";
 import { migrateNotificationPreferencesSchema } from "./utils/migrate-notification-preferences-schema";
 import { migrateSessionColumn } from "./utils/migrate-session-column";
@@ -140,6 +145,14 @@ export function createApp() {
   const app = new Hono<AppVariables>();
 
   app.onError((err, c) => {
+    if (err instanceof ApiError) {
+      // expected errors (401/404/...) are not reported; real failures are
+      if (err.status >= 500) {
+        Sentry.captureException(err);
+      }
+      return c.json({ message: err.message, code: err.code }, err.status);
+    }
+
     if (err instanceof HTTPException) {
       // expected errors (401/404/...) are not reported; real failures are
       if (err.status >= 500) {
@@ -303,7 +316,7 @@ export function createApp() {
         .limit(1);
 
       if (!asset) {
-        throw new HTTPException(404, { message: "Asset not found" });
+        throw httpError(404, "asset_not_found", "Asset not found");
       }
 
       await authorizeAssetAccess(c, asset);
@@ -337,7 +350,11 @@ export function createApp() {
         });
       } catch (error) {
         console.error("Failed to stream asset:", error);
-        throw new HTTPException(404, { message: "Asset object not found" });
+        throw httpError(
+          404,
+          "asset_object_not_found",
+          "Asset object not found",
+        );
       }
     },
   );
@@ -369,7 +386,7 @@ export function createApp() {
       const avatar = await getAvatar(id);
 
       if (!avatar) {
-        throw new HTTPException(404, { message: "Avatar not found" });
+        throw httpError(404, "avatar_not_found", "Avatar not found");
       }
 
       const etag = `"${avatar.id}"`;
@@ -560,7 +577,11 @@ export function createApp() {
       } catch (error) {
         if (!(error instanceof HTTPException)) {
           console.error("API authentication failed:", error);
-          throw new HTTPException(500, { message: "Internal Server Error" });
+          throw httpError(
+            500,
+            "internal_server_error",
+            "Internal Server Error",
+          );
         }
         throw error;
       } finally {
@@ -579,6 +600,7 @@ export function createApp() {
   const commentApi = api.route("/comment", comment);
   const timeEntryApi = api.route("/time-entry", timeEntry);
   const labelApi = api.route("/label", label);
+  const requirementApi = api.route("/requirement", requirement);
   const notificationApi = api.route("/notification", notification);
   const notificationPreferencesApi = api.route(
     "/notification-preferences",
@@ -598,6 +620,10 @@ export function createApp() {
     "/discord-integration",
     discordIntegration,
   );
+  const mattermostIntegrationApi = api.route(
+    "/mattermost-integration",
+    mattermostIntegration,
+  );
   const slackIntegrationApi = api.route("/slack-integration", slackIntegration);
   const telegramIntegrationApi = api.route(
     "/telegram-integration",
@@ -608,6 +634,7 @@ export function createApp() {
   const workflowRuleApi = api.route("/workflow-rule", workflowRule);
   const invitationApi = api.route("/invitation", invitation);
   const workspaceApi = api.route("/workspace", workspace);
+  const customFieldApi = api.route("/custom-field", customField);
   const userApi = api.route("/user", user);
 
   app.route(
@@ -632,7 +659,7 @@ export function createApp() {
           throw error;
         }
         console.error("API authentication failed:", error);
-        throw new HTTPException(500, { message: "Internal Server Error" });
+        throw httpError(500, "internal_server_error", "Internal Server Error");
       }
 
       const userId = c.get("userId");
@@ -683,7 +710,7 @@ export function createApp() {
           throw error;
         }
         console.error("API authentication failed:", error);
-        throw new HTTPException(500, { message: "Internal Server Error" });
+        throw httpError(500, "internal_server_error", "Internal Server Error");
       }
 
       const userId = c.get("userId");
@@ -696,7 +723,7 @@ export function createApp() {
           .limit(1);
 
         if (!project) {
-          throw new HTTPException(401, { message: "Unauthorized" });
+          throw httpError(401, "unauthorized", "Unauthorized");
         }
 
         await validateWorkspaceAccess(userId, project.workspaceId);
@@ -765,7 +792,9 @@ export function createApp() {
     notificationPreferencesApi,
     projectApi,
     publicProjectApi,
+    requirementApi,
     searchApi,
+    mattermostIntegrationApi,
     slackIntegrationApi,
     taskApi,
     taskRelationApi,
@@ -774,6 +803,7 @@ export function createApp() {
     userApi,
     workflowRuleApi,
     workspaceApi,
+    customFieldApi,
     oauthApi,
   };
 }
@@ -879,10 +909,12 @@ const {
   invitationApi,
   invitationPublicApi,
   labelApi,
+  mattermostIntegrationApi,
   notificationApi,
   notificationPreferencesApi,
   projectApi,
   publicProjectApi,
+  requirementApi,
   searchApi,
   slackIntegrationApi,
   taskApi,
@@ -892,6 +924,7 @@ const {
   userApi,
   workflowRuleApi,
   workspaceApi,
+  customFieldApi,
   oauthApi,
 } = createdApp;
 
@@ -922,6 +955,7 @@ export type AppType =
   | typeof giteaIntegrationApi
   | typeof genericWebhookIntegrationApi
   | typeof discordIntegrationApi
+  | typeof mattermostIntegrationApi
   | typeof slackIntegrationApi
   | typeof telegramIntegrationApi
   | typeof taskRelationApi
@@ -929,8 +963,10 @@ export type AppType =
   | typeof workflowRuleApi
   | typeof invitationApi
   | typeof workspaceApi
+  | typeof customFieldApi
   | typeof userApi
   | typeof publicProjectApi
+  | typeof requirementApi
   | typeof invitationPublicApi
   | typeof oauthApi;
 

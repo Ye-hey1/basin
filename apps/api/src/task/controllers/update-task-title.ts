@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { activityTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 
 async function updateTaskTitle({
   id,
@@ -18,9 +18,7 @@ async function updateTaskTitle({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   if (existingTask.title === title) return existingTask;
@@ -36,9 +34,11 @@ async function updateTaskTitle({
       .returning();
 
     if (!task) {
-      throw new HTTPException(500, {
-        message: "Failed to update task title",
-      });
+      throw httpError(
+        500,
+        "failed_to_update_task_title",
+        "Failed to update task title",
+      );
     }
 
     await tx.insert(activityTable).values({

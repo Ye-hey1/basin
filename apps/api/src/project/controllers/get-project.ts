@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { projectTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function getProject(id: string, workspaceId: string) {
   const project = await db.query.projectTable.findFirst({
@@ -15,9 +15,7 @@ async function getProject(id: string, workspaceId: string) {
   });
 
   if (!project) {
-    throw new HTTPException(404, {
-      message: "Project not found",
-    });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   return project;

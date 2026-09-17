@@ -1,5 +1,5 @@
 import { Creem } from "creem";
-import { HTTPException } from "hono/http-exception";
+import { httpError } from "../utils/http-error";
 import { creemApiKey } from "./config";
 
 function creemClient() {
@@ -33,9 +33,11 @@ export async function createCheckoutSession(input: {
     return { checkoutUrl: checkout.checkoutUrl };
   } catch (error) {
     console.error("Creem checkout creation failed:", error);
-    throw new HTTPException(502, {
-      message: "Billing provider request failed",
-    });
+    throw httpError(
+      502,
+      "billing_provider_request_failed",
+      "Billing provider request failed",
+    );
   }
 }
 
@@ -64,8 +66,10 @@ export async function createCustomerPortalLink(customerId: string) {
     return { portalUrl: links.customerPortalLink };
   } catch (error) {
     console.error("Creem portal link creation failed:", error);
-    throw new HTTPException(502, {
-      message: "Billing provider request failed",
-    });
+    throw httpError(
+      502,
+      "billing_provider_request_failed",
+      "Billing provider request failed",
+    );
   }
 }

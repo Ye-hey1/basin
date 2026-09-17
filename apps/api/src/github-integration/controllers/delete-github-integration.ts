@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { integrationTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function deleteGithubIntegration(projectId: string) {
   const existingIntegration = await db.query.integrationTable.findFirst({
@@ -12,7 +12,11 @@ async function deleteGithubIntegration(projectId: string) {
   });
 
   if (!existingIntegration) {
-    throw new HTTPException(404, { message: "GitHub integration not found" });
+    throw httpError(
+      404,
+      "github_integration_not_found",
+      "GitHub integration not found",
+    );
   }
 
   await db

@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   labelTable,
@@ -16,6 +15,7 @@ import {
   removeLabelFromGitHub,
   syncLabelToGitHub,
 } from "../../plugins/github/utils/sync-label-to-github";
+import { httpError } from "../../utils/http-error";
 
 type LabelRow = typeof labelTableType.$inferSelect;
 
@@ -25,9 +25,7 @@ async function assignLabelToTask(id: string, taskId: string, userId: string) {
   });
 
   if (!label) {
-    throw new HTTPException(404, {
-      message: "Label not found",
-    });
+    throw httpError(404, "label_not_found", "Label not found");
   }
 
   const [task] = await db
@@ -42,15 +40,15 @@ async function assignLabelToTask(id: string, taskId: string, userId: string) {
     .limit(1);
 
   if (!task) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   if (label.workspaceId && label.workspaceId !== task.workspaceId) {
-    throw new HTTPException(400, {
-      message: "Label and task must belong to the same workspace",
-    });
+    throw httpError(
+      400,
+      "label_and_task_must_belong_to_the_same_workspace",
+      "Label and task must belong to the same workspace",
+    );
   }
 
   if (label.taskId === taskId) {
@@ -70,18 +68,18 @@ async function assignLabelToTask(id: string, taskId: string, userId: string) {
       });
 
       if (!currentLabel) {
-        throw new HTTPException(404, {
-          message: "Label not found",
-        });
+        throw httpError(404, "label_not_found", "Label not found");
       }
 
       if (
         currentLabel.workspaceId &&
         currentLabel.workspaceId !== task.workspaceId
       ) {
-        throw new HTTPException(400, {
-          message: "Label and task must belong to the same workspace",
-        });
+        throw httpError(
+          400,
+          "label_and_task_must_belong_to_the_same_workspace",
+          "Label and task must belong to the same workspace",
+        );
       }
 
       if (currentLabel.taskId === taskId) {
@@ -128,9 +126,11 @@ async function assignLabelToTask(id: string, taskId: string, userId: string) {
       });
 
       if (!existing) {
-        throw new HTTPException(500, {
-          message: "Failed to attach label to task",
-        });
+        throw httpError(
+          500,
+          "failed_to_attach_label_to_task",
+          "Failed to attach label to task",
+        );
       }
 
       return {

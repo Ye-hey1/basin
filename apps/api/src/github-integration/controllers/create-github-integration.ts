@@ -4,6 +4,7 @@ import db from "../../database";
 import { integrationTable, projectTable } from "../../database/schema";
 import { defaultGitHubConfig } from "../../plugins/github/config";
 import { getGithubApp } from "../../plugins/github/utils/github-app";
+import { httpError } from "../../utils/http-error";
 
 async function createGithubIntegration({
   projectId,
@@ -17,9 +18,11 @@ async function createGithubIntegration({
   const githubApp = getGithubApp();
 
   if (!githubApp) {
-    throw new HTTPException(500, {
-      message: "GitHub app not configured",
-    });
+    throw httpError(
+      500,
+      "github_app_not_configured",
+      "GitHub app not configured",
+    );
   }
 
   const project = await db.query.projectTable.findFirst({
@@ -27,7 +30,7 @@ async function createGithubIntegration({
   });
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const allGitHubIntegrations = await db.query.integrationTable.findMany({
@@ -45,9 +48,11 @@ async function createGithubIntegration({
         config.repositoryOwner === repositoryOwner &&
         config.repositoryName === repositoryName
       ) {
-        throw new HTTPException(409, {
-          message: `Repository ${repositoryOwner}/${repositoryName} is already linked to another project`,
-        });
+        throw httpError(
+          409,
+          "repository_already_linked",
+          `Repository ${repositoryOwner}/${repositoryName} is already linked to another project`,
+        );
       }
     } catch (error) {
       if (error instanceof HTTPException) {

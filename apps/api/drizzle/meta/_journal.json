@@ -316,6 +316,34 @@
 			"when": 1787492852776,
 			"tag": "0044_needy_triathlon",
 			"breakpoints": true
+		},
+		{
+			"idx": 45,
+			"version": "7",
+			"when": 1789543008172,
+			"tag": "0045_fantastic_princess_powerful",
+			"breakpoints": true
+		},
+		{
+			"idx": 46,
+			"version": "7",
+			"when": 1789478825926,
+			"tag": "0046_kind_king_cobra",
+			"breakpoints": true
+		},
+		{
+			"idx": 47,
+			"version": "7",
+			"when": 1789516287542,
+			"tag": "0047_bouncy_joshua_kane",
+			"breakpoints": true
+		},
+		{
+			"idx": 48,
+			"version": "7",
+			"when": 1789543008171,
+			"tag": "0048_parallel_sister_grimm",
+			"breakpoints": true
 		}
 	]
 }

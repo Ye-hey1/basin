@@ -1,5 +1,6 @@
 import { client } from "@kaneo/libs";
 import type { InferRequestType } from "hono";
+import { HttpError } from "@/lib/http-error";
 
 export type ImportGithubIssuesRequest = InferRequestType<
   (typeof client)["github-integration"]["import-issues"]["$post"]
@@ -11,8 +12,7 @@ async function importGithubIssues(data: ImportGithubIssuesRequest) {
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   const result = await response.json();

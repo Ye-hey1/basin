@@ -1,6 +1,5 @@
 import { and, eq } from "drizzle-orm";
 import type { Context } from "hono";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { scopeToProjectFromBody } from "../integrations/middleware";
@@ -17,6 +16,7 @@ import {
   validateGitHubConfig,
 } from "../plugins/github/config";
 import { handleGitHubWebhook } from "../plugins/github/webhook-handler";
+import { httpError } from "../utils/http-error";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createGithubIntegration from "./controllers/create-github-integration";
@@ -70,9 +70,8 @@ const listRepositoriesRoute = createRoute({
       "Repositories reachable through the installed App",
       githubRepositoryListSchema,
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -96,7 +95,8 @@ const verifyRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Verification result", verificationResultSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -118,9 +118,8 @@ const getIntegrationRoute = createRoute({
       "GitHub integration details, or null",
       githubIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -142,7 +141,8 @@ const createIntegrationRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The stored integration", createdGithubIntegrationSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -189,13 +189,11 @@ const deleteIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", deleteResultSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("GitHub integration not found"),
+    404: errorResponse("Unknown project, or the GitHub integration not found"),
   },
 });
 
@@ -286,7 +284,11 @@ const githubIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     try {
       config = JSON.parse(row.config) as GitHubConfig;
     } catch {
-      throw new HTTPException(500, { message: "Invalid integration config" });
+      throw httpError(
+        500,
+        "invalid_integration_config",
+        "Invalid integration config",
+      );
     }
 
     if (body.commentTaskLinkOnGitHubIssue !== undefined) {
@@ -298,9 +300,11 @@ const githubIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = await validateGitHubConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db

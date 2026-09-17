@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function deleteGithubIntegration(projectId: string) {
   const response = await client["github-integration"].project[
@@ -8,8 +9,7 @@ async function deleteGithubIntegration(projectId: string) {
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   const result = await response.json();

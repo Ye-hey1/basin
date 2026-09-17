@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 
 async function updateTaskPriority({
   id,
@@ -18,9 +18,7 @@ async function updateTaskPriority({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   const [updatedTask] = await db
@@ -30,9 +28,11 @@ async function updateTaskPriority({
     .returning();
 
   if (!updatedTask) {
-    throw new HTTPException(500, {
-      message: "Failed to update task priority",
-    });
+    throw httpError(
+      500,
+      "failed_to_update_task_priority",
+      "Failed to update task priority",
+    );
   }
 
   await publishEvent("task.priority_changed", {

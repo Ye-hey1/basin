@@ -1,6 +1,5 @@
 import { and, eq } from "drizzle-orm";
 import type { Context } from "hono";
-import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { integrationTable } from "../database/schema";
 import { scopeToProjectFromBody } from "../integrations/middleware";
@@ -14,6 +13,7 @@ import {
 } from "../openapi";
 import { type GiteaConfig, validateGiteaConfig } from "../plugins/gitea/config";
 import { handleGiteaWebhookRequest } from "../plugins/gitea/webhook-handler";
+import { httpError } from "../utils/http-error";
 import {
   hasWorkspacePermission,
   requireWorkspacePermission,
@@ -62,7 +62,8 @@ const listRepositoriesRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Accessible repositories", giteaRepositoryListSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -86,7 +87,8 @@ const verifyRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Verification result", giteaVerificationResultSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -108,9 +110,8 @@ const getIntegrationRoute = createRoute({
       "Gitea integration details, or null",
       giteaIntegrationSchema.nullable(),
     ),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -133,7 +134,8 @@ const createIntegrationRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The stored integration", giteaIntegrationSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
@@ -177,13 +179,11 @@ const deleteIntegrationRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The integration was removed", giteaDeleteResultSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
     403: errorResponse(
       "No workspace access, or missing workspace:manage_settings",
     ),
-    404: errorResponse("Gitea integration not found"),
+    404: errorResponse("Unknown project, or the Gitea integration not found"),
   },
 });
 
@@ -252,7 +252,11 @@ const giteaIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
     const integration = await getGiteaIntegration(projectId, true);
     if (!integration) {
-      throw new HTTPException(500, { message: "Failed to load integration" });
+      throw httpError(
+        500,
+        "failed_to_load_integration",
+        "Failed to load integration",
+      );
     }
     return c.json(integration, 200);
   })
@@ -275,7 +279,11 @@ const giteaIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     try {
       config = JSON.parse(row.config) as GiteaConfig;
     } catch {
-      throw new HTTPException(500, { message: "Invalid integration config" });
+      throw httpError(
+        500,
+        "invalid_integration_config",
+        "Invalid integration config",
+      );
     }
 
     if (body.commentTaskLinkOnGiteaIssue !== undefined) {
@@ -287,9 +295,11 @@ const giteaIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const validation = await validateGiteaConfig(config);
     if (!validation.valid) {
-      throw new HTTPException(400, {
-        message: validation.errors?.join(", ") ?? "Invalid config",
-      });
+      throw httpError(
+        400,
+        "invalid_config",
+        validation.errors?.join(", ") ?? "Invalid config",
+      );
     }
 
     await db
@@ -309,7 +319,11 @@ const giteaIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
 
     const updated = await getGiteaIntegration(projectId, true);
     if (!updated) {
-      throw new HTTPException(500, { message: "Failed to load integration" });
+      throw httpError(
+        500,
+        "failed_to_load_integration",
+        "Failed to load integration",
+      );
     }
     return c.json(updated, 200);
   })

@@ -1,8 +1,8 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
+import { httpError } from "../../utils/http-error";
 import { assertValidTaskStatus } from "../validate-task-fields";
 
 async function updateTaskStatus({
@@ -19,9 +19,7 @@ async function updateTaskStatus({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   await assertValidTaskStatus(status, existingTask.projectId);
@@ -40,9 +38,11 @@ async function updateTaskStatus({
     .returning();
 
   if (!updatedTask) {
-    throw new HTTPException(500, {
-      message: "Failed to update task status",
-    });
+    throw httpError(
+      500,
+      "failed_to_update_task_status",
+      "Failed to update task status",
+    );
   }
 
   await publishEvent("task.status_changed", {

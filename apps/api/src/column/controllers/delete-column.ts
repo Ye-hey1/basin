@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable, taskTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function deleteColumn(id: string) {
   const existing = await db.query.columnTable.findFirst({
@@ -9,7 +9,7 @@ async function deleteColumn(id: string) {
   });
 
   if (!existing) {
-    throw new HTTPException(404, { message: "Column not found" });
+    throw httpError(404, "column_not_found", "Column not found");
   }
 
   const [taskCount] = await db
@@ -18,10 +18,11 @@ async function deleteColumn(id: string) {
     .where(eq(taskTable.columnId, id));
 
   if (taskCount && taskCount.count > 0) {
-    throw new HTTPException(409, {
-      message:
-        "Cannot delete column that contains tasks. Move or delete tasks first.",
-    });
+    throw httpError(
+      409,
+      "cannot_delete_column_that_contains_tasks_move_or_delete_tasks_first",
+      "Cannot delete column that contains tasks. Move or delete tasks first.",
+    );
   }
 
   await db.delete(columnTable).where(eq(columnTable.id, id));

@@ -15,6 +15,11 @@ type TaskExternalLink = {
   metadata: Record<string, unknown> | null;
 };
 
+type TaskCustomFieldValue = {
+  fieldId: string;
+  value: string | null;
+};
+
 type Task = {
   id: string;
   title: string;
@@ -35,6 +40,11 @@ type Task = {
   columnId?: string | null;
   labels?: TaskLabel[];
   externalLinks?: TaskExternalLink[];
+  // Only the detail route resolves requirementTitle; board payloads carry the
+  // id alone.
+  requirementId?: string | null;
+  requirementTitle?: string | null;
+  customFieldValues?: TaskCustomFieldValue[];
 };
 
 export default Task;

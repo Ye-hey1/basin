@@ -12,6 +12,7 @@ afterEach(() => {
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
 }));
 
 vi.mock("@/lib/format", () => ({
@@ -28,7 +29,14 @@ function task(
   start: Date,
   end: Date,
 ): CalendarTask {
-  return { id, title, number, scheduleStart: start, scheduleEnd: end };
+  return {
+    id,
+    title,
+    number,
+    status: "to-do",
+    scheduleStart: start,
+    scheduleEnd: end,
+  };
 }
 
 const AUGUST_10 = new Date(2026, 7, 10);

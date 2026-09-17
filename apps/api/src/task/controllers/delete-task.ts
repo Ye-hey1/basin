@@ -1,9 +1,9 @@
 import { eq, or } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskRelationTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { deleteS3Keys, getTaskAssetKeys } from "../../storage/cleanup-assets";
+import { httpError } from "../../utils/http-error";
 import getTask from "./get-task";
 
 async function deleteTask(taskId: string, currentUserId: string) {
@@ -29,9 +29,7 @@ async function deleteTask(taskId: string, currentUserId: string) {
     .execute();
 
   if (!deletedTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   await publishEvent("task.deleted", {

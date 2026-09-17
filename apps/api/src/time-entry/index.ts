@@ -7,6 +7,7 @@ import {
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import createTimeEntry from "./controllers/create-time-entry";
+import deleteTimeEntry from "./controllers/delete-time-entry";
 import getTimeEntriesByTaskId from "./controllers/get-time-entries";
 import getTimeEntry from "./controllers/get-time-entry";
 import updateTimeEntry from "./controllers/update-time-entry";
@@ -29,9 +30,8 @@ const getTaskTimeEntriesRoute = createRoute({
   request: { params: taskIdParam },
   responses: {
     200: jsonResponse("List of time entries for the task", timeEntryListSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
   },
 });
@@ -47,9 +47,8 @@ const getTimeEntryRoute = createRoute({
   request: { params: timeEntryParam },
   responses: {
     200: jsonResponse("Time entry details", timeEntrySchema),
-    400: errorResponse(
-      "Unknown entry, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown entry"),
     403: errorResponse("No access to the entry's workspace"),
   },
 });
@@ -74,7 +73,8 @@ const createTimeEntryRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created time entry", timeEntrySchema),
-    400: errorResponse("Invalid timestamps, or unknown task"),
+    400: errorResponse("Invalid timestamps"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -102,7 +102,30 @@ const updateTimeEntryRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated time entry", timeEntrySchema),
-    400: errorResponse("Invalid timestamps, or unknown entry"),
+    400: errorResponse("Invalid timestamps"),
+    404: errorResponse("Unknown entry"),
+    403: errorResponse(
+      "No workspace access, or missing task:update permission",
+    ),
+  },
+});
+
+const deleteTimeEntryRoute = createRoute({
+  method: "delete",
+  operationId: "deleteTimeEntry",
+  path: "/{id}",
+  tags: ["Time Entries"],
+  summary: "Delete time entry",
+  description: "Permanently remove a time entry from its task.",
+  middleware: [
+    workspaceAccess.fromTimeEntry(),
+    requireWorkspacePermission({ task: ["update"] }),
+  ] as const,
+  request: { params: timeEntryParam },
+  responses: {
+    200: jsonResponse("The deleted time entry", timeEntrySchema),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown entry"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -141,6 +164,10 @@ const timeEntry = apiRouter()
       }),
       200,
     );
+  })
+  .openapi(deleteTimeEntryRoute, async (c) => {
+    const { id } = c.req.valid("param");
+    return c.json(await deleteTimeEntry(id), 200);
   });
 
 export default timeEntry;

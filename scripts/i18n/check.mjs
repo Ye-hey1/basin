@@ -41,6 +41,22 @@ function isCountBearing(referenceData, key) {
   return typeof value === "string" && value.includes("{{count}}");
 }
 
+// i18next renders unknown interpolations literally, so a locale must use
+// exactly the placeholders its en-US counterpart declares. This catches copy
+// that went stale after the reference reworded a key.
+function placeholders(value) {
+  const found = value.match(/\{\{\w+\}\}/gu) ?? [];
+  return found
+    .map((placeholder) => placeholder.slice(2, -2))
+    .sort()
+    .join(",");
+}
+
+function formatPlaceholders(value) {
+  const list = placeholders(value);
+  return list ? `{{${list}}}` : "none";
+}
+
 function pluralFamilies(referenceKeys) {
   const families = new Set();
   for (const key of referenceKeys) {
@@ -172,7 +188,30 @@ for (const locale of filteredLocales) {
     }),
   );
 
-  if (missing.size === 0 && extra.size === 0) {
+  const placeholderMismatches = [];
+  for (const key of localeKeys) {
+    const value = getValueAtKey(locale.data, key);
+    if (typeof value !== "string") {
+      continue;
+    }
+    const referenceValue =
+      getValueAtKey(reference.data, key) ??
+      referenceValueFor(reference.data, key);
+    if (typeof referenceValue !== "string") {
+      continue;
+    }
+    if (placeholders(value) !== placeholders(referenceValue)) {
+      placeholderMismatches.push(
+        `${key}: locale has ${formatPlaceholders(value)}, en-US has ${formatPlaceholders(referenceValue)}`,
+      );
+    }
+  }
+
+  if (
+    missing.size === 0 &&
+    extra.size === 0 &&
+    placeholderMismatches.length === 0
+  ) {
     console.log(`${locale.locale}: OK`);
     continue;
   }
@@ -208,6 +247,13 @@ for (const locale of filteredLocales) {
     console.log("  Extra keys:");
     for (const key of formatKeyList(extra)) {
       console.log(`    - ${key}`);
+    }
+  }
+
+  if (placeholderMismatches.length > 0) {
+    console.log("  Placeholder mismatches:");
+    for (const message of placeholderMismatches) {
+      console.log(`    - ${message}`);
     }
   }
 

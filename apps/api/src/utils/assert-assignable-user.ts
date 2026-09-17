@@ -1,6 +1,6 @@
 import { and, eq, inArray } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { httpError } from "./http-error";
 
 const NOT_ASSIGNABLE = "Assignee is not a member of this workspace";
 
@@ -53,7 +53,7 @@ export async function assertAssignableUser(
   const assignable = await filterAssignableUsers([userId], workspaceId);
 
   if (!assignable.has(userId)) {
-    throw new HTTPException(403, { message: NOT_ASSIGNABLE });
+    throw httpError(403, "assignee_not_in_workspace", NOT_ASSIGNABLE);
   }
 }
 
@@ -67,7 +67,7 @@ export async function getProjectWorkspaceId(
     .limit(1);
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   return project.workspaceId;

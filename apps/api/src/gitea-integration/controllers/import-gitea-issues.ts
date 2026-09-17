@@ -1,5 +1,4 @@
 import { and, eq, inArray, max, notInArray } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   activityTable,
@@ -27,6 +26,7 @@ import {
   extractIssueStatus,
 } from "../../plugins/github/utils/extract-priority";
 import { formatTaskDescriptionFromIssue } from "../../plugins/github/utils/format";
+import { httpError } from "../../utils/http-error";
 
 type ImportResult = {
   imported: number;
@@ -54,7 +54,7 @@ export async function importGiteaIssues(
   });
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const integration = await db.query.integrationTable.findFirst({
@@ -65,13 +65,19 @@ export async function importGiteaIssues(
   });
 
   if (!integration) {
-    throw new HTTPException(404, { message: "Gitea integration not found" });
+    throw httpError(
+      404,
+      "gitea_integration_not_found",
+      "Gitea integration not found",
+    );
   }
 
   if (!integration.isActive) {
-    throw new HTTPException(400, {
-      message: "Gitea integration is not active",
-    });
+    throw httpError(
+      400,
+      "gitea_integration_is_not_active",
+      "Gitea integration is not active",
+    );
   }
 
   let config: GiteaConfig;
@@ -83,15 +89,19 @@ export async function importGiteaIssues(
       integrationId: integration.id,
       error,
     });
-    throw new HTTPException(400, {
-      message: `Invalid Gitea integration config: ${message}`,
-    });
+    throw httpError(
+      400,
+      "invalid_gitea_config",
+      `Invalid Gitea integration config: ${message}`,
+    );
   }
 
   if (!config.accessToken || !config.baseUrl) {
-    throw new HTTPException(400, {
-      message: "Gitea access token or base URL not configured",
-    });
+    throw httpError(
+      400,
+      "gitea_access_token_or_base_url_not_configured",
+      "Gitea access token or base URL not configured",
+    );
   }
 
   const client = createGiteaClient(config);

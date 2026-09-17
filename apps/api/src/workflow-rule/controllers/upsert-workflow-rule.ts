@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable, workflowRuleTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 
 async function upsertWorkflowRule({
   projectId,
@@ -22,9 +22,11 @@ async function upsertWorkflowRule({
   });
 
   if (!targetColumn) {
-    throw new HTTPException(400, {
-      message: "Column does not belong to the provided project",
-    });
+    throw httpError(
+      400,
+      "column_does_not_belong_to_the_provided_project",
+      "Column does not belong to the provided project",
+    );
   }
 
   const existing = await db.query.workflowRuleTable.findFirst({
@@ -43,9 +45,11 @@ async function upsertWorkflowRule({
       .returning();
 
     if (!updated) {
-      throw new HTTPException(500, {
-        message: "Failed to update workflow rule",
-      });
+      throw httpError(
+        500,
+        "failed_to_update_workflow_rule",
+        "Failed to update workflow rule",
+      );
     }
 
     return updated;
@@ -62,9 +66,11 @@ async function upsertWorkflowRule({
     .returning();
 
   if (!created) {
-    throw new HTTPException(500, {
-      message: "Failed to create workflow rule",
-    });
+    throw httpError(
+      500,
+      "failed_to_create_workflow_rule",
+      "Failed to create workflow rule",
+    );
   }
 
   return created;

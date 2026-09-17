@@ -24,3 +24,39 @@ All API endpoints require authentication. Refer to the [authentication guide](/a
 ```text
 https://your-kaneo-instance.com/api
 ```
+
+## Errors
+
+Every error response is JSON, with a human-readable message and a stable
+machine-readable code:
+
+```json
+{ "message": "Task not found", "code": "task_not_found" }
+```
+
+Match on `code` rather than on `message`, and translate `message` for display or
+supply your own copy. Codes are stable; wording is not.
+
+| Status | Meaning |
+| --- | --- |
+| 400 | The request itself could not be resolved, usually because no workspace could be determined from it |
+| 401 | Missing or invalid credentials |
+| 403 | Authenticated, but not allowed: no workspace access, or the role lacks the required permission |
+| 404 | The resource named by the request does not exist |
+| 500 | An unexpected server failure |
+
+When you address a resource by id, Kaneo first looks that resource up to decide
+which workspace the request belongs to. Which failure you get depends on how that
+lookup goes:
+
+- The id does not exist: `404` with that resource's code, such as
+  `task_not_found`, `time_entry_not_found`, or `requirement_not_found`.
+- The id exists, but you are not a member of its workspace: `403` with
+  `you_don_t_have_access_to_this_workspace`.
+- The request identifies no workspace at all — a search with no `workspaceId`,
+  for instance: `400` with `workspace_id_could_not_be_determined`.
+
+Getting `403` rather than `404` for someone else's resource is the intended
+behaviour: the workspace is a collaboration boundary, and its existence is not a
+secret. What the API never does is leak the contents of a workspace you are not a
+member of.

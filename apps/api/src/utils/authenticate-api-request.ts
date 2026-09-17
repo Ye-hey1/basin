@@ -1,8 +1,8 @@
 import * as Sentry from "@sentry/node";
 import { APIError } from "better-auth/api";
 import type { Context } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { auth } from "../auth";
+import { httpError } from "./http-error";
 import { verifyApiKey } from "./verify-api-key";
 
 // User is tagged on Sentry's isolation scope; the per-request isolation
@@ -64,14 +64,14 @@ function parseBearerToken(authHeader: string | undefined): {
 export async function authenticateApiRequest(c: Context): Promise<void> {
   const { token, malformed } = parseBearerToken(c.req.header("Authorization"));
   if (malformed) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   const apiKeyHeader = c.req.header("x-api-key")?.trim();
   if (!token && apiKeyHeader) {
     const apiKeyResult = await verifyApiKey(apiKeyHeader);
     if (!apiKeyResult?.valid || !apiKeyResult.key) {
-      throw new HTTPException(401, { message: "Unauthorized" });
+      throw httpError(401, "unauthorized", "Unauthorized");
     }
     const key = apiKeyResult.key;
     c.set("userId", key.userId);
@@ -114,7 +114,7 @@ export async function authenticateApiRequest(c: Context): Promise<void> {
       attachUserToScope(sessionResult.user.id);
       return;
     }
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   const sessionResult = await getSession(c.req.raw.headers);
@@ -124,7 +124,7 @@ export async function authenticateApiRequest(c: Context): Promise<void> {
   c.set("userEmail", sessionResult?.user?.email ?? "");
 
   if (!sessionResult?.user) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   attachUserToScope(sessionResult.user.id);
@@ -136,7 +136,7 @@ export async function resolveAssetBearerOrCookie(c: Context): Promise<{
 }> {
   const { token, malformed } = parseBearerToken(c.req.header("Authorization"));
   if (malformed) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   const apiKeyHeader = c.req.header("x-api-key")?.trim();
@@ -148,7 +148,7 @@ export async function resolveAssetBearerOrCookie(c: Context): Promise<{
         apiKeyId: apiKeyResult.key.id,
       };
     }
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   if (token) {
@@ -163,12 +163,12 @@ export async function resolveAssetBearerOrCookie(c: Context): Promise<{
     if (sessionResult?.user?.id) {
       return { userId: sessionResult.user.id };
     }
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   const sessionResult = await getSession(c.req.raw.headers);
   if (!sessionResult?.user) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    throw httpError(401, "unauthorized", "Unauthorized");
   }
 
   return { userId: sessionResult.user.id };

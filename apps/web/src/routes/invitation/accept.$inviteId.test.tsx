@@ -32,6 +32,7 @@ vi.mock("@/lib/toast", () => ({
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
   Trans: ({ i18nKey }: { i18nKey: string }) => <span>{i18nKey}</span>,
+  initReactI18next: { type: "3rdParty", init: () => {} },
 }));
 
 const AcceptInvitation = (Route as unknown as { component: ComponentType })

@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { columnTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
@@ -8,6 +7,7 @@ import {
   assertAssignableUser,
   getProjectWorkspaceId,
 } from "../../utils/assert-assignable-user";
+import { httpError } from "../../utils/http-error";
 import { assertValidTaskStatus } from "../validate-task-fields";
 
 async function updateTask(
@@ -35,15 +35,15 @@ async function updateTask(
     .limit(1);
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   if (projectId !== existingTask.projectId) {
-    throw new HTTPException(400, {
-      message: "Use the task move endpoint to move tasks between projects",
-    });
+    throw httpError(
+      400,
+      "use_the_task_move_endpoint_to_move_tasks_between_projects",
+      "Use the task move endpoint to move tasks between projects",
+    );
   }
 
   await assertValidTaskStatus(status, projectId);
@@ -82,9 +82,7 @@ async function updateTask(
     .returning();
 
   if (!updatedTask) {
-    throw new HTTPException(500, {
-      message: "Failed to update task",
-    });
+    throw httpError(500, "failed_to_update_task", "Failed to update task");
   }
 
   if (existingTask.status !== status) {

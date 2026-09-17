@@ -1,10 +1,10 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { taskTable, userTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import createNotification from "../../notification/controllers/create-notification";
 import { deleteOrphanedAssets } from "../../storage/cleanup-assets";
+import { httpError } from "../../utils/http-error";
 import { parseMentionIds } from "../../utils/parse-mentions";
 
 async function updateTaskDescription({
@@ -21,9 +21,7 @@ async function updateTaskDescription({
   });
 
   if (!existingTask) {
-    throw new HTTPException(404, {
-      message: "Task not found",
-    });
+    throw httpError(404, "task_not_found", "Task not found");
   }
 
   const [updatedTask] = await db
@@ -33,9 +31,11 @@ async function updateTaskDescription({
     .returning();
 
   if (!updatedTask) {
-    throw new HTTPException(500, {
-      message: "Failed to update task description",
-    });
+    throw httpError(
+      500,
+      "failed_to_update_task_description",
+      "Failed to update task description",
+    );
   }
 
   await publishEvent("task.description_changed", {

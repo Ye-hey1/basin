@@ -1,11 +1,14 @@
 import { relations } from "drizzle-orm";
 import {
+  acceptanceItemTable,
   accountTable,
   activityTable,
   apikeyTable,
   assetTable,
   columnTable,
   commentTable,
+  customFieldDefinitionTable,
+  customFieldValueTable,
   externalLinkTable,
   githubIntegrationTable,
   integrationTable,
@@ -13,6 +16,10 @@ import {
   labelTable,
   notificationTable,
   projectTable,
+  requirementDocumentTable,
+  requirementDocumentVersionTable,
+  requirementProjectTable,
+  requirementTable,
   sessionTable,
   taskRelationTable,
   taskReminderSentTable,
@@ -146,6 +153,10 @@ export const taskTableRelations = relations(taskTable, ({ one, many }) => ({
     fields: [taskTable.columnId],
     references: [columnTable.id],
   }),
+  requirement: one(requirementTable, {
+    fields: [taskTable.requirementId],
+    references: [requirementTable.id],
+  }),
   timeEntries: many(timeEntryTable),
   activities: many(activityTable),
   comments: many(commentTable),
@@ -155,6 +166,7 @@ export const taskTableRelations = relations(taskTable, ({ one, many }) => ({
   sourceRelations: many(taskRelationTable, { relationName: "sourceTask" }),
   targetRelations: many(taskRelationTable, { relationName: "targetTask" }),
   remindersSent: many(taskReminderSentTable),
+  customFieldValues: many(customFieldValueTable),
 }));
 
 export const timeEntryTableRelations = relations(timeEntryTable, ({ one }) => ({
@@ -391,3 +403,99 @@ export const commentTableRelations = relations(commentTable, ({ one }) => ({
     references: [userTable.id],
   }),
 }));
+
+export const customFieldDefinitionTableRelations = relations(
+  customFieldDefinitionTable,
+  ({ one, many }) => ({
+    project: one(projectTable, {
+      fields: [customFieldDefinitionTable.projectId],
+      references: [projectTable.id],
+    }),
+    values: many(customFieldValueTable),
+  }),
+);
+
+export const customFieldValueTableRelations = relations(
+  customFieldValueTable,
+  ({ one }) => ({
+    field: one(customFieldDefinitionTable, {
+      fields: [customFieldValueTable.fieldId],
+      references: [customFieldDefinitionTable.id],
+    }),
+    task: one(taskTable, {
+      fields: [customFieldValueTable.taskId],
+      references: [taskTable.id],
+    }),
+  }),
+);
+
+export const requirementTableRelations = relations(
+  requirementTable,
+  ({ one, many }) => ({
+    workspace: one(workspaceTable, {
+      fields: [requirementTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    // Self-referencing on both sides, so the relation name must be explicit
+    // or drizzle cannot tell `parent` and `children` apart.
+    parent: one(requirementTable, {
+      fields: [requirementTable.parentId],
+      references: [requirementTable.id],
+      relationName: "requirementHierarchy",
+    }),
+    children: many(requirementTable, { relationName: "requirementHierarchy" }),
+    assignee: one(userTable, {
+      fields: [requirementTable.assigneeId],
+      references: [userTable.id],
+    }),
+    projectLinks: many(requirementProjectTable),
+    acceptanceItems: many(acceptanceItemTable),
+    tasks: many(taskTable),
+    documents: many(requirementDocumentTable),
+  }),
+);
+
+export const requirementProjectTableRelations = relations(
+  requirementProjectTable,
+  ({ one }) => ({
+    requirement: one(requirementTable, {
+      fields: [requirementProjectTable.requirementId],
+      references: [requirementTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [requirementProjectTable.projectId],
+      references: [projectTable.id],
+    }),
+  }),
+);
+
+export const acceptanceItemTableRelations = relations(
+  acceptanceItemTable,
+  ({ one }) => ({
+    requirement: one(requirementTable, {
+      fields: [acceptanceItemTable.requirementId],
+      references: [requirementTable.id],
+    }),
+  }),
+);
+
+export const requirementDocumentTableRelations = relations(
+  requirementDocumentTable,
+  ({ one, many }) => ({
+    requirement: one(requirementTable, {
+      fields: [requirementDocumentTable.requirementId],
+      references: [requirementTable.id],
+    }),
+    versions: many(requirementDocumentVersionTable),
+  }),
+);
+
+export const requirementDocumentVersionTableRelations = relations(
+  requirementDocumentVersionTable,
+  ({ one }) => ({
+    document: one(requirementDocumentTable, {
+      fields: [requirementDocumentVersionTable.documentId],
+      references: [requirementDocumentTable.id],
+    }),
+  }),
+);

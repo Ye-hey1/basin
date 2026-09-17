@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { requireEntitlement } from "../../billing/require-entitlement-middleware";
 import db from "../../database";
 import { taskTable } from "../../database/schema";
+import { httpError } from "../../utils/http-error";
 import { requireWorkspacePermission } from "../../utils/require-workspace-permission";
 
 type BulkTaskOperation =
@@ -40,9 +40,11 @@ async function bulkOperation(c: Context): Promise<BulkTaskOperation> {
     typeof operation !== "string" ||
     !(BULK_OPERATIONS as readonly string[]).includes(operation)
   ) {
-    throw new HTTPException(400, {
-      message: `operation must be one of: ${BULK_OPERATIONS.join(", ")}`,
-    });
+    throw httpError(
+      400,
+      "invalid_bulk_operation",
+      `operation must be one of: ${BULK_OPERATIONS.join(", ")}`,
+    );
   }
   return operation as BulkTaskOperation;
 }

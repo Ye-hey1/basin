@@ -49,6 +49,15 @@ const messages = {
     ignore: "心当たりがない場合は、このメールを無視してかまいません。",
     footer: "Kaneo セキュリティメール",
   },
+  zh: {
+    preview: "你的 Kaneo 验证码",
+    title: "你的验证码",
+    subtitle: "输入此一次性验证码以完成登录。",
+    code: "是你的 Kaneo 验证码。",
+    expiry: "此验证码 15 分钟后过期。",
+    ignore: "如果你没有发起此请求，可以忽略这封邮件。",
+    footer: "Kaneo 安全邮件",
+  },
 } as const;
 
 const OtpEmail = ({ otp, locale }: OtpEmailProps) => {

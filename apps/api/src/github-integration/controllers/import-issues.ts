@@ -1,5 +1,4 @@
 import { and, eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import {
   activityTable,
@@ -22,6 +21,7 @@ import {
 import { formatTaskDescriptionFromIssue } from "../../plugins/github/utils/format";
 import { getInstallationOctokit } from "../../plugins/github/utils/github-app";
 import { claimTaskNumber } from "../../task/controllers/claim-task-numbers";
+import { httpError } from "../../utils/http-error";
 
 type ImportResult = {
   imported: number;
@@ -70,7 +70,7 @@ export async function importIssues(projectId: string): Promise<ImportResult> {
   });
 
   if (!project) {
-    throw new HTTPException(404, { message: "Project not found" });
+    throw httpError(404, "project_not_found", "Project not found");
   }
 
   const integration = await db.query.integrationTable.findFirst({
@@ -81,21 +81,29 @@ export async function importIssues(projectId: string): Promise<ImportResult> {
   });
 
   if (!integration) {
-    throw new HTTPException(404, { message: "GitHub integration not found" });
+    throw httpError(
+      404,
+      "github_integration_not_found",
+      "GitHub integration not found",
+    );
   }
 
   if (!integration.isActive) {
-    throw new HTTPException(400, {
-      message: "GitHub integration is not active",
-    });
+    throw httpError(
+      400,
+      "github_integration_is_not_active",
+      "GitHub integration is not active",
+    );
   }
 
   const config = JSON.parse(integration.config) as GitHubConfig;
 
   if (!config.installationId) {
-    throw new HTTPException(400, {
-      message: "GitHub installation ID not configured",
-    });
+    throw httpError(
+      400,
+      "github_installation_id_not_configured",
+      "GitHub installation ID not configured",
+    );
   }
 
   const octokit = await getInstallationOctokit(config.installationId);

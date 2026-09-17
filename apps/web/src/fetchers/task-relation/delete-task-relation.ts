@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function deleteTaskRelation(id: string) {
   const response = await client["task-relation"][":id"].$delete({
@@ -6,8 +7,7 @@ async function deleteTaskRelation(id: string) {
   });
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   const data = await response.json();

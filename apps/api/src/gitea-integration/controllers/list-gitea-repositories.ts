@@ -1,9 +1,9 @@
-import { HTTPException } from "hono/http-exception";
 import { normalizeGiteaBaseUrl } from "../../plugins/gitea/config";
 import {
   createGiteaClient,
   verifyGiteaToken,
 } from "../../plugins/gitea/utils/gitea-api";
+import { httpError } from "../../utils/http-error";
 
 type RepoRow = {
   id: number;
@@ -26,9 +26,11 @@ async function listGiteaRepositories({
   try {
     await verifyGiteaToken(normalized, accessToken);
   } catch {
-    throw new HTTPException(401, {
-      message: "Invalid Gitea token or could not reach instance.",
-    });
+    throw httpError(
+      401,
+      "invalid_gitea_token_or_could_not_reach_instance",
+      "Invalid Gitea token or could not reach instance.",
+    );
   }
 
   const client = createGiteaClient({

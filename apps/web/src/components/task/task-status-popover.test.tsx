@@ -29,6 +29,7 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
+  initReactI18next: { type: "3rdParty", init: () => {} },
 }));
 
 const task: Task = {

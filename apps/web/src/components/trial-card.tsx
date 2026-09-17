@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Sparkles, TriangleAlert, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useGetBilling } from "@/hooks/queries/billing/use-get-billing";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { cn } from "@/lib/cn";
@@ -14,6 +15,7 @@ function daysLeft(value: string | null | undefined) {
 const DISMISS_KEY = "kaneo:trial-card-dismissed";
 
 export function TrialCard() {
+  const { t } = useTranslation();
   const { data: workspace } = useActiveWorkspace();
   const { data: billing } = useGetBilling(workspace?.id);
   const [dismissed, setDismissed] = useState<string[]>(() => {
@@ -63,7 +65,7 @@ export function TrialCard() {
         <button
           type="button"
           onClick={dismiss}
-          aria-label="Dismiss"
+          aria-label={t("common:actions.dismiss")}
           className="absolute top-1.5 right-1.5 rounded p-0.5 opacity-60 transition-opacity hover:opacity-100"
         >
           <X className="size-3" />
@@ -78,20 +80,22 @@ export function TrialCard() {
         )}
         <span>
           {expired
-            ? "Trial ended"
-            : `${left} ${left === 1 ? "day" : "days"} left in trial`}
+            ? t("settings:billingPage.trialCard.trialEnded")
+            : t("settings:billingPage.trialCard.daysLeft", { count: left })}
         </span>
       </div>
       <p className="mt-1 text-[0.7rem] leading-snug opacity-80">
         {expired
-          ? "Subscribe to keep creating and editing."
-          : "Upgrade anytime to keep your workspace after the trial."}
+          ? t("settings:billingPage.trialCard.subscribePrompt")
+          : t("settings:billingPage.trialCard.upgradePrompt")}
       </p>
       <Link
         to="/dashboard/settings/workspace/billing"
         className="mt-2 inline-flex font-medium underline underline-offset-2 hover:no-underline"
       >
-        {expired ? "Choose a plan" : "View plans"}
+        {expired
+          ? t("settings:billingPage.trialCard.choosePlan")
+          : t("settings:billingPage.trialCard.viewPlans")}
       </Link>
     </div>
   );

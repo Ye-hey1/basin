@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import moveTask from "@/fetchers/task/move-task";
+import { translateApiError } from "@/lib/error-handler";
 import { toast } from "@/lib/toast";
 
 export function useMoveTask() {
@@ -32,7 +33,8 @@ export function useMoveTask() {
     },
     onError: (error) => {
       toast.error(
-        error instanceof Error ? error.message : t("tasks:move.error"),
+        translateApiError(error) ??
+          (error instanceof Error ? error.message : t("tasks:move.error")),
       );
     },
   });

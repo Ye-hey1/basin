@@ -1,10 +1,10 @@
 import { and, eq, isNull, sql } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { labelTable, projectTable, taskTable } from "../../database/schema";
 import { publishEvent } from "../../events";
 import { syncLabelToGitea } from "../../plugins/gitea/utils/sync-label-to-gitea";
 import { syncLabelToGitHub } from "../../plugins/github/utils/sync-label-to-github";
+import { httpError } from "../../utils/http-error";
 
 async function createLabel(
   name: string,
@@ -26,15 +26,11 @@ async function createLabel(
       .limit(1);
 
     if (!task) {
-      throw new HTTPException(404, {
-        message: "Task not found",
-      });
+      throw httpError(404, "task_not_found", "Task not found");
     }
 
     if (task.workspaceId !== workspaceId) {
-      throw new HTTPException(404, {
-        message: "Task not found",
-      });
+      throw httpError(404, "task_not_found", "Task not found");
     }
 
     const [inserted] = await db

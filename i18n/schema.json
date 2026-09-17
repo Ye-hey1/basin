@@ -45,6 +45,9 @@
 						},
 						"clearAllFilters": {
 							"type": "string"
+						},
+						"dismiss": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -57,7 +60,8 @@
 						"remove",
 						"reset",
 						"filter",
-						"clearAllFilters"
+						"clearAllFilters",
+						"dismiss"
 					]
 				},
 				"a11y": {
@@ -66,9 +70,12 @@
 					"properties": {
 						"toggleSidebar": {
 							"type": "string"
+						},
+						"toggleTheme": {
+							"type": "string"
 						}
 					},
-					"required": ["toggleSidebar"]
+					"required": ["toggleSidebar", "toggleTheme"]
 				},
 				"sidebar": {
 					"type": "object",
@@ -301,6 +308,602 @@
 								}
 							},
 							"required": ["cors", "network"]
+						},
+						"codes": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"all_tasks_must_belong_to_the_same_workspace": {
+									"type": "string"
+								},
+								"asset_not_found": {
+									"type": "string"
+								},
+								"asset_object_not_found": {
+									"type": "string"
+								},
+								"assignee_not_in_workspace": {
+									"type": "string"
+								},
+								"avatar_not_found": {
+									"type": "string"
+								},
+								"billing_is_not_enabled": {
+									"type": "string"
+								},
+								"billing_provider_request_failed": {
+									"type": "string"
+								},
+								"cannot_create_a_relation_between_a_task_and_itself": {
+									"type": "string"
+								},
+								"cannot_delete_column_that_contains_tasks_move_or_delete_tasks_first": {
+									"type": "string"
+								},
+								"column_does_not_belong_to_the_provided_project": {
+									"type": "string"
+								},
+								"column_name_must_contain_at_least_one_alphanumeric_character": {
+									"type": "string"
+								},
+								"column_not_found": {
+									"type": "string"
+								},
+								"column_not_in_project": {
+									"type": "string"
+								},
+								"column_slug_exists": {
+									"type": "string"
+								},
+								"column_slug_reserved": {
+									"type": "string"
+								},
+								"comment_not_found_or_you_are_not_the_author": {
+									"type": "string"
+								},
+								"could_not_determine_workspace": {
+									"type": "string"
+								},
+								"destination_project_does_not_have_a_workflow": {
+									"type": "string"
+								},
+								"discord_integration_not_found": {
+									"type": "string"
+								},
+								"duplicate_project_ids_in_reorder_payload": {
+									"type": "string"
+								},
+								"email_notifications_require_an_account_email_address": {
+									"type": "string"
+								},
+								"enable_email_notifications_globally_before_using_them_here": {
+									"type": "string"
+								},
+								"enable_gotify_notifications_globally_before_using_them_here": {
+									"type": "string"
+								},
+								"enable_ntfy_notifications_globally_before_using_them_here": {
+									"type": "string"
+								},
+								"enable_webhook_notifications_globally_before_using_them_here": {
+									"type": "string"
+								},
+								"failed_to_archive_project": {
+									"type": "string"
+								},
+								"failed_to_attach_label_to_task": {
+									"type": "string"
+								},
+								"failed_to_create_activity": {
+									"type": "string"
+								},
+								"failed_to_create_column": {
+									"type": "string"
+								},
+								"failed_to_create_gitea_integration": {
+									"type": "string"
+								},
+								"failed_to_create_task": {
+									"type": "string"
+								},
+								"failed_to_create_task_relation": {
+									"type": "string"
+								},
+								"failed_to_create_time_entry": {
+									"type": "string"
+								},
+								"failed_to_create_workflow_rule": {
+									"type": "string"
+								},
+								"failed_to_decrypt_notification_secret": {
+									"type": "string"
+								},
+								"failed_to_delete_project": {
+									"type": "string"
+								},
+								"failed_to_detach_label_from_task": {
+									"type": "string"
+								},
+								"failed_to_fetch_repositories_from_github": {
+									"type": "string"
+								},
+								"failed_to_initialize_workspace_billing": {
+									"type": "string"
+								},
+								"failed_to_load_integration": {
+									"type": "string"
+								},
+								"failed_to_load_telegram_integration_after_save": {
+									"type": "string"
+								},
+								"failed_to_load_telegram_integration_after_update": {
+									"type": "string"
+								},
+								"failed_to_move_task": {
+									"type": "string"
+								},
+								"failed_to_save_asset": {
+									"type": "string"
+								},
+								"failed_to_save_notification_workspace_rule": {
+									"type": "string"
+								},
+								"failed_to_unarchive_project": {
+									"type": "string"
+								},
+								"failed_to_update_column": {
+									"type": "string"
+								},
+								"failed_to_update_gitea_integration": {
+									"type": "string"
+								},
+								"failed_to_update_task": {
+									"type": "string"
+								},
+								"failed_to_update_task_assignee": {
+									"type": "string"
+								},
+								"failed_to_update_task_description": {
+									"type": "string"
+								},
+								"failed_to_update_task_due_date": {
+									"type": "string"
+								},
+								"failed_to_update_task_priority": {
+									"type": "string"
+								},
+								"failed_to_update_task_status": {
+									"type": "string"
+								},
+								"failed_to_update_task_title": {
+									"type": "string"
+								},
+								"failed_to_update_workflow_rule": {
+									"type": "string"
+								},
+								"generic_webhook_integration_not_found": {
+									"type": "string"
+								},
+								"gitea_access_token_or_base_url_not_configured": {
+									"type": "string"
+								},
+								"gitea_integration_error": {
+									"type": "string"
+								},
+								"gitea_integration_is_not_active": {
+									"type": "string"
+								},
+								"gitea_integration_not_found": {
+									"type": "string"
+								},
+								"gitea_verify_failed": {
+									"type": "string"
+								},
+								"github_app_not_configured": {
+									"type": "string"
+								},
+								"github_installation_id_not_configured": {
+									"type": "string"
+								},
+								"github_integration_is_not_active": {
+									"type": "string"
+								},
+								"github_integration_not_found": {
+									"type": "string"
+								},
+								"github_verify_failed": {
+									"type": "string"
+								},
+								"gotify_requires_a_server_url_and_app_token": {
+									"type": "string"
+								},
+								"image_upload_key_does_not_match_the_task_context": {
+									"type": "string"
+								},
+								"image_uploads_not_configured": {
+									"type": "string"
+								},
+								"insufficient_api_key_scope": {
+									"type": "string"
+								},
+								"insufficient_permissions": {
+									"type": "string"
+								},
+								"internal_server_error": {
+									"type": "string"
+								},
+								"invalid_api_key_for_this_workspace": {
+									"type": "string"
+								},
+								"invalid_avatar_upload": {
+									"type": "string"
+								},
+								"invalid_bulk_operation": {
+									"type": "string"
+								},
+								"invalid_config": {
+									"type": "string"
+								},
+								"invalid_date": {
+									"type": "string"
+								},
+								"invalid_date_value": {
+									"type": "string"
+								},
+								"invalid_encrypted_notification_secret_payload": {
+									"type": "string"
+								},
+								"invalid_gitea_config": {
+									"type": "string"
+								},
+								"invalid_gitea_token_or_could_not_reach_instance": {
+									"type": "string"
+								},
+								"invalid_gitea_token_or_unauthorized": {
+									"type": "string"
+								},
+								"invalid_gotify_url": {
+									"type": "string"
+								},
+								"invalid_image_upload": {
+									"type": "string"
+								},
+								"invalid_integration_config": {
+									"type": "string"
+								},
+								"invalid_ntfy_url": {
+									"type": "string"
+								},
+								"invalid_priority": {
+									"type": "string"
+								},
+								"invalid_request": {
+									"type": "string"
+								},
+								"invalid_signature": {
+									"type": "string"
+								},
+								"invalid_status": {
+									"type": "string"
+								},
+								"invalid_webhook_url": {
+									"type": "string"
+								},
+								"label_and_task_must_belong_to_the_same_workspace": {
+									"type": "string"
+								},
+								"label_and_tasks_must_belong_to_the_same_workspace": {
+									"type": "string"
+								},
+								"label_id_is_required": {
+									"type": "string"
+								},
+								"label_is_not_assigned_to_a_task": {
+									"type": "string"
+								},
+								"label_not_found": {
+									"type": "string"
+								},
+								"no_billing_customer_exists_for_this_workspace_yet": {
+									"type": "string"
+								},
+								"no_tasks_found": {
+									"type": "string"
+								},
+								"not_found": {
+									"type": "string"
+								},
+								"notification_not_found": {
+									"type": "string"
+								},
+								"notification_secret_encryption_key_is_required_to_store_encrypted_notification_s": {
+									"type": "string"
+								},
+								"ntfy_requires_a_server_url_and_topic": {
+									"type": "string"
+								},
+								"one_or_more_selected_projects_are_invalid": {
+									"type": "string"
+								},
+								"only_workspace_owners_and_admins_can_manage_billing": {
+									"type": "string"
+								},
+								"personal_access_token_is_required": {
+									"type": "string"
+								},
+								"priority_value_is_required": {
+									"type": "string"
+								},
+								"project_doesn_t_exist_or_doesn_t_belong_to_the_specified_workspace": {
+									"type": "string"
+								},
+								"project_is_not_public": {
+									"type": "string"
+								},
+								"project_not_found": {
+									"type": "string"
+								},
+								"project_not_in_workspace": {
+									"type": "string"
+								},
+								"projectid_is_required": {
+									"type": "string"
+								},
+								"repository_already_linked": {
+									"type": "string"
+								},
+								"select_at_least_one_project_for_selected_project_mode": {
+									"type": "string"
+								},
+								"selected_status_is_not_valid_for_the_destination_project": {
+									"type": "string"
+								},
+								"slack_integration_not_found": {
+									"type": "string"
+								},
+								"source_task_not_found": {
+									"type": "string"
+								},
+								"sourcetaskid_is_required": {
+									"type": "string"
+								},
+								"start_date_cannot_be_after_due_date_please_adjust_the_date_range": {
+									"type": "string"
+								},
+								"start_time_cannot_be_after_end_time_please_adjust_the_time_range": {
+									"type": "string"
+								},
+								"status_value_is_required": {
+									"type": "string"
+								},
+								"stored_telegram_integration_configuration_is_invalid": {
+									"type": "string"
+								},
+								"target_task_not_found": {
+									"type": "string"
+								},
+								"task_is_already_in_that_project": {
+									"type": "string"
+								},
+								"task_not_found": {
+									"type": "string"
+								},
+								"task_relation_not_found": {
+									"type": "string"
+								},
+								"tasks_can_only_be_moved_within_the_same_workspace": {
+									"type": "string"
+								},
+								"telegram_integration_not_found": {
+									"type": "string"
+								},
+								"the_time_range_is_too_long_to_record": {
+									"type": "string"
+								},
+								"this_relation_already_exists": {
+									"type": "string"
+								},
+								"this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and": {
+									"type": "string"
+								},
+								"time_entry_not_found": {
+									"type": "string"
+								},
+								"unauthorized": {
+									"type": "string"
+								},
+								"unknown_bulk_operation": {
+									"type": "string"
+								},
+								"unknown_plan": {
+									"type": "string"
+								},
+								"use_the_task_move_endpoint_to_move_tasks_between_projects": {
+									"type": "string"
+								},
+								"value_is_required_for_this_operation": {
+									"type": "string"
+								},
+								"webhook_notifications_require_an_endpoint_url": {
+									"type": "string"
+								},
+								"workflow_rule_not_found": {
+									"type": "string"
+								},
+								"workspace_already_has_an_active_subscription": {
+									"type": "string"
+								},
+								"workspace_id_could_not_be_determined": {
+									"type": "string"
+								},
+								"workspace_not_found": {
+									"type": "string"
+								},
+								"workspace_notification_rule_not_found": {
+									"type": "string"
+								},
+								"workspaceid_not_set_in_context": {
+									"type": "string"
+								},
+								"you_don_t_have_access_to_this_workspace": {
+									"type": "string"
+								},
+								"requirement_not_found": {
+									"type": "string"
+								},
+								"acceptance_item_not_found": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"all_tasks_must_belong_to_the_same_workspace",
+								"asset_not_found",
+								"asset_object_not_found",
+								"assignee_not_in_workspace",
+								"avatar_not_found",
+								"billing_is_not_enabled",
+								"billing_provider_request_failed",
+								"cannot_create_a_relation_between_a_task_and_itself",
+								"cannot_delete_column_that_contains_tasks_move_or_delete_tasks_first",
+								"column_does_not_belong_to_the_provided_project",
+								"column_name_must_contain_at_least_one_alphanumeric_character",
+								"column_not_found",
+								"column_not_in_project",
+								"column_slug_exists",
+								"column_slug_reserved",
+								"comment_not_found_or_you_are_not_the_author",
+								"could_not_determine_workspace",
+								"destination_project_does_not_have_a_workflow",
+								"discord_integration_not_found",
+								"duplicate_project_ids_in_reorder_payload",
+								"email_notifications_require_an_account_email_address",
+								"enable_email_notifications_globally_before_using_them_here",
+								"enable_gotify_notifications_globally_before_using_them_here",
+								"enable_ntfy_notifications_globally_before_using_them_here",
+								"enable_webhook_notifications_globally_before_using_them_here",
+								"failed_to_archive_project",
+								"failed_to_attach_label_to_task",
+								"failed_to_create_activity",
+								"failed_to_create_column",
+								"failed_to_create_gitea_integration",
+								"failed_to_create_task",
+								"failed_to_create_task_relation",
+								"failed_to_create_time_entry",
+								"failed_to_create_workflow_rule",
+								"failed_to_decrypt_notification_secret",
+								"failed_to_delete_project",
+								"failed_to_detach_label_from_task",
+								"failed_to_fetch_repositories_from_github",
+								"failed_to_initialize_workspace_billing",
+								"failed_to_load_integration",
+								"failed_to_load_telegram_integration_after_save",
+								"failed_to_load_telegram_integration_after_update",
+								"failed_to_move_task",
+								"failed_to_save_asset",
+								"failed_to_save_notification_workspace_rule",
+								"failed_to_unarchive_project",
+								"failed_to_update_column",
+								"failed_to_update_gitea_integration",
+								"failed_to_update_task",
+								"failed_to_update_task_assignee",
+								"failed_to_update_task_description",
+								"failed_to_update_task_due_date",
+								"failed_to_update_task_priority",
+								"failed_to_update_task_status",
+								"failed_to_update_task_title",
+								"failed_to_update_workflow_rule",
+								"generic_webhook_integration_not_found",
+								"gitea_access_token_or_base_url_not_configured",
+								"gitea_integration_error",
+								"gitea_integration_is_not_active",
+								"gitea_integration_not_found",
+								"gitea_verify_failed",
+								"github_app_not_configured",
+								"github_installation_id_not_configured",
+								"github_integration_is_not_active",
+								"github_integration_not_found",
+								"github_verify_failed",
+								"gotify_requires_a_server_url_and_app_token",
+								"image_upload_key_does_not_match_the_task_context",
+								"image_uploads_not_configured",
+								"insufficient_api_key_scope",
+								"insufficient_permissions",
+								"internal_server_error",
+								"invalid_api_key_for_this_workspace",
+								"invalid_avatar_upload",
+								"invalid_bulk_operation",
+								"invalid_config",
+								"invalid_date",
+								"invalid_date_value",
+								"invalid_encrypted_notification_secret_payload",
+								"invalid_gitea_config",
+								"invalid_gitea_token_or_could_not_reach_instance",
+								"invalid_gitea_token_or_unauthorized",
+								"invalid_gotify_url",
+								"invalid_image_upload",
+								"invalid_integration_config",
+								"invalid_ntfy_url",
+								"invalid_priority",
+								"invalid_request",
+								"invalid_signature",
+								"invalid_status",
+								"invalid_webhook_url",
+								"label_and_task_must_belong_to_the_same_workspace",
+								"label_and_tasks_must_belong_to_the_same_workspace",
+								"label_id_is_required",
+								"label_is_not_assigned_to_a_task",
+								"label_not_found",
+								"no_billing_customer_exists_for_this_workspace_yet",
+								"no_tasks_found",
+								"not_found",
+								"notification_not_found",
+								"notification_secret_encryption_key_is_required_to_store_encrypted_notification_s",
+								"ntfy_requires_a_server_url_and_topic",
+								"one_or_more_selected_projects_are_invalid",
+								"only_workspace_owners_and_admins_can_manage_billing",
+								"personal_access_token_is_required",
+								"priority_value_is_required",
+								"project_doesn_t_exist_or_doesn_t_belong_to_the_specified_workspace",
+								"project_is_not_public",
+								"project_not_found",
+								"project_not_in_workspace",
+								"projectid_is_required",
+								"repository_already_linked",
+								"select_at_least_one_project_for_selected_project_mode",
+								"selected_status_is_not_valid_for_the_destination_project",
+								"slack_integration_not_found",
+								"source_task_not_found",
+								"sourcetaskid_is_required",
+								"start_date_cannot_be_after_due_date_please_adjust_the_date_range",
+								"start_time_cannot_be_after_end_time_please_adjust_the_time_range",
+								"status_value_is_required",
+								"stored_telegram_integration_configuration_is_invalid",
+								"target_task_not_found",
+								"task_is_already_in_that_project",
+								"task_not_found",
+								"task_relation_not_found",
+								"tasks_can_only_be_moved_within_the_same_workspace",
+								"telegram_integration_not_found",
+								"the_time_range_is_too_long_to_record",
+								"this_relation_already_exists",
+								"this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and",
+								"time_entry_not_found",
+								"unauthorized",
+								"unknown_bulk_operation",
+								"unknown_plan",
+								"use_the_task_move_endpoint_to_move_tasks_between_projects",
+								"value_is_required_for_this_operation",
+								"webhook_notifications_require_an_endpoint_url",
+								"workflow_rule_not_found",
+								"workspace_already_has_an_active_subscription",
+								"workspace_id_could_not_be_determined",
+								"workspace_not_found",
+								"workspace_notification_rule_not_found",
+								"workspaceid_not_set_in_context",
+								"you_don_t_have_access_to_this_workspace",
+								"requirement_not_found",
+								"acceptance_item_not_found"
+							]
 						}
 					},
 					"required": [
@@ -311,7 +914,8 @@
 						"viewDeploymentGuide",
 						"refreshPage",
 						"messages",
-						"troubleshootingSteps"
+						"troubleshootingSteps",
+						"codes"
 					]
 				},
 				"formats": {
@@ -515,6 +1119,15 @@
 								"createButton": {
 									"type": "string"
 								},
+								"discardTitle": {
+									"type": "string"
+								},
+								"discardDescription": {
+									"type": "string"
+								},
+								"discardButton": {
+									"type": "string"
+								},
 								"untitledTask": {
 									"type": "string"
 								},
@@ -593,12 +1206,28 @@
 								"labelCreateError",
 								"createMore",
 								"createButton",
+								"discardTitle",
+								"discardDescription",
+								"discardButton",
 								"untitledTask",
 								"labelColors"
 							]
 						}
 					},
 					"required": ["createProject", "createWorkspace", "createTask"]
+				},
+				"demoAlert": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"message": {
+							"type": "string"
+						},
+						"deployYourOwn": {
+							"type": "string"
+						}
+					},
+					"required": ["message", "deployYourOwn"]
 				}
 			},
 			"required": [
@@ -613,7 +1242,8 @@
 				"people",
 				"error",
 				"formats",
-				"modals"
+				"modals",
+				"demoAlert"
 			]
 		},
 		"auth": {
@@ -1311,6 +1941,166 @@
 						"toast",
 						"validation"
 					]
+				},
+				"device": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pageTitle": {
+							"type": "string"
+						},
+						"subtitle": {
+							"type": "string"
+						},
+						"codePlaceholder": {
+							"type": "string"
+						},
+						"continue": {
+							"type": "string"
+						},
+						"enterCodeError": {
+							"type": "string"
+						},
+						"invalidCodeError": {
+							"type": "string"
+						},
+						"approveTitle": {
+							"type": "string"
+						},
+						"checkingSession": {
+							"type": "string"
+						},
+						"noCodeSubtitle": {
+							"type": "string"
+						},
+						"enterCode": {
+							"type": "string"
+						},
+						"signInTitle": {
+							"type": "string"
+						},
+						"signInSubtitle": {
+							"type": "string"
+						},
+						"signIn": {
+							"type": "string"
+						},
+						"approveSubtitle": {
+							"type": "string"
+						},
+						"approve": {
+							"type": "string"
+						},
+						"deny": {
+							"type": "string"
+						},
+						"connected": {
+							"type": "string"
+						},
+						"couldNotApprove": {
+							"type": "string"
+						},
+						"couldNotDeny": {
+							"type": "string"
+						},
+						"cancelled": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"pageTitle",
+						"subtitle",
+						"codePlaceholder",
+						"continue",
+						"enterCodeError",
+						"invalidCodeError",
+						"approveTitle",
+						"checkingSession",
+						"noCodeSubtitle",
+						"enterCode",
+						"signInTitle",
+						"signInSubtitle",
+						"signIn",
+						"approveSubtitle",
+						"approve",
+						"deny",
+						"connected",
+						"couldNotApprove",
+						"couldNotDeny",
+						"cancelled"
+					]
+				},
+				"mcpAuthorize": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"failedTitle": {
+							"type": "string"
+						},
+						"failedSubtitle": {
+							"type": "string"
+						},
+						"returnToClient": {
+							"type": "string"
+						},
+						"authorizeTitle": {
+							"type": "string"
+						},
+						"loadingSubtitle": {
+							"type": "string"
+						},
+						"checkingRequest": {
+							"type": "string"
+						},
+						"signInTitle": {
+							"type": "string"
+						},
+						"signInSubtitle": {
+							"type": "string"
+						},
+						"signIn": {
+							"type": "string"
+						},
+						"reviewSubtitle": {
+							"type": "string"
+						},
+						"accessWarning": {
+							"type": "string"
+						},
+						"clientNameLabel": {
+							"type": "string"
+						},
+						"clientFallback": {
+							"type": "string"
+						},
+						"redirectUriLabel": {
+							"type": "string"
+						},
+						"approve": {
+							"type": "string"
+						},
+						"deny": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"failedTitle",
+						"failedSubtitle",
+						"returnToClient",
+						"authorizeTitle",
+						"loadingSubtitle",
+						"checkingRequest",
+						"signInTitle",
+						"signInSubtitle",
+						"signIn",
+						"reviewSubtitle",
+						"accessWarning",
+						"clientNameLabel",
+						"clientFallback",
+						"redirectUriLabel",
+						"approve",
+						"deny"
+					]
 				}
 			},
 			"required": [
@@ -1325,7 +2115,9 @@
 				"signUpForm",
 				"invitation",
 				"onboarding",
-				"profileSetup"
+				"profileSetup",
+				"device",
+				"mcpAuthorize"
 			]
 		},
 		"settings": {
@@ -5102,6 +5894,367 @@
 						"draft",
 						"open"
 					]
+				},
+				"billingPage": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"disabledDescription": {
+							"type": "string"
+						},
+						"subtitle": {
+							"type": "string"
+						},
+						"currentPlan": {
+							"type": "string"
+						},
+						"currentPlanSubtitle": {
+							"type": "string"
+						},
+						"foundingFree": {
+							"type": "string"
+						},
+						"freeBadge": {
+							"type": "string"
+						},
+						"foundingFreeDescription": {
+							"type": "string"
+						},
+						"cloudPlan": {
+							"type": "string"
+						},
+						"accessEnds": {
+							"type": "string"
+						},
+						"renews": {
+							"type": "string"
+						},
+						"billingPortalHint": {
+							"type": "string"
+						},
+						"manageBilling": {
+							"type": "string"
+						},
+						"opening": {
+							"type": "string"
+						},
+						"trialEnded": {
+							"type": "string"
+						},
+						"freeTrial": {
+							"type": "string"
+						},
+						"trialEndedDescription": {
+							"type": "string"
+						},
+						"trialDaysLeft_one": {
+							"type": "string"
+						},
+						"trialDaysLeft_zero": {
+							"type": "string"
+						},
+						"trialDaysLeft_two": {
+							"type": "string"
+						},
+						"trialDaysLeft_few": {
+							"type": "string"
+						},
+						"trialDaysLeft_many": {
+							"type": "string"
+						},
+						"trialDaysLeft_other": {
+							"type": "string"
+						},
+						"choosePlanAfterTrial": {
+							"type": "string"
+						},
+						"choosePlan": {
+							"type": "string"
+						},
+						"choosePlanSubtitle": {
+							"type": "string"
+						},
+						"intervalMonthly": {
+							"type": "string"
+						},
+						"intervalAnnual": {
+							"type": "string"
+						},
+						"twoMonthsFree": {
+							"type": "string"
+						},
+						"mostPopular": {
+							"type": "string"
+						},
+						"chooseButton": {
+							"type": "string"
+						},
+						"starting": {
+							"type": "string"
+						},
+						"checkoutNote": {
+							"type": "string"
+						},
+						"checkoutAdminOnly": {
+							"type": "string"
+						},
+						"seats_one": {
+							"type": "string"
+						},
+						"seats_zero": {
+							"type": "string"
+						},
+						"seats_two": {
+							"type": "string"
+						},
+						"seats_few": {
+							"type": "string"
+						},
+						"seats_many": {
+							"type": "string"
+						},
+						"seats_other": {
+							"type": "string"
+						},
+						"status": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"active": {
+									"type": "string"
+								},
+								"trialing": {
+									"type": "string"
+								},
+								"past_due": {
+									"type": "string"
+								},
+								"scheduled_cancel": {
+									"type": "string"
+								},
+								"canceled": {
+									"type": "string"
+								},
+								"expired": {
+									"type": "string"
+								},
+								"paused": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"active",
+								"trialing",
+								"past_due",
+								"scheduled_cancel",
+								"canceled",
+								"expired",
+								"paused"
+							]
+						},
+						"plans": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"personal": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"tagline": {
+											"type": "string"
+										},
+										"featureSingleUser": {
+											"type": "string"
+										},
+										"featureUnlimited": {
+											"type": "string"
+										},
+										"featureBackups": {
+											"type": "string"
+										},
+										"featureSupport": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"name",
+										"tagline",
+										"featureSingleUser",
+										"featureUnlimited",
+										"featureBackups",
+										"featureSupport"
+									]
+								},
+								"team": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"tagline": {
+											"type": "string"
+										},
+										"featureMembers": {
+											"type": "string"
+										},
+										"featureUnlimited": {
+											"type": "string"
+										},
+										"featureRoles": {
+											"type": "string"
+										},
+										"featureBackups": {
+											"type": "string"
+										},
+										"featureSupport": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"name",
+										"tagline",
+										"featureMembers",
+										"featureUnlimited",
+										"featureRoles",
+										"featureBackups",
+										"featureSupport"
+									]
+								}
+							},
+							"required": ["personal", "team"]
+						},
+						"price": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"perMonth": {
+									"type": "string"
+								},
+								"perYear": {
+									"type": "string"
+								},
+								"perUserPerMonth": {
+									"type": "string"
+								},
+								"perUserPerYear": {
+									"type": "string"
+								},
+								"billedMonthly": {
+									"type": "string"
+								},
+								"personalAnnualNote": {
+									"type": "string"
+								},
+								"teamAnnualNote": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"perMonth",
+								"perYear",
+								"perUserPerMonth",
+								"perUserPerYear",
+								"billedMonthly",
+								"personalAnnualNote",
+								"teamAnnualNote"
+							]
+						},
+						"trialCard": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"trialEnded": {
+									"type": "string"
+								},
+								"daysLeft_one": {
+									"type": "string"
+								},
+								"daysLeft_zero": {
+									"type": "string"
+								},
+								"daysLeft_two": {
+									"type": "string"
+								},
+								"daysLeft_few": {
+									"type": "string"
+								},
+								"daysLeft_many": {
+									"type": "string"
+								},
+								"daysLeft_other": {
+									"type": "string"
+								},
+								"subscribePrompt": {
+									"type": "string"
+								},
+								"upgradePrompt": {
+									"type": "string"
+								},
+								"choosePlan": {
+									"type": "string"
+								},
+								"viewPlans": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"trialEnded",
+								"subscribePrompt",
+								"upgradePrompt",
+								"choosePlan",
+								"viewPlans"
+							]
+						},
+						"toastCheckoutFailed": {
+							"type": "string"
+						},
+						"toastPortalFailed": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"disabledDescription",
+						"subtitle",
+						"currentPlan",
+						"currentPlanSubtitle",
+						"foundingFree",
+						"freeBadge",
+						"foundingFreeDescription",
+						"cloudPlan",
+						"accessEnds",
+						"renews",
+						"billingPortalHint",
+						"manageBilling",
+						"opening",
+						"trialEnded",
+						"freeTrial",
+						"trialEndedDescription",
+						"choosePlanAfterTrial",
+						"choosePlan",
+						"choosePlanSubtitle",
+						"intervalMonthly",
+						"intervalAnnual",
+						"twoMonthsFree",
+						"mostPopular",
+						"chooseButton",
+						"starting",
+						"checkoutNote",
+						"checkoutAdminOnly",
+						"status",
+						"plans",
+						"price",
+						"trialCard",
+						"toastCheckoutFailed",
+						"toastPortalFailed"
+					]
 				}
 			},
 			"required": [
@@ -5134,7 +6287,8 @@
 				"repositoryBrowser",
 				"tasksImportExport",
 				"workflowEditor",
-				"externalLinks"
+				"externalLinks",
+				"billingPage"
 			]
 		},
 		"navigation": {
@@ -5355,9 +6509,12 @@
 						},
 						"back": {
 							"type": "string"
+						},
+						"openSettingsMenu": {
+							"type": "string"
 						}
 					},
-					"required": ["toggleSidebar", "back"]
+					"required": ["toggleSidebar", "back", "openSettingsMenu"]
 				},
 				"userMenu": {
 					"type": "object",
@@ -7589,6 +8746,9 @@
 						"searchPlaceholder": {
 							"type": "string"
 						},
+						"jumpToToday": {
+							"type": "string"
+						},
 						"hideTasks": {
 							"type": "string"
 						},
@@ -7627,6 +8787,7 @@
 						"pageTitle",
 						"title",
 						"searchPlaceholder",
+						"jumpToToday",
 						"hideTasks",
 						"showTasks",
 						"noTasks",
@@ -7849,9 +9010,12 @@
 						},
 						"delete": {
 							"type": "string"
+						},
+						"duplicate": {
+							"type": "string"
 						}
 					},
-					"required": ["archive", "markAsPlanned", "delete"]
+					"required": ["archive", "markAsPlanned", "delete", "duplicate"]
 				},
 				"bulk": {
 					"type": "object",
@@ -8176,6 +9340,107 @@
 						}
 					},
 					"required": ["table"]
+				},
+				"duplicate": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"success": {
+							"type": "string"
+						},
+						"error": {
+							"type": "string"
+						}
+					},
+					"required": ["success", "error"]
+				},
+				"time": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"empty": {
+							"type": "string"
+						},
+						"add": {
+							"type": "string"
+						},
+						"descriptionPlaceholder": {
+							"type": "string"
+						},
+						"addSuccess": {
+							"type": "string"
+						},
+						"addError": {
+							"type": "string"
+						},
+						"deleteSuccess": {
+							"type": "string"
+						},
+						"deleteError": {
+							"type": "string"
+						},
+						"deleteAria": {
+							"type": "string"
+						},
+						"startRequired": {
+							"type": "string"
+						},
+						"endAfterStart": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"empty",
+						"add",
+						"descriptionPlaceholder",
+						"addSuccess",
+						"addError",
+						"deleteSuccess",
+						"deleteError",
+						"deleteAria",
+						"startRequired",
+						"endAfterStart"
+					]
+				},
+				"requirement": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"none": {
+							"type": "string"
+						},
+						"open": {
+							"type": "string"
+						},
+						"searchPlaceholder": {
+							"type": "string"
+						},
+						"empty": {
+							"type": "string"
+						},
+						"unlink": {
+							"type": "string"
+						},
+						"updateError": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"none",
+						"open",
+						"searchPlaceholder",
+						"empty",
+						"unlink",
+						"updateError"
+					]
 				}
 			},
 			"required": [
@@ -8208,7 +9473,10 @@
 				"contextMenu",
 				"actions",
 				"bulk",
-				"editor"
+				"editor",
+				"duplicate",
+				"time",
+				"requirement"
 			]
 		},
 		"invitations": {
@@ -8552,9 +9820,106 @@
 						"success",
 						"error"
 					]
+				},
+				"overview": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pageTitle": {
+							"type": "string"
+						},
+						"totalTasks": {
+							"type": "string"
+						},
+						"completedTasks": {
+							"type": "string"
+						},
+						"overdueTasks": {
+							"type": "string"
+						},
+						"dueSoonTasks": {
+							"type": "string"
+						},
+						"projectsTitle": {
+							"type": "string"
+						},
+						"projectColumn": {
+							"type": "string"
+						},
+						"tasksColumn": {
+							"type": "string"
+						},
+						"progressColumn": {
+							"type": "string"
+						},
+						"assigneesTitle": {
+							"type": "string"
+						},
+						"openTasks": {
+							"type": "string"
+						},
+						"openTasks_zero": {
+							"type": "string"
+						},
+						"openTasks_one": {
+							"type": "string"
+						},
+						"openTasks_two": {
+							"type": "string"
+						},
+						"openTasks_few": {
+							"type": "string"
+						},
+						"openTasks_many": {
+							"type": "string"
+						},
+						"openTasks_other": {
+							"type": "string"
+						},
+						"emptyTitle": {
+							"type": "string"
+						},
+						"emptyDescription": {
+							"type": "string"
+						},
+						"loadError": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"pageTitle",
+						"totalTasks",
+						"completedTasks",
+						"overdueTasks",
+						"dueSoonTasks",
+						"projectsTitle",
+						"projectColumn",
+						"tasksColumn",
+						"progressColumn",
+						"assigneesTitle",
+						"emptyTitle",
+						"emptyDescription",
+						"loadError"
+					]
+				},
+				"myTasks": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pageTitle": {
+							"type": "string"
+						},
+						"emptyTitle": {
+							"type": "string"
+						},
+						"emptyDescription": {
+							"type": "string"
+						}
+					},
+					"required": ["pageTitle", "emptyTitle", "emptyDescription"]
 				}
 			},
-			"required": ["projects", "search", "create"]
+			"required": ["projects", "search", "create", "overview", "myTasks"]
 		},
 		"team": {
 			"type": "object",
@@ -8918,6 +10283,642 @@
 				"copyUrl",
 				"branding"
 			]
+		},
+		"requirements": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"pageTitle": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"subtitle": {
+					"type": "string"
+				},
+				"new": {
+					"type": "string"
+				},
+				"newChild": {
+					"type": "string"
+				},
+				"searchPlaceholder": {
+					"type": "string"
+				},
+				"emptyTitle": {
+					"type": "string"
+				},
+				"emptyDescription": {
+					"type": "string"
+				},
+				"emptyFiltered": {
+					"type": "string"
+				},
+				"fields": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"status": {
+							"type": "string"
+						},
+						"priority": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"source": {
+							"type": "string"
+						},
+						"module": {
+							"type": "string"
+						},
+						"assignee": {
+							"type": "string"
+						},
+						"expectedDate": {
+							"type": "string"
+						},
+						"projects": {
+							"type": "string"
+						},
+						"parent": {
+							"type": "string"
+						},
+						"topLevel": {
+							"type": "string"
+						},
+						"unassigned": {
+							"type": "string"
+						},
+						"noDate": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"description",
+						"status",
+						"priority",
+						"type",
+						"source",
+						"module",
+						"assignee",
+						"expectedDate",
+						"projects",
+						"parent",
+						"topLevel",
+						"unassigned",
+						"noDate"
+					]
+				},
+				"status": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pending_review": {
+							"type": "string"
+						},
+						"reviewed": {
+							"type": "string"
+						},
+						"in_development": {
+							"type": "string"
+						},
+						"completed": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"pending_review",
+						"reviewed",
+						"in_development",
+						"completed"
+					]
+				},
+				"priority": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"P0": {
+							"type": "string"
+						},
+						"P1": {
+							"type": "string"
+						},
+						"P2": {
+							"type": "string"
+						},
+						"P3": {
+							"type": "string"
+						},
+						"P4": {
+							"type": "string"
+						}
+					},
+					"required": ["P0", "P1", "P2", "P3", "P4"]
+				},
+				"type": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"feature": {
+							"type": "string"
+						},
+						"optimization": {
+							"type": "string"
+						},
+						"bug": {
+							"type": "string"
+						},
+						"tech_improvement": {
+							"type": "string"
+						}
+					},
+					"required": ["feature", "optimization", "bug", "tech_improvement"]
+				},
+				"source": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"customer_feedback": {
+							"type": "string"
+						},
+						"internal_plan": {
+							"type": "string"
+						},
+						"operational": {
+							"type": "string"
+						}
+					},
+					"required": ["customer_feedback", "internal_plan", "operational"]
+				},
+				"filters": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"all": {
+							"type": "string"
+						},
+						"status": {
+							"type": "string"
+						},
+						"priority": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string"
+						},
+						"project": {
+							"type": "string"
+						},
+						"assignee": {
+							"type": "string"
+						},
+						"clear": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"all",
+						"status",
+						"priority",
+						"type",
+						"project",
+						"assignee",
+						"clear"
+					]
+				},
+				"form": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"createTitle": {
+							"type": "string"
+						},
+						"createChildTitle": {
+							"type": "string"
+						},
+						"editTitle": {
+							"type": "string"
+						},
+						"titlePlaceholder": {
+							"type": "string"
+						},
+						"descriptionPlaceholder": {
+							"type": "string"
+						},
+						"parentPlaceholder": {
+							"type": "string"
+						},
+						"projectPlaceholder": {
+							"type": "string"
+						},
+						"submit": {
+							"type": "string"
+						},
+						"save": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"createTitle",
+						"createChildTitle",
+						"editTitle",
+						"titlePlaceholder",
+						"descriptionPlaceholder",
+						"parentPlaceholder",
+						"projectPlaceholder",
+						"submit",
+						"save"
+					]
+				},
+				"actions": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"edit": {
+							"type": "string"
+						},
+						"delete": {
+							"type": "string"
+						},
+						"move": {
+							"type": "string"
+						},
+						"addChild": {
+							"type": "string"
+						},
+						"cancel": {
+							"type": "string"
+						},
+						"save": {
+							"type": "string"
+						}
+					},
+					"required": ["edit", "delete", "move", "addChild", "cancel", "save"]
+				},
+				"move": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"toRoot": {
+							"type": "string"
+						},
+						"submit": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "description", "toRoot", "submit"]
+				},
+				"acceptance": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"add": {
+							"type": "string"
+						},
+						"empty": {
+							"type": "string"
+						},
+						"criterionPlaceholder": {
+							"type": "string"
+						},
+						"notePlaceholder": {
+							"type": "string"
+						},
+						"markPassed": {
+							"type": "string"
+						},
+						"markFailed": {
+							"type": "string"
+						},
+						"reset": {
+							"type": "string"
+						},
+						"verifiedBy": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"add",
+						"empty",
+						"criterionPlaceholder",
+						"notePlaceholder",
+						"markPassed",
+						"markFailed",
+						"reset",
+						"verifiedBy"
+					]
+				},
+				"acceptanceStatus": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pending": {
+							"type": "string"
+						},
+						"passed": {
+							"type": "string"
+						},
+						"failed": {
+							"type": "string"
+						}
+					},
+					"required": ["pending", "passed", "failed"]
+				},
+				"detail": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"children": {
+							"type": "string"
+						},
+						"noChildren": {
+							"type": "string"
+						},
+						"selectPrompt": {
+							"type": "string"
+						},
+						"createdBy": {
+							"type": "string"
+						}
+					},
+					"required": ["children", "noChildren", "selectPrompt", "createdBy"]
+				},
+				"deleteDialog": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"confirm": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "description", "confirm"]
+				},
+				"toast": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"created": {
+							"type": "string"
+						},
+						"updated": {
+							"type": "string"
+						},
+						"deleted": {
+							"type": "string"
+						},
+						"moved": {
+							"type": "string"
+						},
+						"statusUpdated": {
+							"type": "string"
+						},
+						"acceptanceAdded": {
+							"type": "string"
+						},
+						"acceptanceRemoved": {
+							"type": "string"
+						},
+						"error": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"created",
+						"updated",
+						"deleted",
+						"moved",
+						"statusUpdated",
+						"acceptanceAdded",
+						"acceptanceRemoved",
+						"error"
+					]
+				},
+				"errors": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"hasChildren": {
+							"type": "string"
+						},
+						"cycle": {
+							"type": "string"
+						},
+						"titleRequired": {
+							"type": "string"
+						}
+					},
+					"required": ["hasChildren", "cycle", "titleRequired"]
+				},
+				"tasks": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"progress": {
+							"type": "string"
+						},
+						"empty": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "progress", "empty"]
+				},
+				"documents": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"new": {
+							"type": "string"
+						},
+						"empty": {
+							"type": "string"
+						},
+						"createTitle": {
+							"type": "string"
+						},
+						"createDescription": {
+							"type": "string"
+						},
+						"titleLabel": {
+							"type": "string"
+						},
+						"titlePlaceholder": {
+							"type": "string"
+						},
+						"createConfirm": {
+							"type": "string"
+						},
+						"created": {
+							"type": "string"
+						},
+						"createError": {
+							"type": "string"
+						},
+						"versionBadge": {
+							"type": "string"
+						},
+						"versionTotal": {
+							"type": "string"
+						},
+						"current": {
+							"type": "string"
+						},
+						"history": {
+							"type": "string"
+						},
+						"rename": {
+							"type": "string"
+						},
+						"renamed": {
+							"type": "string"
+						},
+						"deleteTitle": {
+							"type": "string"
+						},
+						"deleteDescription": {
+							"type": "string"
+						},
+						"deleteConfirm": {
+							"type": "string"
+						},
+						"deleted": {
+							"type": "string"
+						},
+						"saveError": {
+							"type": "string"
+						},
+						"savedAsVersion": {
+							"type": "string"
+						},
+						"noChanges": {
+							"type": "string"
+						},
+						"restored": {
+							"type": "string"
+						},
+						"viewingPastVersion": {
+							"type": "string"
+						},
+						"compareWithCurrent": {
+							"type": "string"
+						},
+						"restore": {
+							"type": "string"
+						},
+						"backToCurrent": {
+							"type": "string"
+						},
+						"emptyBody": {
+							"type": "string"
+						},
+						"editorPlaceholder": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"new",
+						"empty",
+						"createTitle",
+						"createDescription",
+						"titleLabel",
+						"titlePlaceholder",
+						"createConfirm",
+						"created",
+						"createError",
+						"versionBadge",
+						"versionTotal",
+						"current",
+						"history",
+						"rename",
+						"renamed",
+						"deleteTitle",
+						"deleteDescription",
+						"deleteConfirm",
+						"deleted",
+						"saveError",
+						"savedAsVersion",
+						"noChanges",
+						"restored",
+						"viewingPastVersion",
+						"compareWithCurrent",
+						"restore",
+						"backToCurrent",
+						"emptyBody",
+						"editorPlaceholder"
+					]
+				},
+				"tree": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"documents": {
+							"type": "string"
+						}
+					},
+					"required": ["documents"]
+				}
+			},
+			"required": [
+				"pageTitle",
+				"title",
+				"subtitle",
+				"new",
+				"newChild",
+				"searchPlaceholder",
+				"emptyTitle",
+				"emptyDescription",
+				"emptyFiltered",
+				"fields",
+				"status",
+				"priority",
+				"type",
+				"source",
+				"filters",
+				"form",
+				"actions",
+				"move",
+				"acceptance",
+				"acceptanceStatus",
+				"detail",
+				"deleteDialog",
+				"toast",
+				"errors",
+				"tasks",
+				"documents",
+				"tree"
+			]
 		}
 	},
 	"required": [
@@ -8931,6 +10932,7 @@
 		"invitations",
 		"workspace",
 		"team",
-		"publicProject"
+		"publicProject",
+		"requirements"
 	]
 }

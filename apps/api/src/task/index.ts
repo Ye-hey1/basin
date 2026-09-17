@@ -1,5 +1,4 @@
 import { eq } from "drizzle-orm";
-import { HTTPException } from "hono/http-exception";
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
 import db from "../database";
 import {
@@ -21,6 +20,7 @@ import {
   isImageContentType,
   validateTaskAssetUploadInput,
 } from "../storage/s3";
+import { httpError } from "../utils/http-error";
 import { normalizeApiServerUrl } from "../utils/openapi-spec";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import {
@@ -31,6 +31,7 @@ import { workspaceAccess } from "../utils/workspace-access-middleware";
 import bulkUpdateTasks from "./controllers/bulk-update-tasks";
 import createTask from "./controllers/create-task";
 import deleteTask from "./controllers/delete-task";
+import duplicateTask from "./controllers/duplicate-task";
 import exportTasks from "./controllers/export-tasks";
 import getTask from "./controllers/get-task";
 import getTasks from "./controllers/get-tasks";
@@ -46,6 +47,7 @@ import updateTaskAssignee from "./controllers/update-task-assignee";
 import updateTaskDescription from "./controllers/update-task-description";
 import updateTaskDueDate from "./controllers/update-task-due-date";
 import updateTaskPriority from "./controllers/update-task-priority";
+import updateTaskRequirement from "./controllers/update-task-requirement";
 import updateTaskStatus from "./controllers/update-task-status";
 import updateTaskTitle from "./controllers/update-task-title";
 import {
@@ -75,6 +77,7 @@ import {
   updatePriorityBody,
   updateStatusBody,
   updateTaskBody,
+  updateTaskRequirementBody,
   updateTitleBody,
 } from "./schema";
 
@@ -90,9 +93,8 @@ const listTasksRoute = createRoute({
   request: { params: projectIdParam, query: listTasksQuery },
   responses: {
     200: jsonResponse("The project board", boardSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -150,7 +152,8 @@ const createTaskRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created task", taskSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing task:create permission",
     ),
@@ -168,9 +171,8 @@ const getTaskRoute = createRoute({
   request: { params: taskParam },
   responses: {
     200: jsonResponse("Task details", taskWithAssigneeSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
     403: errorResponse("No access to the task's workspace"),
   },
 });
@@ -200,7 +202,7 @@ const moveTaskRoute = createRoute({
       "The moved task, with both project ids",
       moveTaskResultSchema,
     ),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -231,7 +233,8 @@ const updateTaskRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update or task:assign permission",
     ),
@@ -250,9 +253,8 @@ const exportTasksRoute = createRoute({
   request: { params: projectIdParam },
   responses: {
     200: jsonResponse("The exported project and tasks", taskExportSchema),
-    400: errorResponse(
-      "Unknown project, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown project"),
     403: errorResponse("No access to the project's workspace"),
   },
 });
@@ -279,7 +281,8 @@ const importTasksRoute = createRoute({
   },
   responses: {
     200: jsonResponse("Per-task import outcome", taskImportResultSchema),
-    400: errorResponse("Invalid body, or unknown project"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown project"),
     403: errorResponse(
       "No workspace access, or missing task:create permission",
     ),
@@ -301,11 +304,34 @@ const deleteTaskRoute = createRoute({
   request: { params: taskParam },
   responses: {
     200: jsonResponse("The deleted task", taskSchema),
-    400: errorResponse(
-      "Unknown task, or its workspace could not be determined",
-    ),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:delete permission",
+    ),
+  },
+});
+
+const duplicateTaskRoute = createRoute({
+  method: "post",
+  operationId: "duplicateTask",
+  path: "/{id}/duplicate",
+  tags: ["Tasks"],
+  summary: "Duplicate task",
+  description:
+    "Create a copy of a task in the same project and column, keeping its description, dates, assignee, and labels.",
+  middleware: [
+    workspaceAccess.fromTask(),
+    requireWorkspacePermission({ task: ["create"] }),
+    requireEntitlement,
+  ] as const,
+  request: { params: taskParam },
+  responses: {
+    200: jsonResponse("The duplicated task", taskSchema),
+    400: errorResponse("The workspace could not be determined"),
+    404: errorResponse("Unknown task"),
+    403: errorResponse(
+      "No workspace access, or missing task:create permission",
     ),
   },
 });
@@ -331,7 +357,8 @@ const updateTaskStatusRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -359,13 +386,45 @@ const updateTaskPriorityRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid priority, or unknown task"),
+    400: errorResponse("Invalid priority"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
   },
 });
 
+const updateTaskRequirementRoute = createRoute({
+  method: "put",
+  operationId: "updateTaskRequirement",
+  path: "/requirement/{id}",
+  tags: ["Tasks"],
+  summary: "Link or unlink a requirement",
+  description:
+    "Point a task at a requirement in the same workspace, or send null to unlink it. Separate from the general update route because the requirement link is orthogonal to the board fields and is edited from the task's planning section.",
+  middleware: [
+    workspaceAccess.fromTask(),
+    requireWorkspacePermission({ task: ["update"] }),
+    requireEntitlement,
+  ] as const,
+  request: {
+    params: taskParam,
+    body: {
+      required: true,
+      content: { "application/json": { schema: updateTaskRequirementBody } },
+    },
+  },
+  responses: {
+    200: jsonResponse("The updated task", taskSchema),
+    400: errorResponse("Invalid body"),
+    403: errorResponse(
+      "No workspace access, or missing task:update permission",
+    ),
+    404: errorResponse(
+      "Unknown task, or the requirement does not exist in the task's workspace",
+    ),
+  },
+});
 const updateTaskAssigneeRoute = createRoute({
   method: "put",
   operationId: "updateTaskAssignee",
@@ -388,11 +447,13 @@ const updateTaskAssigneeRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
     403: errorResponse(
       "No workspace access, or missing task:assign permission",
     ),
-    404: errorResponse("Assignee is not a member of the workspace"),
+    404: errorResponse(
+      "Unknown task, or the assignee is not a member of the workspace",
+    ),
   },
 });
 
@@ -417,7 +478,8 @@ const updateTaskDueDateRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid date, or unknown task"),
+    400: errorResponse("Invalid date"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -445,7 +507,8 @@ const updateTaskTitleRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -536,7 +599,8 @@ const updateTaskDescriptionRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The updated task", taskSchema),
-    400: errorResponse("Invalid body, or unknown task"),
+    400: errorResponse("Invalid body"),
+    404: errorResponse("Unknown task"),
     403: errorResponse(
       "No workspace access, or missing task:update permission",
     ),
@@ -557,7 +621,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
     const userId = c.get("userId");
 
     if (!userId) {
-      throw new HTTPException(401, { message: "Unauthorized" });
+      throw httpError(401, "unauthorized", "Unauthorized");
     }
 
     if (
@@ -565,9 +629,11 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       operation !== "updateDueDate" &&
       value === undefined
     ) {
-      throw new HTTPException(400, {
-        message: "Value is required for this operation",
-      });
+      throw httpError(
+        400,
+        "value_is_required_for_this_operation",
+        "Value is required for this operation",
+      );
     }
 
     const result = await bulkUpdateTasks({
@@ -581,8 +647,17 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
   })
   .openapi(createTaskRoute, async (c) => {
     const { projectId } = c.req.param();
-    const { title, description, startDate, dueDate, priority, status, userId } =
-      c.req.valid("json");
+    const {
+      title,
+      description,
+      startDate,
+      dueDate,
+      priority,
+      status,
+      userId,
+      requirementId,
+      customFields,
+    } = c.req.valid("json");
 
     const parsedStartDate =
       startDate !== undefined
@@ -605,6 +680,8 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       dueDate: parsedDueDate,
       priority,
       status,
+      requirementId,
+      customFields,
     });
 
     return c.json(task, 200);
@@ -697,12 +774,33 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
 
     return c.json(task, 200);
   })
+  .openapi(duplicateTaskRoute, async (c) => {
+    const { id } = c.req.valid("param");
+
+    const currentUserId = c.get("userId");
+    const task = await duplicateTask({ taskId: id, currentUserId });
+
+    return c.json(task, 200);
+  })
   .openapi(updateTaskStatusRoute, async (c) => {
     const { id } = c.req.valid("param");
     const { status } = c.req.valid("json");
     const currentUserId = c.get("userId");
 
     const task = await updateTaskStatus({ id, status, currentUserId });
+
+    return c.json(task, 200);
+  })
+  .openapi(updateTaskRequirementRoute, async (c) => {
+    const { id } = c.req.valid("param");
+    const { requirementId } = c.req.valid("json");
+    const currentUserId = c.get("userId");
+
+    const task = await updateTaskRequirement({
+      id,
+      requirementId,
+      currentUserId,
+    });
 
     return c.json(task, 200);
   })
@@ -753,12 +851,11 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
     try {
       validateTaskAssetUploadInput(contentType, size);
     } catch (error) {
-      throw new HTTPException(400, {
-        message:
-          error instanceof Error
-            ? error.message
-            : "Invalid image upload request",
-      });
+      throw httpError(
+        400,
+        "invalid_image_upload",
+        error instanceof Error ? error.message : "Invalid image upload request",
+      );
     }
 
     const [taskContext] = await db
@@ -777,7 +874,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       .limit(1);
 
     if (!taskContext) {
-      throw new HTTPException(404, { message: "Task not found" });
+      throw httpError(404, "task_not_found", "Task not found");
     }
 
     try {
@@ -792,12 +889,13 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
 
       return c.json(upload, 200);
     } catch (error) {
-      throw new HTTPException(503, {
-        message:
-          error instanceof Error
-            ? error.message
-            : "Image uploads are not configured",
-      });
+      throw httpError(
+        503,
+        "image_uploads_not_configured",
+        error instanceof Error
+          ? error.message
+          : "Image uploads are not configured",
+      );
     }
   })
   .openapi(finalizeTaskImageUploadRoute, async (c) => {
@@ -808,12 +906,11 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
     try {
       validateTaskAssetUploadInput(contentType, size);
     } catch (error) {
-      throw new HTTPException(400, {
-        message:
-          error instanceof Error
-            ? error.message
-            : "Invalid image upload request",
-      });
+      throw httpError(
+        400,
+        "invalid_image_upload",
+        error instanceof Error ? error.message : "Invalid image upload request",
+      );
     }
 
     const [taskContext] = await db
@@ -832,7 +929,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
       .limit(1);
 
     if (!taskContext) {
-      throw new HTTPException(404, { message: "Task not found" });
+      throw httpError(404, "task_not_found", "Task not found");
     }
 
     const normalizedKey = key.trim();
@@ -844,9 +941,11 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
         surface,
       })
     ) {
-      throw new HTTPException(400, {
-        message: "Image upload key does not match the task context.",
-      });
+      throw httpError(
+        400,
+        "image_upload_key_does_not_match_the_task_context",
+        "Image upload key does not match the task context.",
+      );
     }
 
     const [existingAsset] = await db
@@ -892,9 +991,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
           });
 
     if (!asset) {
-      throw new HTTPException(500, {
-        message: "Failed to save asset",
-      });
+      throw httpError(500, "failed_to_save_asset", "Failed to save asset");
     }
 
     const apiBaseUrl = normalizeApiServerUrl(

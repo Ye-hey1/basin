@@ -12,6 +12,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
 } from "@/components/ui/context-menu";
+import { useDuplicateTask } from "@/hooks/mutations/task/use-duplicate-task";
 import { useUpdateTask } from "@/hooks/mutations/task/use-update-task";
 import { useUpdateTaskAssignee } from "@/hooks/mutations/task/use-update-task-assignee";
 import { useUpdateTaskDescription } from "@/hooks/mutations/task/use-update-task-description";
@@ -23,6 +24,7 @@ import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import { useGetActiveWorkspaceUsers } from "@/hooks/queries/workspace-users/use-get-active-workspace-users";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getColumnIcon } from "@/lib/column";
+import { translateApiError } from "@/lib/error-handler";
 import { generateLink } from "@/lib/generate-link";
 import { getInitials } from "@/lib/get-initials";
 import { getPriorityLabel } from "@/lib/i18n/domain";
@@ -68,6 +70,7 @@ export default function TaskCardContextMenuContent({
     taskCardContext.worskpaceId,
   );
   const { mutateAsync: updateTask } = useUpdateTask();
+  const { mutateAsync: duplicateTask } = useDuplicateTask();
   const { mutateAsync: updateTaskPriority } = useUpdateTaskPriority();
   const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
   const { mutateAsync: updateTaskAssignee } = useUpdateTaskAssignee();
@@ -95,6 +98,18 @@ export default function TaskCardContextMenuContent({
 
     navigator.clipboard.writeText(taskLink);
     toast.success(t("tasks:contextMenu.copyLinkSuccess"));
+  };
+
+  const handleDuplicateClick = async () => {
+    try {
+      await duplicateTask(task);
+      toast.success(t("tasks:duplicate.success"));
+    } catch (error) {
+      toast.error(
+        translateApiError(error) ??
+          (error instanceof Error ? error.message : t("tasks:duplicate.error")),
+      );
+    }
   };
 
   const handleChange = async (field: keyof Task, value: string | Date) => {
@@ -301,17 +316,23 @@ export default function TaskCardContextMenuContent({
             <>
               <ContextMenuSeparator />
 
+              <ContextMenuItem onClick={handleDuplicateClick}>
+                <span>{t("tasks:actions.duplicate")}</span>
+              </ContextMenuItem>
+
               <ContextMenuItem
                 onClick={() => handleChange("status", "archived")}
               >
                 <span>{t("tasks:actions.archive")}</span>
               </ContextMenuItem>
 
-              <ContextMenuItem
-                onClick={() => handleChange("status", "planned")}
-              >
-                <span>{t("tasks:actions.markAsPlanned")}</span>
-              </ContextMenuItem>
+              {task.status !== "planned" && (
+                <ContextMenuItem
+                  onClick={() => handleChange("status", "planned")}
+                >
+                  <span>{t("tasks:actions.markAsPlanned")}</span>
+                </ContextMenuItem>
+              )}
             </>
           )}
 

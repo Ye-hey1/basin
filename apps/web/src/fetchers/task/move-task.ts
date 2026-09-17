@@ -1,4 +1,5 @@
 import { client } from "@kaneo/libs";
+import { HttpError } from "@/lib/http-error";
 
 async function moveTask({
   taskId,
@@ -18,19 +19,7 @@ async function moveTask({
   });
 
   if (!response.ok) {
-    let message: string;
-    try {
-      const json = await response.json();
-      message =
-        (json as { message?: string; error?: string }).message ||
-        (json as { error?: string }).error ||
-        JSON.stringify(json);
-    } catch {
-      message =
-        (await response.text().catch(() => "")) ||
-        `API error ${response.status}`;
-    }
-    throw new Error(message);
+    throw await HttpError.fromResponse(response, "Request failed");
   }
 
   return response.json();
