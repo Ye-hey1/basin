@@ -23,42 +23,6 @@ const messages = {
     ignore: "If you didn't request this, no changes will be made.",
     footer: "Kaneo security email",
   },
-  de: {
-    preview: "Setze dein Kaneo-Passwort zurueck",
-    title: "Passwort zuruecksetzen",
-    subtitleWithName: (name: string) =>
-      `Hallo ${name}, verwende die Schaltflaeche unten, um ein neues Passwort festzulegen.`,
-    subtitleDefault:
-      "Verwende die Schaltflaeche unten, um ein neues Passwort festzulegen.",
-    cta: "Passwort zuruecksetzen",
-    expiry: "Dieser Link laeuft in 1 Stunde ab.",
-    ignore:
-      "Wenn du das nicht angefordert hast, werden keine Aenderungen vorgenommen.",
-    footer: "Kaneo Sicherheits-E-Mail",
-  },
-  vi: {
-    preview: "Đặt lại mật khẩu Kaneo của bạn",
-    title: "Đặt lại mật khẩu",
-    subtitleWithName: (name: string) =>
-      `Chào ${name}, hãy dùng nút bên dưới để đặt mật khẩu mới.`,
-    subtitleDefault: "Hãy dùng nút bên dưới để đặt mật khẩu mới.",
-    cta: "Đặt lại mật khẩu",
-    expiry: "Liên kết đặt lại này sẽ hết hạn sau 1 giờ.",
-    ignore:
-      "Nếu bạn không yêu cầu điều này, sẽ không có thay đổi nào được thực hiện.",
-    footer: "Email bảo mật Kaneo",
-  },
-  ja: {
-    preview: "Kaneo のパスワードをリセット",
-    title: "パスワードのリセット",
-    subtitleWithName: (name: string) =>
-      `${name} さん、下のボタンから新しいパスワードを設定してください。`,
-    subtitleDefault: "下のボタンから新しいパスワードを設定してください。",
-    cta: "パスワードをリセット",
-    expiry: "このリンクの有効期限は1時間です。",
-    ignore: "心当たりがない場合は、変更は行われません。",
-    footer: "Kaneo セキュリティメール",
-  },
   zh: {
     preview: "重置你的 Kaneo 密码",
     title: "重置密码",

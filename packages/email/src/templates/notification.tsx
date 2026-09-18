@@ -20,25 +20,6 @@ const messages = {
     footer: "Kaneo notification",
     actionLabel: "Open in Kaneo",
   },
-  de: {
-    preview: "Du hast eine neue Kaneo-Benachrichtigung",
-    subtitle:
-      "Eine Benachrichtigung entspricht deinen Zustellungs-Einstellungen.",
-    footer: "Kaneo-Benachrichtigung",
-    actionLabel: "In Kaneo oeffnen",
-  },
-  vi: {
-    preview: "Bạn có thông báo mới từ Kaneo",
-    subtitle: "Một thông báo khớp với tùy chọn nhận thông báo của bạn.",
-    footer: "Thông báo Kaneo",
-    actionLabel: "Mở trong Kaneo",
-  },
-  ja: {
-    preview: "Kaneo の新しい通知",
-    subtitle: "配信設定に一致する通知がありました。",
-    footer: "Kaneo 通知",
-    actionLabel: "Kaneo で開く",
-  },
   zh: {
     preview: "你有一条新的 Kaneo 通知",
     subtitle: "有一条通知符合你的投递偏好。",

@@ -10,11 +10,11 @@ describe("OtpEmail", () => {
     expect(html).toContain("verification code");
   });
 
-  it("renders Japanese copy for a Japanese locale", async () => {
+  it("renders Chinese copy for a Chinese locale", async () => {
     const html = await render(
-      createElement(OtpEmail, { otp: "123456", locale: "ja-JP" }),
+      createElement(OtpEmail, { otp: "123456", locale: "zh-CN" }),
     );
-    expect(html).toContain("確認コード");
-    expect(html).toContain("Kaneo セキュリティメール");
+    expect(html).toContain("你的验证码");
+    expect(html).toContain("Kaneo 安全邮件");
   });
 });

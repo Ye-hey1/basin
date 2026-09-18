@@ -12,7 +12,7 @@ vi.mock("@i18n/resources", async () => {
   };
 });
 
-const { i18n, preloadNamespaces } = await import("./index");
+const { i18n, preloadNamespaces, resolveLocale } = await import("./index");
 const resources = await import("@i18n/resources");
 
 describe("preloadNamespaces", () => {
@@ -32,5 +32,20 @@ describe("preloadNamespaces", () => {
     expect(
       (resources.loadLocale as ReturnType<typeof vi.fn>).mock.calls.length,
     ).toBe(callsBefore);
+  });
+});
+
+describe("resolveLocale", () => {
+  it("matches a regional variant of a supported language", () => {
+    expect(resolveLocale("zh-TW", null)).toBe("zh-CN");
+  });
+
+  it("falls back to the default locale for a language Kaneo dropped", () => {
+    expect(resolveLocale("ja-JP", null)).toBe("en-US");
+    expect(resolveLocale("de-DE", null)).toBe("en-US");
+  });
+
+  it("prefers the saved locale over the browser one", () => {
+    expect(resolveLocale("en-US", "zh-CN")).toBe("en-US");
   });
 });

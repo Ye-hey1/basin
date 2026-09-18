@@ -4,16 +4,16 @@ import { describe, expect, it } from "vitest";
 import NotificationEmail from "./notification";
 
 describe("NotificationEmail", () => {
-  it("renders Japanese chrome for a Japanese locale", async () => {
+  it("renders Chinese chrome for a Chinese locale", async () => {
     const html = await render(
       createElement(NotificationEmail, {
-        title: "タスクが割り当てられました",
-        message: "デザイン案の確認をお願いします。",
+        title: "任务已分配给你",
+        message: "请查看设计稿。",
         actionUrl: "https://kaneo.example/task/1",
-        locale: "ja-JP",
+        locale: "zh-CN",
       }),
     );
-    expect(html).toContain("Kaneo で開く");
-    expect(html).toContain("配信設定に一致する通知がありました。");
+    expect(html).toContain("有一条通知符合你的投递偏好。");
+    expect(html).toContain("在 Kaneo 中打开");
   });
 });

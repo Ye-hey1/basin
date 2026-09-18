@@ -2,43 +2,25 @@ import { render } from "@react-email/render";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import enUS from "../../../../i18n/en-US.json";
-import frFR from "../../../../i18n/fr-FR.json";
-import jaJP from "../../../../i18n/ja-JP.json";
+import zhCN from "../../../../i18n/zh-CN.json";
 import WorkspaceInvitationEmail from "./workspace-invitation";
 
 describe("WorkspaceInvitationEmail", () => {
-  it("renders the invitation in French for a French locale", async () => {
+  it("renders the invitation in Chinese for a Chinese locale", async () => {
     const html = await render(
       createElement(WorkspaceInvitationEmail, {
-        workspaceName: "Équipe Produit",
-        inviterName: "Camille",
-        inviterEmail: "camille@example.com",
+        workspaceName: "产品团队",
+        inviterName: "陈晨",
+        inviterEmail: "chen@example.com",
         invitationLink: "https://kaneo.example/invite/abc",
         to: "invite@example.com",
-        copy: frFR.invitations.email,
+        copy: zhCN.invitations.email,
       }),
     );
 
-    expect(html).toContain("Rejoindre Équipe Produit");
-    expect(html).toContain("Accepter l’invitation");
-    expect(html).toContain("Camille (camille@example.com)");
-  });
-
-  it("renders the invitation in Japanese for a Japanese locale", async () => {
-    const html = await render(
-      createElement(WorkspaceInvitationEmail, {
-        workspaceName: "プロダクト",
-        inviterName: "アリス",
-        inviterEmail: "alice@example.com",
-        invitationLink: "https://kaneo.example/invite/abc",
-        to: "invite@example.com",
-        copy: jaJP.invitations.email,
-      }),
-    );
-
-    expect(html).toContain("「プロダクト」に参加");
-    expect(html).toContain("招待を承諾");
-    expect(html).toContain("アリス (alice@example.com)");
+    expect(html).toContain("加入 产品团队");
+    expect(html).toContain("接受邀请");
+    expect(html).toContain("陈晨（chen@example.com）");
   });
 });
 

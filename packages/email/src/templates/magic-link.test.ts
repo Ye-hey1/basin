@@ -4,14 +4,14 @@ import { describe, expect, it } from "vitest";
 import MagicLinkEmail from "./magic-link";
 
 describe("MagicLinkEmail", () => {
-  it("renders Japanese copy for a Japanese locale", async () => {
+  it("renders Chinese copy for a Chinese locale", async () => {
     const html = await render(
       createElement(MagicLinkEmail, {
         magicLink: "https://kaneo.example/auth",
-        locale: "ja-JP",
+        locale: "zh-CN",
       }),
     );
-    expect(html).toContain("Kaneo にサインイン");
-    expect(html).toContain("Kaneo セキュリティメール");
+    expect(html).toContain("登录 Kaneo");
+    expect(html).toContain("Kaneo 安全邮件");
   });
 });
