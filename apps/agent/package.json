@@ -18,7 +18,7 @@
 		"test": "echo \"no unit tests\" && exit 0"
 	},
 	"dependencies": {
-		"@ai-sdk/anthropic": "^2.0.0",
+		"@ai-sdk/anthropic": "^4.0.71",
 		"@ai-sdk/openai": "^2.0.0",
 		"@ai-sdk/openai-compatible": "^1.0.0",
 		"@basin/api": "workspace:*",
