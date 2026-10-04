@@ -229,31 +229,22 @@ if (!gotLock) {
     const host = startServerHost();
     serverHost = host;
     createWindow();
-    // The window shows the connecting splash first; flip to the real app
-    // (and back on dropouts) as health changes.
-    host
-      .waitForHealthy(90_000)
-      .then(() => {
+    // The watchdog owns every state transition and must be registered
+    // unconditionally: if it only started after waitForHealthy succeeded,
+    // a launch during an outage would never navigate (splash forever).
+    // First successful probe navigates; dropouts splash; recoveries
+    // re-navigate in case the renderer itself was the thing that was down.
+    watchHealth(
+      host.baseUrl,
+      () => {
         apiHealthy = true;
         void navigateToApp();
-        watchHealth(
-          host.baseUrl,
-          // Recovered from a dropout: re-navigate in case the renderer
-          // itself was the thing that was down.
-          () => {
-            apiHealthy = true;
-            void navigateToApp();
-          },
-          () => {
-            apiHealthy = false;
-            showConnecting();
-          },
-        );
-      })
-      .catch((error) => {
-        console.error("[desktop] waiting for API failed:", error);
+      },
+      () => {
         apiHealthy = false;
-      });
+        showConnecting();
+      },
+    );
 
     // Self-heal: while parked on the connecting page with the API healthy
     // (e.g. the renderer server came up after the retry budget ran out),
