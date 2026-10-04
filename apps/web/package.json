@@ -1,5 +1,5 @@
 {
-	"name": "@kaneo/web",
+	"name": "@basin/web",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -13,6 +13,7 @@
 		"test:watch": "vitest --config vitest.config.ts"
 	},
 	"dependencies": {
+		"@ai-sdk/react": "^2.0.274",
 		"@base-ui/react": "^1.7.0",
 		"@better-auth/api-key": "^1.6.25",
 		"@dnd-kit/core": "^6.3.1",
@@ -22,6 +23,7 @@
 		"@fontsource-variable/geist": "5.3.0",
 		"@fontsource-variable/geist-mono": "5.3.0",
 		"@hookform/resolvers": "^5.7.1",
+		"@basin/ai": "workspace:*",
 		"@radix-ui/react-accordion": "^1.2.20",
 		"@radix-ui/react-alert-dialog": "^1.1.23",
 		"@radix-ui/react-avatar": "^1.2.6",
@@ -106,8 +108,8 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^8.0.1",
-		"@kaneo/libs": "workspace:*",
-		"@kaneo/permissions": "workspace:*",
+		"@basin/libs": "workspace:*",
+		"@basin/permissions": "workspace:*",
 		"@rolldown/plugin-babel": "^0.2.3",
 		"@tailwindcss/postcss": "^4.3.3",
 		"@testing-library/jest-dom": "^7.0.0",

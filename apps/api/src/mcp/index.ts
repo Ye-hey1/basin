@@ -29,11 +29,11 @@ import {
 } from "./schemas";
 import { registerMcpTools, toMcpToolRegistrar } from "./tools";
 
-const publicApiUrl = (process.env.KANEO_API_URL || "http://localhost:1337")
+const publicApiUrl = (process.env.BASIN_API_URL || "http://localhost:1337")
   .replace(/\/api\/?$/, "")
   .replace(/\/+$/, "");
 const internalApiUrl = (
-  process.env.KANEO_INTERNAL_API_URL || "http://127.0.0.1:1337"
+  process.env.BASIN_INTERNAL_API_URL || "http://127.0.0.1:1337"
 )
   .replace(/\/api\/?$/, "")
   .replace(/\/+$/, "");
@@ -47,7 +47,7 @@ const sessions = new Map<string, McpSession>();
 
 function createMcpServerForUser(token: string): LegacyMcpServer {
   const server = new LegacyMcpServer({
-    name: "kaneo-mcp",
+    name: "basin-mcp",
     version: "1.0.0",
   });
   registerMcpTools(toMcpToolRegistrar(server), internalApiUrl, token);
@@ -134,11 +134,11 @@ const authorizeRoute = createRoute({
   tags: ["MCP"],
   summary: "Start MCP authorization",
   description:
-    "Begin an MCP OAuth authorization. Redirects the browser to the Kaneo consent page, which then approves or denies the request.",
+    "Begin an MCP OAuth authorization. Redirects the browser to the Basin consent page, which then approves or denies the request.",
   security: [],
   request: { query: authorizationQuerySchema },
   responses: {
-    302: { description: "Redirect to the Kaneo consent page" },
+    302: { description: "Redirect to the Basin consent page" },
     400: jsonError("Invalid authorization request"),
   },
 });

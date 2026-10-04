@@ -1,0 +1,38 @@
+{
+	"name": "@basin/agent",
+	"type": "module",
+	"private": true,
+	"main": "./dist/index.js",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"dev": "tsx watch src/index.ts",
+		"build": "esbuild src/index.ts --bundle --platform=node --outdir=dist --format=esm --external:bullmq --external:ioredis --external:pg --external:drizzle-orm --external:dotenv-mono --external:ai --external:@ai-sdk/openai --external:@ai-sdk/anthropic --external:@ai-sdk/openai-compatible --external:zod",
+		"lint": "biome check --write .",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"test": "echo \"no unit tests\" && exit 0"
+	},
+	"dependencies": {
+		"@ai-sdk/anthropic": "^2.0.0",
+		"@ai-sdk/openai": "^2.0.0",
+		"@ai-sdk/openai-compatible": "^1.0.0",
+		"@basin/api": "workspace:*",
+		"ai": "^5.0.0",
+		"bullmq": "^6.3.11",
+		"dotenv-mono": "^1.5.1",
+		"drizzle-orm": "^0.45.2",
+		"ioredis": "^6.0.0",
+		"pg": "^8.22.0",
+		"zod": "^4.1.5"
+	},
+	"devDependencies": {
+		"@basin/typescript-config": "workspace:*",
+		"@types/node": "^24.0.0",
+		"tsx": "^4.23.9"
+	}
+}

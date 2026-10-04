@@ -4,14 +4,14 @@ const all: BlogAuthor[] = [
   {
     id: "andrej",
     name: "Andrej Acevski",
-    role: "Founder, Kaneo",
+    role: "Founder, Basin",
     url: "https://github.com/andrejsshell",
   },
   {
-    id: "kaneo-team",
-    name: "The Kaneo team",
-    role: "Kaneo",
-    url: "https://github.com/usekaneo/kaneo",
+    id: "basin-team",
+    name: "The Basin team",
+    role: "Basin",
+    url: "https://github.com/usebasin/basin",
   },
 ];
 

@@ -1,4 +1,4 @@
-import { client } from "@kaneo/libs";
+import { client } from "@basin/libs";
 
 async function deleteCustomField({ id }: { id: string }) {
   const response = await client["custom-field"][":id"].$delete({

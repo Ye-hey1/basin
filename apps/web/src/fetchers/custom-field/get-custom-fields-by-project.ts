@@ -1,4 +1,4 @@
-import { client } from "@kaneo/libs";
+import { client } from "@basin/libs";
 
 async function getCustomFieldsByProject({ projectId }: { projectId: string }) {
   const response = await client["custom-field"].project[":projectId"].$get({

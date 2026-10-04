@@ -18,7 +18,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { UserAvatar } from "@/components/user-avatar";
 import { shortcuts } from "@/constants/shortcuts";
 import useGetConfig from "@/hooks/queries/config/use-get-config";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
@@ -203,9 +202,6 @@ export function WorkspaceSwitcher() {
 
         <div className="flex items-center gap-1">
           <NotificationDropdown />
-          <div className="h-8 w-8 shrink-0">
-            <UserAvatar />
-          </div>
         </div>
       </div>
 

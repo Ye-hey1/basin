@@ -28,7 +28,7 @@ export default function RequirementDocumentEditor({
       placeholder={placeholder ?? t("requirements:documents.editorPlaceholder")}
       uploadSurface="description"
       value={value}
-      className="[&_.kaneo-comment-editor-content_.ProseMirror]:min-h-[22rem] [&_.kaneo-comment-editor-content_.ProseMirror]:max-h-none [&_.kaneo-comment-editor-content_.ProseMirror]:overflow-visible [&_.kaneo-comment-editor-content_.ProseMirror]:px-0 [&_.kaneo-comment-editor-content_.ProseMirror]:pt-1 [&_.kaneo-comment-editor-content_.ProseMirror]:pb-2"
+      className="[&_.basin-comment-editor-content_.ProseMirror]:min-h-[22rem] [&_.basin-comment-editor-content_.ProseMirror]:max-h-none [&_.basin-comment-editor-content_.ProseMirror]:overflow-visible [&_.basin-comment-editor-content_.ProseMirror]:px-0 [&_.basin-comment-editor-content_.ProseMirror]:pt-1 [&_.basin-comment-editor-content_.ProseMirror]:pb-2"
     />
   );
 }

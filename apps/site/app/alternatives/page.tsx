@@ -12,9 +12,9 @@ import { alternativePath, comparisonList } from "@/lib/comparisons";
 import { guideList, guidePath } from "@/lib/guides";
 
 export const metadata: Metadata = {
-  title: "Kaneo alternatives and comparisons",
+  title: "Basin alternatives and comparisons",
   description:
-    "How Kaneo compares to Jira, Trello, Linear, Asana, ClickUp, monday.com, PLANKA, Plane, OpenProject, Redmine, and other project management tools. Open source, self-hostable, MIT licensed.",
+    "How Basin compares to Jira, Trello, Linear, Asana, ClickUp, monday.com, PLANKA, Plane, OpenProject, Redmine, and other project management tools. Open source, self-hostable, MIT licensed.",
   alternates: { canonical: "/alternatives" },
 };
 
@@ -40,7 +40,7 @@ export default function Page() {
     <>
       <JsonLd
         data={breadcrumbJsonLd([
-          { name: "Kaneo", path: "/" },
+          { name: "Basin", path: "/" },
           { name: "Alternatives", path: "/alternatives" },
         ])}
       />
@@ -48,12 +48,12 @@ export default function Page() {
         data={{
           "@context": "https://schema.org",
           "@type": "ItemList",
-          name: "Kaneo comparisons",
+          name: "Basin comparisons",
           itemListElement: comparisonList.map((comparison, index) => ({
             "@type": "ListItem",
             position: index + 1,
-            name: `Kaneo vs ${comparison.competitor}`,
-            url: `https://kaneo.app${alternativePath(comparison.slug)}`,
+            name: `Basin vs ${comparison.competitor}`,
+            url: `https://basin.app${alternativePath(comparison.slug)}`,
           })),
         }}
       />
@@ -67,12 +67,12 @@ export default function Page() {
               </FadeIn>
               <FadeIn delay={60}>
                 <h1 className="mt-3 text-balance font-medium text-4xl leading-[1.06] md:text-5xl">
-                  How Kaneo compares
+                  How Basin compares
                 </h1>
               </FadeIn>
               <FadeIn delay={120}>
                 <p className="mt-5 text-balance text-foreground/70 text-lg leading-relaxed">
-                  Kaneo Cloud is managed, EU-hosted project management from $4 a
+                  Basin Cloud is managed, EU-hosted project management from $4 a
                   month, and it is open source if you would rather run it
                   yourself. Here is how it sits next to the tools people usually
                   weigh it against, and where each of them is the better answer.
@@ -108,7 +108,7 @@ export default function Page() {
                             Checked {formatBlogDateShort(comparison.verifiedOn)}
                           </time>,
                         ]}
-                        title={`Kaneo vs ${comparison.competitor}`}
+                        title={`Basin vs ${comparison.competitor}`}
                       />
                     ))}
                 </div>

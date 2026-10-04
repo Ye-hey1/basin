@@ -1,0 +1,40 @@
+# Basin Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "basin.fullname" . }}-basin
+  labels:
+    {{- include "basin.labels" . | nindent 4 }}
+    app.kubernetes.io/component: basin
+spec:
+  type: {{ .Values.basin.service.type }}
+  ports:
+    - port: {{ .Values.basin.service.port }}
+      targetPort: basin
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "basin.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: basin
+
+{{- if .Values.postgresql.enabled }}
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "basin.fullname" . }}-postgresql
+  labels:
+    {{- include "basin.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql
+spec:
+  type: {{ .Values.postgresql.service.type }}
+  ports:
+    - port: {{ .Values.postgresql.service.port }}
+      targetPort: postgresql
+      protocol: TCP
+      name: postgresql
+  selector:
+    {{- include "basin.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql
+{{- end }}

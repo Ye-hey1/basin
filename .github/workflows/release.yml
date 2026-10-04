@@ -193,7 +193,7 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           VERSION: ${{ needs.plan.outputs.version }}
         run: |
-          for image in kaneo web api; do
+          for image in basin web api; do
             ref="ghcr.io/${OWNER,,}/${image}"
             docker buildx imagetools create --tag "${ref}:latest" "${ref}:${VERSION}"
           done

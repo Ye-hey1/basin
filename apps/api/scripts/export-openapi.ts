@@ -2,7 +2,7 @@ import { writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { createApp } from "../src/index";
 
-process.env.KANEO_API_URL = "https://cloud.kaneo.app";
+process.env.BASIN_API_URL = "https://cloud.basin.app";
 
 const { app } = createApp();
 const response = await app.request("/api/openapi");

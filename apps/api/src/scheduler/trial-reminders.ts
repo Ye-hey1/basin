@@ -1,4 +1,4 @@
-import { isSmtpConfigured, sendTrialReminderEmail } from "@kaneo/email";
+import { isSmtpConfigured, sendTrialReminderEmail } from "@basin/email";
 import { and, asc, eq, gt, isNotNull, isNull, lte } from "drizzle-orm";
 import { isBillingEnabled } from "../billing/config";
 import db from "../database";
@@ -53,7 +53,7 @@ const REMINDERS: {
 ];
 
 function clientUrl() {
-  return (process.env.KANEO_CLIENT_URL ?? "https://cloud.kaneo.app").replace(
+  return (process.env.BASIN_CLIENT_URL ?? "https://cloud.basin.app").replace(
     /\/$/,
     "",
   );

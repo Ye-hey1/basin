@@ -1,5 +1,6 @@
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import db, { schema } from "../../database";
+import { publishEvent } from "../../events";
 import type { z } from "../../openapi";
 import { httpError } from "../../utils/http-error";
 import {
@@ -211,6 +212,8 @@ export async function createRequirementDocument(
     return document.id;
   });
 
+  await publishEvent("requirement_document.saved", { documentId });
+
   return getRequirementDocument(documentId);
 }
 
@@ -291,6 +294,10 @@ export async function saveRequirementDocumentContent(
     return true;
   });
 
+  if (changed) {
+    await publishEvent("requirement_document.saved", { documentId });
+  }
+
   return { document: await getRequirementDocument(documentId), changed };
 }
 
@@ -339,6 +346,8 @@ export async function deleteRequirementDocument(documentId: string) {
   await db
     .delete(schema.requirementDocumentTable)
     .where(eq(schema.requirementDocumentTable.id, documentId));
+
+  await publishEvent("requirement_document.deleted", { documentId });
 
   return { success: true };
 }

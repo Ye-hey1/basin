@@ -1,16 +1,16 @@
 ---
 title: API Reference
-description: Complete API reference for Kaneo
+description: Complete API reference for Basin
 ---
 
 ## Overview
 
-Kaneo API endpoint pages are generated automatically from our OpenAPI specification.
+Basin API endpoint pages are generated automatically from our OpenAPI specification.
 
 <Card
   title="OpenAPI Specification"
   icon="code"
-  href="https://cloud.kaneo.app/api/openapi"
+  href="https://cloud.basin.app/api/openapi"
 >
   View the canonical OpenAPI schema powering this documentation.
 </Card>
@@ -22,7 +22,7 @@ All API endpoints require authentication. Refer to the [authentication guide](/a
 ## Base URL
 
 ```text
-https://your-kaneo-instance.com/api
+https://your-basin-instance.com/api
 ```
 
 ## Errors
@@ -47,7 +47,7 @@ body, and an unexpected server failure (`{ "message": "Internal Server Error" }`
 | 404 | The resource named by the request does not exist |
 | 500 | An unexpected server failure |
 
-When you address a resource by id, Kaneo first looks that resource up to decide
+When you address a resource by id, Basin first looks that resource up to decide
 which workspace the request belongs to. Which failure you get depends on how that
 lookup goes:
 

@@ -8,7 +8,7 @@ describe("parseInstallArgs", () => {
       "--target",
       "cursor-user",
       "--name",
-      "my-kaneo",
+      "my-basin",
       "-y",
       "--api-url",
       "http://example.com",
@@ -16,7 +16,7 @@ describe("parseInstallArgs", () => {
     const expected = {
       target: "cursor-user",
       output: undefined,
-      name: "my-kaneo",
+      name: "my-basin",
       yes: true,
       apiUrl: "http://example.com",
       projectDir: process.cwd(),
@@ -46,7 +46,7 @@ describe("parseInstallArgs", () => {
     const expected = {
       target: "-my-server",
       output: undefined,
-      name: "kaneo",
+      name: "basin",
       yes: true,
       apiUrl: undefined,
       projectDir: process.cwd(),

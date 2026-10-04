@@ -1,4 +1,4 @@
-import { client } from "@kaneo/libs";
+import { client } from "@basin/libs";
 
 async function getCustomFieldValuesByTask({ taskId }: { taskId: string }) {
   const response = await client["custom-field"].task[":taskId"].$get({

@@ -6,45 +6,45 @@ export const focalboard: Comparison = {
   category: "open-source",
   title: "Maintained Focalboard alternative",
   description:
-    "Kaneo is an actively maintained, MIT-licensed Focalboard alternative for teams that need a self-hosted board with a future.",
+    "Basin is an actively maintained, MIT-licensed Focalboard alternative for teams that need a self-hosted board with a future.",
   summary: "An actively maintained board, independent of Mattermost.",
   heading: "The maintained Focalboard alternative",
   subheading:
     "Standalone Focalboard has been looking for maintainers since Mattermost unbundled it. If you are self-hosting it today, you are running software nobody is on the hook for.",
   verdict:
-    "Kaneo is an actively maintained, MIT-licensed alternative to Focalboard. Mattermost stopped bundling the Focalboard plugin in 2023 and the standalone project moved to community maintenance, with the plugin continuing separately as Mattermost Boards. Kaneo offers a comparable self-hosted board with regular releases, SSO, and a documented API.",
+    "Basin is an actively maintained, MIT-licensed alternative to Focalboard. Mattermost stopped bundling the Focalboard plugin in 2023 and the standalone project moved to community maintenance, with the plugin continuing separately as Mattermost Boards. Basin offers a comparable self-hosted board with regular releases, SSO, and a documented API.",
   facts: {
     license: "MIT, versus Focalboard's mixed Mattermost licensing",
-    hosting: "Both self-host. Kaneo is Docker plus PostgreSQL",
-    sso: "Free on Kaneo through Google, GitHub, Discord, or any OIDC provider",
+    hosting: "Both self-host. Basin is Docker plus PostgreSQL",
+    sso: "Free on Basin through Google, GitHub, Discord, or any OIDC provider",
     pricing: "$0 self-hosted, cloud from $4 / month",
   },
   rows: [
     {
       feature: "Actively maintained",
-      kaneo: true,
+      basin: true,
       them: "Community, seeking maintainers",
     },
-    { feature: "License", kaneo: "MIT", them: "Mixed Mattermost licensing" },
-    { feature: "Self-hostable", kaneo: true, them: true },
+    { feature: "License", basin: "MIT", them: "Mixed Mattermost licensing" },
+    { feature: "Self-hostable", basin: true, them: true },
     {
       feature: "Runs without Mattermost",
-      kaneo: true,
+      basin: true,
       them: "Standalone build only",
     },
-    { feature: "SSO / OIDC", kaneo: "Built in", them: "Via Mattermost" },
-    { feature: "Backlog planning", kaneo: true, them: false },
-    { feature: "Time tracking", kaneo: true, them: false },
-    { feature: "Official cloud", kaneo: true, them: false },
+    { feature: "SSO / OIDC", basin: "Built in", them: "Via Mattermost" },
+    { feature: "Backlog planning", basin: true, them: false },
+    { feature: "Time tracking", basin: true, them: false },
+    { feature: "Official cloud", basin: true, them: false },
   ],
   reasons: [
     {
       title: "Somebody is maintaining it",
-      body: "Kaneo ships releases, security fixes, and migrations that work on existing installations. That is the whole argument here: a self-hosted board is only as good as its next update.",
+      body: "Basin ships releases, security fixes, and migrations that work on existing installations. That is the whole argument here: a self-hosted board is only as good as its next update.",
     },
     {
       title: "Independent of a chat platform",
-      body: "Focalboard's future is as a Mattermost plugin. Kaneo is a standalone product, and it integrates with Slack, Discord, and Telegram rather than living inside one of them.",
+      body: "Focalboard's future is as a Mattermost plugin. Basin is a standalone product, and it integrates with Slack, Discord, and Telegram rather than living inside one of them.",
     },
     {
       title: "More than a board",
@@ -52,7 +52,7 @@ export const focalboard: Comparison = {
     },
   ],
   honestNote:
-    "If you already run Mattermost, the maintained Boards plugin keeps your tasks next to your conversations, and that adjacency is worth a lot. Focalboard's card and property model is also flexible in a Notion-like way that Kaneo deliberately does not copy.",
+    "If you already run Mattermost, the maintained Boards plugin keeps your tasks next to your conversations, and that adjacency is worth a lot. Focalboard's card and property model is also flexible in a Notion-like way that Basin deliberately does not copy.",
   faq: [
     {
       question: "Is Focalboard discontinued?",
@@ -62,17 +62,17 @@ export const focalboard: Comparison = {
     {
       question: "What should I use instead of Focalboard?",
       answer:
-        "For a maintained self-hosted board, Kaneo, PLANKA, WeKan, and Vikunja are the usual choices. Kaneo is MIT licensed with SSO included and adds backlog planning and time tracking.",
+        "For a maintained self-hosted board, Basin, PLANKA, WeKan, and Vikunja are the usual choices. Basin is MIT licensed with SSO included and adds backlog planning and time tracking.",
     },
     {
-      question: "Can I move my Focalboard data to Kaneo?",
+      question: "Can I move my Focalboard data to Basin?",
       answer:
-        "There is no dedicated importer. Focalboard exports boards as archive files, and Kaneo has a public API and per-project JSON import, so a scripted migration is possible. Open a GitHub issue if you want this supported properly.",
+        "There is no dedicated importer. Focalboard exports boards as archive files, and Basin has a public API and per-project JSON import, so a scripted migration is possible. Open a GitHub issue if you want this supported properly.",
     },
     {
-      question: "Does Kaneo need Mattermost or another chat tool?",
+      question: "Does Basin need Mattermost or another chat tool?",
       answer:
-        "No. Kaneo is standalone. It can post notifications into Slack, Discord, or Telegram, but nothing requires them.",
+        "No. Basin is standalone. It can post notifications into Slack, Discord, or Telegram, but nothing requires them.",
     },
   ],
   related: ["planka", "wekan", "trello", "notion"],
@@ -82,6 +82,6 @@ export const focalboard: Comparison = {
       label: "Focalboard repository",
       href: "https://github.com/mattermost-community/focalboard",
     },
-    { label: "Kaneo pricing", href: "/pricing" },
+    { label: "Basin pricing", href: "/pricing" },
   ],
 };

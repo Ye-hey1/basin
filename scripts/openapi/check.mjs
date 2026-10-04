@@ -27,7 +27,7 @@ const RUN = {
 function generate(into) {
   execFileSync(
     process.execPath,
-    [packageManager, "turbo", "build", "--filter=@kaneo/api^..."],
+    [packageManager, "turbo", "build", "--filter=@basin/api^..."],
     RUN,
   );
   execFileSync(
@@ -35,7 +35,7 @@ function generate(into) {
     [
       packageManager,
       "--filter",
-      "@kaneo/api",
+      "@basin/api",
       "exec",
       "tsx",
       "scripts/export-openapi.ts",
@@ -46,7 +46,7 @@ function generate(into) {
 }
 
 function run() {
-  const workdir = mkdtempSync(join(tmpdir(), "kaneo-openapi-"));
+  const workdir = mkdtempSync(join(tmpdir(), "basin-openapi-"));
   const generated = join(workdir, "openapi.json");
 
   try {

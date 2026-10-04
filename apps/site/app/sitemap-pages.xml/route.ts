@@ -9,7 +9,7 @@ import { guideList, guidePath } from "@/lib/guides";
 
 export const dynamic = "force-static";
 
-const SITE = "https://kaneo.app";
+const SITE = "https://basin.app";
 
 type Entry = { path: string; changefreq: string; priority: string };
 

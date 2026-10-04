@@ -34,6 +34,7 @@ overrides:
   '@babel/core': '>=7.29.6 <8'
 onlyBuiltDependencies:
   - '@biomejs/biome'
+  - electron
   - bcrypt
   - better-sqlite3
   - esbuild

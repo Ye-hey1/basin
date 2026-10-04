@@ -3,8 +3,15 @@ import {
   acceptanceItemTable,
   accountTable,
   activityTable,
+  agentRunStepTable,
+  agentRunTable,
+  agentTriggerTable,
+  aiMessageTable,
+  aiThreadTable,
   apikeyTable,
   assetTable,
+  brainChunkTable,
+  brainDocumentTable,
   columnTable,
   commentTable,
   customFieldDefinitionTable,
@@ -14,6 +21,7 @@ import {
   integrationTable,
   invitationTable,
   labelTable,
+  mcpServerTable,
   notificationTable,
   projectTable,
   requirementDocumentTable,
@@ -499,3 +507,101 @@ export const requirementDocumentVersionTableRelations = relations(
     }),
   }),
 );
+
+export const brainDocumentTableRelations = relations(
+  brainDocumentTable,
+  ({ one, many }) => ({
+    workspace: one(workspaceTable, {
+      fields: [brainDocumentTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [brainDocumentTable.projectId],
+      references: [projectTable.id],
+    }),
+    chunks: many(brainChunkTable),
+  }),
+);
+
+export const brainChunkTableRelations = relations(
+  brainChunkTable,
+  ({ one }) => ({
+    document: one(brainDocumentTable, {
+      fields: [brainChunkTable.documentId],
+      references: [brainDocumentTable.id],
+    }),
+  }),
+);
+
+export const aiThreadTableRelations = relations(
+  aiThreadTable,
+  ({ one, many }) => ({
+    user: one(userTable, {
+      fields: [aiThreadTable.userId],
+      references: [userTable.id],
+    }),
+    workspace: one(workspaceTable, {
+      fields: [aiThreadTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    messages: many(aiMessageTable),
+  }),
+);
+
+export const aiMessageTableRelations = relations(aiMessageTable, ({ one }) => ({
+  thread: one(aiThreadTable, {
+    fields: [aiMessageTable.threadId],
+    references: [aiThreadTable.id],
+  }),
+}));
+
+export const agentTriggerTableRelations = relations(
+  agentTriggerTable,
+  ({ one, many }) => ({
+    workspace: one(workspaceTable, {
+      fields: [agentTriggerTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [agentTriggerTable.projectId],
+      references: [projectTable.id],
+    }),
+    runs: many(agentRunTable),
+  }),
+);
+
+export const agentRunTableRelations = relations(
+  agentRunTable,
+  ({ one, many }) => ({
+    workspace: one(workspaceTable, {
+      fields: [agentRunTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    trigger: one(agentTriggerTable, {
+      fields: [agentRunTable.triggerId],
+      references: [agentTriggerTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [agentRunTable.projectId],
+      references: [projectTable.id],
+    }),
+    steps: many(agentRunStepTable),
+  }),
+);
+
+export const agentRunStepTableRelations = relations(
+  agentRunStepTable,
+  ({ one }) => ({
+    run: one(agentRunTable, {
+      fields: [agentRunStepTable.runId],
+      references: [agentRunTable.id],
+    }),
+  }),
+);
+
+export const mcpServerTableRelations = relations(mcpServerTable, ({ one }) => ({
+  workspace: one(workspaceTable, {
+    fields: [mcpServerTable.workspaceId],
+    references: [workspaceTable.id],
+  }),
+}));

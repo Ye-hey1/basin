@@ -13,7 +13,7 @@ export type PasswordResetEmailProps = {
 
 const messages = {
   en: {
-    preview: "Reset your Kaneo password",
+    preview: "Reset your Basin password",
     title: "Reset your password",
     subtitleWithName: (name: string) =>
       `Hi ${name}, use the button below to set a new password.`,
@@ -21,10 +21,10 @@ const messages = {
     cta: "Reset password",
     expiry: "This reset link expires in 1 hour.",
     ignore: "If you didn't request this, no changes will be made.",
-    footer: "Kaneo security email",
+    footer: "Basin security email",
   },
   zh: {
-    preview: "重置你的 Kaneo 密码",
+    preview: "重置你的 Basin 密码",
     title: "重置密码",
     subtitleWithName: (name: string) =>
       `你好 ${name}，点击下方按钮设置新密码。`,
@@ -32,7 +32,7 @@ const messages = {
     cta: "重置密码",
     expiry: "此重置链接 1 小时后过期。",
     ignore: "如果你没有发起此请求，将不会做任何更改。",
-    footer: "Kaneo 安全邮件",
+    footer: "Basin 安全邮件",
   },
 } as const;
 
@@ -65,7 +65,7 @@ const PasswordResetEmail = ({
 };
 
 PasswordResetEmail.PreviewProps = {
-  resetLink: "https://kaneo.app/auth/reset-password?token=example",
+  resetLink: "https://basin.app/auth/reset-password?token=example",
   userName: "Jane",
 } as PasswordResetEmailProps;
 

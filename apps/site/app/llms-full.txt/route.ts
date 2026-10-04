@@ -5,7 +5,7 @@ import { guideList, guidePath } from "@/lib/guides";
 
 export const dynamic = "force-static";
 
-const SITE = "https://kaneo.app";
+const SITE = "https://basin.app";
 
 function cell(value: Cell) {
   if (value === true) return "Yes";
@@ -19,7 +19,7 @@ function comparisonMarkdown() {
       const rows = data.rows
         .map(
           (row) =>
-            `| ${row.feature} | ${cell(row.kaneo)} | ${cell(row.them)} |`,
+            `| ${row.feature} | ${cell(row.basin)} | ${cell(row.them)} |`,
         )
         .join("\n");
 
@@ -31,14 +31,14 @@ function comparisonMarkdown() {
         .map((entry) => `**${entry.question}**\n\n${entry.answer}`)
         .join("\n\n");
 
-      return `## Kaneo vs ${data.competitor}
+      return `## Basin vs ${data.competitor}
 
 URL: ${SITE}${alternativePath(data.slug)}
 Competitor details checked: ${data.verifiedOn}
 
 ${data.verdict}
 
-| | Kaneo | ${data.competitor} |
+| | Basin | ${data.competitor} |
 | --- | --- | --- |
 ${rows}
 
@@ -102,9 +102,9 @@ ${post.markdown}`,
 }
 
 export function GET() {
-  const body = `# Kaneo, full content
+  const body = `# Basin, full content
 
-> Kaneo is an open-source, self-hostable project management platform under the MIT license. This file contains the full text of Kaneo's comparison pages, guides, and blog posts. Written by the Kaneo team, who build one of the tools discussed.
+> Basin is an open-source, self-hostable project management platform under the MIT license. This file contains the full text of Basin's comparison pages, guides, and blog posts. Written by the Basin team, who build one of the tools discussed.
 
 # Comparisons
 

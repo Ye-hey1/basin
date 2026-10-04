@@ -1,6 +1,6 @@
-# Kaneo agent guide
+# Basin agent guide
 
-Kaneo is a fast, deliberately simple, self-hosted project-management platform. The Hono API owns domain behavior and authorization, the React app consumes its typed client, PostgreSQL stores durable state, and events plus WebSockets keep clients current. Redis is optional and coordinates realtime delivery across multiple API instances.
+Basin is a fast, deliberately simple, self-hosted project-management platform. The Hono API owns domain behavior and authorization, the React app consumes its typed client, PostgreSQL stores durable state, and events plus WebSockets keep clients current. Redis is optional and coordinates realtime delivery across multiple API instances.
 
 This is an operating guide, not a README. These rules are good defaults; explicit developer and user instructions take precedence.
 
@@ -23,13 +23,13 @@ This is an operating guide, not a README. These rules are good defaults; explici
 - `packages/libs` — shared typed Hono client and URL helpers.
 - `packages/permissions` — canonical permission vocabulary and built-in roles.
 - `packages/mcp` — published stdio MCP package.
-- `charts/kaneo` — Helm deployment surface.
+- `charts/basin` — Helm deployment surface.
 - `tests/api` contains API unit tests; `tests/api-integration` contains PostgreSQL-backed integration tests.
 
 ## Boundaries that must hold
 
 - The API is the authority for authentication and authorization. Hiding an action in the UI is not an authorization check.
-- Workspace-scoped operations must use the existing `@kaneo/permissions` vocabulary and API middleware.
+- Workspace-scoped operations must use the existing `@basin/permissions` vocabulary and API middleware.
 - Do not expose secrets, credentials, internal fields, or private workspace data through responses, logs, events, WebSockets, or MCP tools.
 - Public API behavior must retain accurate Zod validation and OpenAPI metadata.
 - Mutations that affect realtime state must consider event publication, WebSocket delivery, and client cache invalidation.
@@ -58,9 +58,9 @@ Not every change touches every surface. Make the decision deliberately rather th
 - Use `requireWorkspacePermission` rather than duplicating role checks.
 - Use `publishEvent()` when a mutation drives activity, notifications, integrations, or realtime updates.
 - Keep web requests in `apps/web/src/fetchers/` and server state in TanStack Query hooks.
-- Use the client from `@kaneo/libs`; do not create a parallel untyped request layer.
+- Use the client from `@basin/libs`; do not create a parallel untyped request layer.
 - Define database schema in `apps/api/src/database/schema.ts` and relations in `apps/api/src/database/relations.ts`.
-- Generate migrations with `pnpm --filter @kaneo/api db:generate`, inspect the SQL, and include it with the schema change.
+- Generate migrations with `pnpm --filter @basin/api db:generate`, inspect the SQL, and include it with the schema change.
 - `apps/docs/openapi.json` is a committed artifact that the docs site serves. Regenerate it with `pnpm openapi:check:fix` whenever a route, request schema, or response schema changes; CI fails when it drifts.
 - Prefer inferred TypeScript types and `type` over `interface` unless extension or declaration merging is required.
 - Comments should explain constraints or surprising decisions, not narrate code.
@@ -92,7 +92,7 @@ Run repository-wide checks when a change crosses packages broadly, before a requ
 
 Releasing is manual and deliberate: dispatch the **Release** workflow from `main`. Nothing releases on a push.
 
-The workflow resolves the next version from the Conventional Commits since the last tag, builds and pushes the three GHCR images under that version, validates the Helm chart, and only then cuts the release: `package.json`, `charts/kaneo/Chart.yaml`, `CHANGELOG.md`, the `vX.Y.Z` tag, a GitHub Release with grouped notes, and a "released in vX.Y.Z" comment on every PR and issue it closed. `:latest` and the chart publish come after that. A failed image build stops the release; it never leaves a tag pointing at an image that was never published.
+The workflow resolves the next version from the Conventional Commits since the last tag, builds and pushes the three GHCR images under that version, validates the Helm chart, and only then cuts the release: `package.json`, `charts/basin/Chart.yaml`, `CHANGELOG.md`, the `vX.Y.Z` tag, a GitHub Release with grouped notes, and a "released in vX.Y.Z" comment on every PR and issue it closed. `:latest` and the chart publish come after that. A failed image build stops the release; it never leaves a tag pointing at an image that was never published.
 
 Dispatch inputs: `release_type` (`auto` by default; `patch`/`minor`/`major` force the bump) and `dry_run`, which prints the version and notes to the job summary and stops.
 
@@ -116,7 +116,7 @@ Version-carrying files are listed in `scripts/release/apply-version.mjs`. Add ne
 
 ## Glossary
 
-- **instance**: one deployed Kaneo installation.
+- **instance**: one deployed Basin installation.
 - **workspace**: the top-level collaboration and authorization boundary.
 - **project**: a task container inside a workspace.
 - **role**: a workspace-scoped set of permission statements.

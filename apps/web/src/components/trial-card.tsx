@@ -12,7 +12,7 @@ function daysLeft(value: string | null | undefined) {
   return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
 }
 
-const DISMISS_KEY = "kaneo:trial-card-dismissed";
+const DISMISS_KEY = "basin:trial-card-dismissed";
 
 export function TrialCard() {
   const { t } = useTranslation();

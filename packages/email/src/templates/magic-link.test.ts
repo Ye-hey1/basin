@@ -7,11 +7,11 @@ describe("MagicLinkEmail", () => {
   it("renders Chinese copy for a Chinese locale", async () => {
     const html = await render(
       createElement(MagicLinkEmail, {
-        magicLink: "https://kaneo.example/auth",
+        magicLink: "https://basin.example/auth",
         locale: "zh-CN",
       }),
     );
-    expect(html).toContain("登录 Kaneo");
-    expect(html).toContain("Kaneo 安全邮件");
+    expect(html).toContain("登录 Basin");
+    expect(html).toContain("Basin 安全邮件");
   });
 });

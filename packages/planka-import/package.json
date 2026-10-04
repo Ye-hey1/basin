@@ -1,18 +1,18 @@
 {
-	"name": "@kaneo/planka-import",
+	"name": "@basin/planka-import",
 	"version": "0.2.0",
-	"description": "Migrate PLANKA boards into Kaneo: projects, lists, cards, labels, assignees, checklists and comments, over the public APIs of both",
+	"description": "Migrate PLANKA boards into Basin: projects, lists, cards, labels, assignees, checklists and comments, over the public APIs of both",
 	"license": "MIT",
-	"author": "Kaneo (https://kaneo.app)",
-	"homepage": "https://kaneo.app/docs/core/migrations/from-planka",
+	"author": "Basin (https://basin.app)",
+	"homepage": "https://basin.app/docs/core/migrations/from-planka",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/usekaneo/kaneo/",
+		"url": "https://github.com/usebasin/basin/",
 		"directory": "packages/planka-import"
 	},
 	"type": "module",
 	"bin": {
-		"kaneo-planka-import": "dist/index.js"
+		"basin-planka-import": "dist/index.js"
 	},
 	"publishConfig": {
 		"access": "public"
@@ -24,7 +24,7 @@
 	],
 	"keywords": [
 		"planka",
-		"kaneo",
+		"basin",
 		"migration",
 		"import",
 		"kanban",
@@ -46,7 +46,7 @@
 		"prompts": "^2.4.2"
 	},
 	"devDependencies": {
-		"@kaneo/typescript-config": "workspace:*",
+		"@basin/typescript-config": "workspace:*",
 		"@types/node": "^26.1.2",
 		"@types/prompts": "^2.4.9",
 		"tsx": "^4.23.9",

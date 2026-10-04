@@ -344,6 +344,20 @@
 			"when": 1789543008171,
 			"tag": "0048_parallel_sister_grimm",
 			"breakpoints": true
+		},
+		{
+			"idx": 49,
+			"version": "7",
+			"when": 1791010583612,
+			"tag": "0049_lame_longshot",
+			"breakpoints": true
+		},
+		{
+			"idx": 50,
+			"version": "7",
+			"when": 1791019910949,
+			"tag": "0050_previous_lady_bullseye",
+			"breakpoints": true
 		}
 	]
 }

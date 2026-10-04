@@ -1,0 +1,124 @@
+{{- $corsOrigins := .Values.basin.env.corsOrigins -}}
+{{- $corsOriginsValue := "" -}}
+{{- if kindIs "slice" $corsOrigins -}}
+  {{- $corsOriginsValue = join "," $corsOrigins -}}
+{{- else if $corsOrigins -}}
+  {{- $corsOriginsValue = $corsOrigins -}}
+{{- else if .Values.basin.env.clientUrl -}}
+  {{- $corsOriginsValue = .Values.basin.env.clientUrl -}}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "basin.fullname" . }}
+  labels:
+    {{- include "basin.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "basin.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "basin.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: basin
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "basin.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      enableServiceLinks: {{ default false .Values.enableServiceLinks }}
+      containers:
+        - name: basin
+          securityContext:
+            {{- toYaml .Values.basin.securityContext | nindent 12 }}
+          image: "{{ .Values.basin.image.repository }}:{{ .Values.basin.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.basin.image.pullPolicy }}
+          ports:
+            - name: basin
+              containerPort: {{ .Values.basin.service.targetPort }}
+              protocol: TCP
+          env:
+            - name: BASIN_CLIENT_URL
+              value: "{{ .Values.basin.env.clientUrl }}"
+            - name: CORS_ORIGINS
+              value: {{ $corsOriginsValue | quote }}
+            - name: AUTH_SECRET
+              {{- if .Values.basin.env.existingSecret.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.basin.env.existingSecret.name }}
+                  key: {{ .Values.basin.env.existingSecret.key }}
+              {{- else }}
+              value: {{ .Values.basin.env.authSecret | quote }}
+              {{- end }}
+            {{- if and (not .Values.basin.env.database.external.enabled) .Values.postgresql.auth.existingSecret }}
+            - name: BASIN_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.auth.existingSecret }}
+                  key: {{ .Values.postgresql.auth.secretKeys.userPasswordKey }}
+            {{- end }}
+            - name: DATABASE_URL
+              {{- if .Values.basin.env.database.external.enabled }}
+              {{- if .Values.basin.env.database.external.existingSecret.enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.basin.env.database.external.existingSecret.name }}
+                  key: {{ .Values.basin.env.database.external.existingSecret.passwordKey }}
+              {{- else }}
+              value: "postgresql://{{ include "basin.urlencodeUserinfo" .Values.basin.env.database.external.username }}:{{ include "basin.urlencodeUserinfo" .Values.basin.env.database.external.password }}@{{ .Values.basin.env.database.external.host }}:{{ .Values.basin.env.database.external.port }}/{{ .Values.basin.env.database.external.database }}"
+              {{- end }}
+              {{- else }}
+              {{- if .Values.postgresql.auth.existingSecret }}
+              value: "postgresql://{{ include "basin.urlencodeUserinfo" .Values.postgresql.auth.username }}:$(BASIN_POSTGRES_PASSWORD)@{{ include "basin.fullname" . }}-postgresql:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.auth.database }}"
+              {{- else }}
+              value: "postgresql://{{ include "basin.urlencodeUserinfo" .Values.postgresql.auth.username }}:{{ include "basin.urlencodeUserinfo" .Values.postgresql.auth.password }}@{{ include "basin.fullname" . }}-postgresql:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.auth.database }}"
+              {{- end }}
+              {{- end }}
+            - name: DISABLE_REGISTRATION
+              value: {{ .Values.basin.env.disableRegistration | quote }}
+            - name: DISABLE_PASSWORD_REGISTRATION
+              value: {{ .Values.basin.env.disablePasswordRegistration | quote }}
+            - name: DISABLE_EMAIL_OTP_SIGN_IN
+              value: {{ .Values.basin.env.disableEmailOtpSignIn | quote }}
+            {{- with .Values.basin.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.basin.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.basin.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.basin.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.basin.resources | nindent 12 }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,30 @@
+apiVersion: v2
+name: basin
+description: Basin - All you need. Nothing you don't. Open source project management that works for you.
+type: application
+version: 2.24.0
+appVersion: "2.24.0"
+keywords:
+  - project-management
+  - kanban
+  - task-management
+  - productivity
+  - collaboration
+home: https://basin.app
+sources:
+  - https://github.com/usebasin/basin
+icon: https://assets.basin.app/logo-text.png
+maintainers:
+  - name: Basin Team
+    url: https://github.com/usebasin
+    email: info@basin.app
+annotations:
+  artifacthub.io/license: MIT
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/features: |
+    - Simple & Fast: Minimalist interface with powerful features
+    - Self-hosted: Full control over your data
+    - Customizable: Make it yours with extensive customization options
+    - Open Source: MIT licensed
+kubeVersion: ">=1.23.0-0"

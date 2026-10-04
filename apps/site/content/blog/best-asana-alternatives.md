@@ -3,7 +3,7 @@ title: "10 Best Asana Alternatives in 2026 (Free, Cheaper, and Self-Hosted)"
 description: "The best Asana alternatives in 2026, compared on price per user, free tiers, single sign-on, and whether you can self-host them. Includes free open-source options and the cheapest way to move a whole team off per-seat pricing."
 excerpt: "Asana starts at $10.99 per user a month and keeps SAML single sign-on for its Enterprise tier. Here are 10 alternatives that cost less, do more of what you actually use, or run on your own server for free."
 date: 2026-08-06
-author: kaneo-team
+author: basin-team
 category: alternatives
 ---
 
@@ -15,7 +15,7 @@ That gap, between what Asana is built for and what most teams use it for, is why
 
 ## TL;DR: the 10 best Asana alternatives
 
-1. **[Kaneo](/asana-alternative)** for teams who want a real tracker they can self-host for free, with SSO included.
+1. **[Basin](/asana-alternative)** for teams who want a real tracker they can self-host for free, with SSO included.
 2. **[ClickUp](/clickup-alternative)** for teams who genuinely want docs, whiteboards, and chat alongside tasks.
 3. **[monday.com](/monday-alternative)** for visual, non-engineering workflows and dashboards.
 4. **[Trello](/trello-alternative)** for the simplest possible board, at the lowest possible price.
@@ -42,7 +42,7 @@ That gap, between what Asana is built for and what most teams use it for, is why
 
 | Tool | Open source | Self-host | SSO included | Starting price |
 | --- | --- | --- | --- | --- |
-| Kaneo | Yes (MIT) | Yes | Yes, on every plan | Cloud from $4/mo, self-host free |
+| Basin | Yes (MIT) | Yes | Yes, on every plan | Cloud from $4/mo, self-host free |
 | ClickUp | No | No | Business tier and above | From $7 per user / month |
 | monday.com | No | No | Enterprise tier | Per user, with seat blocks |
 | Trello | No | No | Enterprise tier | Free tier, then per user |
@@ -56,7 +56,7 @@ That gap, between what Asana is built for and what most teams use it for, is why
 
 ## How we evaluated these tools
 
-We build Kaneo, which is the first entry on this list. So here is the criteria, stated up front, and an honest section under every tool explaining when it beats Kaneo.
+We build Basin, which is the first entry on this list. So here is the criteria, stated up front, and an honest section under every tool explaining when it beats Basin.
 
 1. **Cost at ten and at fifty users.** Per-seat pricing behaves very differently at those two points.
 2. **What the free tier actually allows**, in collaborators, projects, and features.
@@ -65,15 +65,15 @@ We build Kaneo, which is the first entry on this list. So here is the criteria, 
 5. **Fit for the work.** Engineering tickets and operations coordination are different problems.
 6. **Data portability.** Export, import, and a documented API.
 7. **Deployment and maintenance burden** for the self-hosted options.
-8. **Where it is genuinely better than Kaneo.**
+8. **Where it is genuinely better than Basin.**
 
 ## The 10 best Asana alternatives in 2026
 
-### 1. Kaneo
+### 1. Basin
 
-Where Asana is a coordination layer for many teams, Kaneo is a focused tracker for one: boards, backlog, workflow columns, roles, labels, priorities, task relations, comments, attachments, and time tracking. Everything a team needs to run its own work, and nothing aimed at making that work legible to a program manager three levels up.
+Where Asana is a coordination layer for many teams, Basin is a focused tracker for one: boards, backlog, workflow columns, roles, labels, priorities, task relations, comments, attachments, and time tracking. Everything a team needs to run its own work, and nothing aimed at making that work legible to a program manager three levels up.
 
-Kaneo Cloud is hosted in the EU and priced at $5 per user a month, less than half of Asana's entry tier, with single sign-on on every plan instead of an Enterprise conversation. Backups, updates, and email support are ours to worry about. Kaneo is also open source under the MIT licence, so you can export everything or move it to your own server if you ever want to, which is a materially different position from a tool with no exit at all.
+Basin Cloud is hosted in the EU and priced at $5 per user a month, less than half of Asana's entry tier, with single sign-on on every plan instead of an Enterprise conversation. Backups, updates, and email support are ours to worry about. Basin is also open source under the MIT licence, so you can export everything or move it to your own server if you ever want to, which is a materially different position from a tool with no exit at all.
 
 **Key features**
 
@@ -82,20 +82,20 @@ Kaneo Cloud is hosted in the EU and priced at $5 per user a month, less than hal
 - Workspace roles and permissions
 - Time tracking, comments, attachments, labels, priorities, and task relations
 - Single sign-on with Google, GitHub, Discord, or any OIDC provider, on every plan
-- Automatic backups, updates, and email support on Kaneo Cloud
+- Automatic backups, updates, and email support on Basin Cloud
 - Public REST API, API keys, webhooks, and an MCP server for AI agents
 - GitHub, Gitea, Slack, Discord, and Telegram integrations
 - Per-project JSON export and import
 
 **Pros:** Roughly half Asana's per-seat price, single sign-on on every plan, EU hosting with backups and updates handled, no feature paywalls between tiers, and an open-source escape hatch if you ever want out.
 
-**Cons:** No portfolios, goals, or workload views. No Gantt charts. If you use Asana's rollup reporting, Kaneo does not replace it.
+**Cons:** No portfolios, goals, or workload views. No Gantt charts. If you use Asana's rollup reporting, Basin does not replace it.
 
-**Pricing:** Kaneo Cloud is $4 a month for one user and $5 per user a month for teams, 14-day trial, no credit card. Annual billing works out at $3.33 and $4.17 a month. Self-hosting under MIT is available if you would rather run it yourself.
+**Pricing:** Basin Cloud is $4 a month for one user and $5 per user a month for teams, 14-day trial, no credit card. Annual billing works out at $3.33 and $4.17 a month. Self-hosting under MIT is available if you would rather run it yourself.
 
 **Best for:** Teams who want the tracking part of Asana without paying coordination-layer prices for it.
 
-**Why choose it over Asana:** A fifteen-person team goes from roughly $165 a month to $75, and single sign-on stops being an Enterprise conversation. Full breakdown on our [Kaneo vs Asana page](/asana-alternative).
+**Why choose it over Asana:** A fifteen-person team goes from roughly $165 a month to $75, and single sign-on stops being an Enterprise conversation. Full breakdown on our [Basin vs Asana page](/asana-alternative).
 
 ### 2. ClickUp
 
@@ -111,7 +111,7 @@ ClickUp is the broadest tool on this list: tasks, docs, whiteboards, chat, dashb
 
 **Best for:** Teams who actually want the docs, whiteboards, and chat, not just the tasks.
 
-**Why choose it over Asana:** More capability at a lower per-seat price. Compare with [Kaneo vs ClickUp](/clickup-alternative) if the breadth is the part you would turn off.
+**Why choose it over Asana:** More capability at a lower per-seat price. Compare with [Basin vs ClickUp](/clickup-alternative) if the breadth is the part you would turn off.
 
 ### 3. monday.com
 
@@ -127,7 +127,7 @@ monday.com is a work OS rather than a tracker. Colourful boards, dashboards, for
 
 **Best for:** Non-engineering teams who want dashboards and forms alongside their work.
 
-**Why choose it over Asana:** More flexible board structures and a stronger automation story for operations work. See [Kaneo vs monday.com](/monday-alternative) for the self-hosted comparison.
+**Why choose it over Asana:** More flexible board structures and a stronger automation story for operations work. See [Basin vs monday.com](/monday-alternative) for the self-hosted comparison.
 
 ### 4. Trello
 
@@ -143,7 +143,7 @@ Trello is the simplest board that works. If Asana feels like too much structure,
 
 **Best for:** Small teams and personal projects that need a board and nothing else.
 
-**Why choose it over Asana:** Dramatically simpler and cheaper. If you want that simplicity on your own server, see [Kaneo vs Trello](/trello-alternative) or our guide to [self-hosted Trello alternatives](/guides/self-hosted-trello-alternatives).
+**Why choose it over Asana:** Dramatically simpler and cheaper. If you want that simplicity on your own server, see [Basin vs Trello](/trello-alternative) or our guide to [self-hosted Trello alternatives](/guides/self-hosted-trello-alternatives).
 
 ### 5. Notion
 
@@ -159,7 +159,7 @@ Notion is a flexible workspace for documents, wikis, and lightweight databases. 
 
 **Best for:** Teams whose work lives in written documents, where the task list is a side effect.
 
-**Why choose it over Asana:** One tool for docs and light tracking instead of two subscriptions. Compare with [Kaneo vs Notion](/notion-alternative) if the database has started getting in the way.
+**Why choose it over Asana:** One tool for docs and light tracking instead of two subscriptions. Compare with [Basin vs Notion](/notion-alternative) if the database has started getting in the way.
 
 ### 6. Basecamp
 
@@ -175,7 +175,7 @@ Basecamp charges a flat monthly fee rather than per user, which is a genuinely g
 
 **Best for:** Companies whose project tool is also their internal communication tool, especially agencies with client access needs.
 
-**Why choose it over Asana:** Predictable cost at any team size, and a much calmer product. See [Kaneo vs Basecamp](/basecamp-alternative) if you want the board and backlog back.
+**Why choose it over Asana:** Predictable cost at any team size, and a much calmer product. See [Basin vs Basecamp](/basecamp-alternative) if you want the board and backlog back.
 
 ### 7. Wrike
 
@@ -191,7 +191,7 @@ Wrike is aimed at larger marketing, professional services, and operations teams:
 
 **Best for:** Operations and professional services teams running billable work.
 
-**Why choose it over Asana:** Stronger proofing and resource allocation. See [Kaneo vs Wrike](/wrike-alternative) if you want one feature set instead of user bands.
+**Why choose it over Asana:** Stronger proofing and resource allocation. See [Basin vs Wrike](/wrike-alternative) if you want one feature set instead of user bands.
 
 ### 8. Linear
 
@@ -207,7 +207,7 @@ Linear is the fastest and most polished tracker in the category. It is not an As
 
 **Best for:** Product and engineering teams who value speed over breadth.
 
-**Why choose it over Asana:** Far better suited to shipping software. See [Kaneo vs Linear](/linear-alternative) for the self-hostable version of that idea.
+**Why choose it over Asana:** Far better suited to shipping software. See [Basin vs Linear](/linear-alternative) for the self-hostable version of that idea.
 
 ### 9. Plane
 
@@ -223,7 +223,7 @@ Plane is an open-source tracker with a modern interface, close in shape to Linea
 
 **Best for:** Engineering teams who want a modern tracker on their own infrastructure.
 
-**Why choose it over Asana:** No per-seat pricing and full data ownership. Compare with [Kaneo vs Plane](/plane-alternative) on deployment weight and licensing.
+**Why choose it over Asana:** No per-seat pricing and full data ownership. Compare with [Basin vs Plane](/plane-alternative) on deployment weight and licensing.
 
 ### 10. OpenProject
 
@@ -239,17 +239,17 @@ OpenProject is the most complete open-source option for classical project manage
 
 **Best for:** Teams that need Gantt charts, budgets, and cost reporting, and want to own the deployment.
 
-**Why choose it over Asana:** Comparable planning depth without per-seat pricing. See [Kaneo vs OpenProject](/openproject-alternative) for the lighter trade.
+**Why choose it over Asana:** Comparable planning depth without per-seat pricing. See [Basin vs OpenProject](/openproject-alternative) for the lighter trade.
 
 ## How to choose
 
-- **Cost is the problem.** Kaneo self-hosted, Basecamp's flat rate, or Trello.
+- **Cost is the problem.** Basin self-hosted, Basecamp's flat rate, or Trello.
 - **You want more, not less.** ClickUp or monday.com.
-- **You must own the data.** Kaneo, Plane, or OpenProject.
-- **You are an engineering team.** Linear, Plane, or Kaneo.
+- **You must own the data.** Basin, Plane, or OpenProject.
+- **You are an engineering team.** Linear, Plane, or Basin.
 - **You are a marketing or operations team.** monday.com, Wrike, or ClickUp.
 - **You need portfolios and goals.** Stay on Asana. Nothing here replaces that layer properly.
-- **Single sign-on without an Enterprise contract.** Kaneo, or check the [free SSO guide](/guides/project-management-tools-with-free-sso).
+- **Single sign-on without an Enterprise contract.** Basin, or check the [free SSO guide](/guides/project-management-tools-with-free-sso).
 
 ## What it actually costs at ten and fifty users
 
@@ -260,27 +260,27 @@ Per-seat pricing hides how quickly this scales. Rough monthly figures at August 
 | Asana (Starter) | ~$110 | ~$550 |
 | Wrike (Team) | ~$100 | ~$500 |
 | ClickUp (Unlimited) | ~$70 | ~$350 |
-| Kaneo Cloud | $50 | $250 |
-| Kaneo self-hosted | Cost of a VPS, plus your time | Cost of a VPS, plus your time |
+| Basin Cloud | $50 | $250 |
+| Basin self-hosted | Cost of a VPS, plus your time | Cost of a VPS, plus your time |
 | Basecamp | Flat rate | Flat rate |
 
-Kaneo Cloud is the cheapest managed row on that table, and the gap widens with headcount: at fifty users it is roughly $300 a month less than Asana for the tracking most teams actually use. The self-hosted line does not move at all, but it trades the bill for someone's time, which is a real cost that spreadsheets like this one tend to leave out.
+Basin Cloud is the cheapest managed row on that table, and the gap widens with headcount: at fifty users it is roughly $300 a month less than Asana for the tracking most teams actually use. The self-hosted line does not move at all, but it trades the bill for someone's time, which is a real cost that spreadsheets like this one tend to leave out.
 
 ## Migrating off Asana
 
 Asana has a CSV export per project and a documented REST API, so a scripted migration is realistic. What tends to break is subtask nesting, custom fields, and attachment history.
 
-Export one active project first and import it somewhere as a test. Check that assignees resolve by email, that due dates land in the right timezone, and that comment authorship survives. Keep Asana readable for a quarter rather than cancelling the same week. Kaneo has a public REST API and per-project JSON import, and we will help with a migration script if you open an issue on [GitHub](https://github.com/usekaneo/kaneo).
+Export one active project first and import it somewhere as a test. Check that assignees resolve by email, that due dates land in the right timezone, and that comment authorship survives. Keep Asana readable for a quarter rather than cancelling the same week. Basin has a public REST API and per-project JSON import, and we will help with a migration script if you open an issue on [GitHub](https://github.com/usebasin/basin).
 
 ## Frequently asked questions
 
 ### What is the best free alternative to Asana?
 
-Trello's free tier is the most usable of the hosted free plans, and ClickUp's is the most generous in features. If you are willing to run a server, Kaneo is MIT licensed and self-hostable. Most teams that price out the server, the upgrades, and the backups end up on a managed plan instead, and Kaneo Cloud at $5 per user a month is roughly half of Asana's entry tier.
+Trello's free tier is the most usable of the hosted free plans, and ClickUp's is the most generous in features. If you are willing to run a server, Basin is MIT licensed and self-hostable. Most teams that price out the server, the upgrades, and the backups end up on a managed plan instead, and Basin Cloud at $5 per user a month is roughly half of Asana's entry tier.
 
 ### Is there an open-source alternative to Asana?
 
-Yes. Kaneo (MIT), Plane (AGPL-3.0 Community edition), and OpenProject (GPLv3 Community edition) are the main options, and all three can be self-hosted for free. They differ in scope and in what the free build withholds, particularly around single sign-on.
+Yes. Basin (MIT), Plane (AGPL-3.0 Community edition), and OpenProject (GPLv3 Community edition) are the main options, and all three can be self-hosted for free. They differ in scope and in what the free build withholds, particularly around single sign-on.
 
 ### Can Asana be self-hosted?
 
@@ -288,7 +288,7 @@ No. Asana is cloud only, with no on-premise or self-managed option at any tier. 
 
 ### Which Asana alternative is cheapest for a large team?
 
-Among managed options, Basecamp's flat rate wins at genuine scale, and Kaneo Cloud at $5 per user a month is roughly half of Asana's entry tier with single sign-on included rather than gated. Self-hosting an open-source tool is cheaper still on paper, because the bill is a server rather than a headcount, as long as you have someone to run it.
+Among managed options, Basecamp's flat rate wins at genuine scale, and Basin Cloud at $5 per user a month is roughly half of Asana's entry tier with single sign-on included rather than gated. Self-hosting an open-source tool is cheaper still on paper, because the bill is a server rather than a headcount, as long as you have someone to run it.
 
 ### Does Asana include single sign-on?
 
@@ -302,4 +302,4 @@ Portfolios, goals, and workload views. If a program manager needs fifty projects
 
 If you use Asana's portfolios, goals, and workload views, keep Asana. That layer is what you are paying for and it works.
 
-If you use Asana as a shared board with due dates, you are paying a coordination-layer price for a tracker. Kaneo Cloud is $5 per user a month, hosted in the EU, with single sign-on on every plan and backups and updates handled for you. Fourteen-day trial, no credit card, and an open-source codebase underneath so leaving is always an option you actually have.
+If you use Asana as a shared board with due dates, you are paying a coordination-layer price for a tracker. Basin Cloud is $5 per user a month, hosted in the EU, with single sign-on on every plan and backups and updates handled for you. Fourteen-day trial, no credit card, and an open-source codebase underneath so leaving is always an option you actually have.

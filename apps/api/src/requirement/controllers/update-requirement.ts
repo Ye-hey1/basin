@@ -1,5 +1,6 @@
 import { and, eq, ne } from "drizzle-orm";
 import db, { schema } from "../../database";
+import { publishEvent } from "../../events";
 import type { z } from "../../openapi";
 import { httpError } from "../../utils/http-error";
 import {
@@ -107,6 +108,8 @@ async function updateRequirement(id: string, input: UpdateRequirementInput) {
   if (!hydrated) {
     throw httpError(404, "requirement_not_found", "Requirement not found");
   }
+
+  await publishEvent("requirement.updated", { requirementId: id });
 
   return hydrated;
 }

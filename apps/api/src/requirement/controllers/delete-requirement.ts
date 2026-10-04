@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import db, { schema } from "../../database";
+import { publishEvent } from "../../events";
 import { httpError } from "../../utils/http-error";
 import { loadOr404 } from "./get-requirement";
 
@@ -29,6 +30,8 @@ async function deleteRequirement(id: string) {
   await db
     .delete(schema.requirementTable)
     .where(eq(schema.requirementTable.id, id));
+
+  await publishEvent("requirement.deleted", { requirementId: id });
 
   return { success: true, message: "Requirement deleted" };
 }

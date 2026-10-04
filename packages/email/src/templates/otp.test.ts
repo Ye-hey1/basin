@@ -15,6 +15,6 @@ describe("OtpEmail", () => {
       createElement(OtpEmail, { otp: "123456", locale: "zh-CN" }),
     );
     expect(html).toContain("你的验证码");
-    expect(html).toContain("Kaneo 安全邮件");
+    expect(html).toContain("Basin 安全邮件");
   });
 });

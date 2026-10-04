@@ -13,10 +13,10 @@ import {
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Round-ups, comparisons, and honest writing from the Kaneo team on choosing, self-hosting, and paying for project management software.",
+    "Round-ups, comparisons, and honest writing from the Basin team on choosing, self-hosting, and paying for project management software.",
   alternates: {
     canonical: "/blog",
-    types: { "application/rss+xml": "https://kaneo.app/blog/rss.xml" },
+    types: { "application/rss+xml": "https://basin.app/blog/rss.xml" },
   },
 };
 
@@ -29,7 +29,7 @@ export default function Page() {
     <>
       <JsonLd
         data={breadcrumbJsonLd([
-          { name: "Kaneo", path: "/" },
+          { name: "Basin", path: "/" },
           { name: "Blog", path: "/blog" },
         ])}
       />
@@ -37,16 +37,16 @@ export default function Page() {
         data={{
           "@context": "https://schema.org",
           "@type": "Blog",
-          name: "Kaneo blog",
-          url: "https://kaneo.app/blog",
+          name: "Basin blog",
+          url: "https://basin.app/blog",
           inLanguage: "en",
-          publisher: { "@type": "Organization", name: "Kaneo" },
+          publisher: { "@type": "Organization", name: "Basin" },
           blogPost: posts.map((post) => ({
             "@type": "BlogPosting",
             headline: post.title,
             description: post.excerpt,
             datePublished: post.date,
-            url: `https://kaneo.app${blogPath(post.slug)}`,
+            url: `https://basin.app${blogPath(post.slug)}`,
             author: { "@type": "Person", name: post.author.name },
           })),
         }}

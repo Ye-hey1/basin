@@ -1,6 +1,6 @@
 {
 	"common": {
-		"appName": "Kaneo",
+		"appName": "Basin",
 		"actions": {
 			"cancel": "取消",
 			"close": "关闭",
@@ -213,7 +213,7 @@
 				"telegram_integration_not_found": "未找到 Telegram 集成",
 				"the_time_range_is_too_long_to_record": "时间范围过长，无法记录。",
 				"this_relation_already_exists": "该关系已存在",
-				"this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and": "此工作区的 Kaneo Cloud 套餐已过期。订阅后即可继续创建和编辑。",
+				"this_workspace_s_basin_cloud_plan_has_expired_subscribe_to_continue_creating_and": "此工作区的 Basin Cloud 套餐已过期。订阅后即可继续创建和编辑。",
 				"time_entry_not_found": "未找到工时记录",
 				"unauthorized": "未授权",
 				"unknown_bulk_operation": "未知操作",
@@ -251,7 +251,7 @@
 				"errorToast": "项目创建失败"
 			},
 			"createWorkspace": {
-				"breadcrumbKaneo": "KANEO",
+				"breadcrumbBasin": "BASIN",
 				"title": "创建新工作区",
 				"description": "为你的工作区提供一个名称即可创建。",
 				"namePlaceholder": "工作区名称",
@@ -383,7 +383,7 @@
 			"toggleMessage": "已经有账户？",
 			"toggleLink": "登录",
 			"instanceStatusError": "无法连接服务器，请稍后重试。",
-			"instanceAdminTitle": "设置你的 Kaneo 实例",
+			"instanceAdminTitle": "设置你的 Basin 实例",
 			"instanceAdminSubtitle": "此账户将成为拥有完整权限的实例管理员。"
 		},
 		"verifyOtp": {
@@ -441,7 +441,7 @@
 			"workspaceLabel": "工作区：{{workspaceName}}",
 			"joinWorkspace": "加入 {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> 邀请你加入他们的工作区。",
-			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> 邀请你加入他们 Kaneo 上的工作区。",
+			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> 邀请你加入他们 Basin 上的工作区。",
 			"createAccountOrSignIn": "创建账户以接受此邀请；如已有账户，请直接登录。",
 			"createAccount": "创建账户",
 			"accepting": "接受中…",
@@ -457,7 +457,7 @@
 			}
 		},
 		"onboarding": {
-			"pageTitle": "欢迎使用 Kaneo",
+			"pageTitle": "欢迎使用 Basin",
 			"workspacePageTitle": "创建工作区",
 			"createWorkspaceTitle": "创建工作区",
 			"createWorkspaceSubtitle": "设置你的工作区以开始管理项目",
@@ -510,7 +510,7 @@
 			"signInTitle": "登录以继续",
 			"signInSubtitle": "登录后即可批准或拒绝此设备请求。",
 			"signIn": "登录",
-			"approveSubtitle": "有一台设备正在请求访问你的 Kaneo 账户。",
+			"approveSubtitle": "有一台设备正在请求访问你的 Basin 账户。",
 			"approve": "批准",
 			"deny": "拒绝",
 			"connected": "设备已连接",
@@ -528,7 +528,7 @@
 			"signInTitle": "登录以继续",
 			"signInSubtitle": "请先登录，再批准此 MCP 客户端。",
 			"signIn": "登录",
-			"reviewSubtitle": "在向此客户端授予 Kaneo 账户访问权限之前，请先确认该请求。",
+			"reviewSubtitle": "在向此客户端授予 Basin 账户访问权限之前，请先确认该请求。",
 			"accessWarning": "该客户端将可以以你的身份操作并访问你的工作区。请仅在由你本人发起连接时继续。",
 			"clientNameLabel": "客户端名称（自行申报）",
 			"clientFallback": "MCP 客户端",
@@ -589,7 +589,7 @@
 		"notificationsPage": {
 			"pageTitle": "通知",
 			"title": "通知",
-			"subtitle": "选择 Kaneo 发送账户通知的方式和渠道。",
+			"subtitle": "选择 Basin 发送账户通知的方式和渠道。",
 			"statusConnected": "已连接",
 			"statusPaused": "已暂停",
 			"emailTitle": "邮箱",
@@ -622,10 +622,10 @@
 			"webhookDescription": "将账户通知以 JSON 形式发送到你的端点。",
 			"endpointUrl": "端点 URL",
 			"signingSecret": "签名密钥",
-			"webhookUrlPlaceholder": "https://example.com/webhooks/kaneo",
+			"webhookUrlPlaceholder": "https://example.com/webhooks/basin",
 			"webhookSecretPlaceholder": "可选的共享密钥",
 			"webhookSecretHintConfigured": "已配置签名密钥（{{masked}}），输入新密钥以替换。",
-			"webhookSecretHintOptional": "可选。设置密钥后，Kaneo 会对请求体进行签名。",
+			"webhookSecretHintOptional": "可选。设置密钥后，Basin 会对请求体进行签名。",
 			"connectWebhook": "连接 Webhook",
 			"workspaceRulesTitle": "工作区通知规则",
 			"workspaceRulesDescription": "复用你的全局渠道，然后决定哪些工作区和项目可以发送账户通知。",
@@ -690,7 +690,7 @@
 		},
 		"preferencesPage": {
 			"title": "偏好设置",
-			"subtitle": "自定义你的 Kaneo 体验。",
+			"subtitle": "自定义你的 Basin 体验。",
 			"appearanceTitle": "外观",
 			"appearanceSubtitle": "视觉设置和布局偏好。",
 			"theme": "主题",
@@ -734,7 +734,7 @@
 			"title": "开发者设置",
 			"subtitle": "管理你的 API 密钥和开发者资源。",
 			"apiKeysCardTitle": "API 密钥",
-			"apiKeysCardDescription": "创建并管理用于以编程方式访问 Kaneo 的 API 密钥。",
+			"apiKeysCardDescription": "创建并管理用于以编程方式访问 Basin 的 API 密钥。",
 			"createApiKey": "创建 API 密钥",
 			"unnamedKey": "未命名密钥"
 		},
@@ -773,7 +773,7 @@
 			},
 			"createDialog": {
 				"title": "创建 API 密钥",
-				"description": "创建新的 API 密钥以编程方式访问 Kaneo API。",
+				"description": "创建新的 API 密钥以编程方式访问 Basin API。",
 				"nameLabel": "姓名",
 				"namePlaceholder": "我的 API 密钥",
 				"nameDescription": "此 API 密钥的描述性名称",
@@ -1130,7 +1130,7 @@
 				"removeError": "移除 GitHub 集成失败",
 				"issuesImported": "Issues 导入成功",
 				"importError": "导入 Issues 失败",
-				"commentOnEnabled": "Kaneo 将在新 Issue 上评论任务链接",
+				"commentOnEnabled": "Basin 将在新 Issue 上评论任务链接",
 				"commentOnDisabled": "新 Issue 的任务链接评论已关闭",
 				"settingsUpdateError": "更新 GitHub 集成失败"
 			},
@@ -1141,8 +1141,8 @@
 			"badgeNotConnected": "未连接",
 			"repository": "仓库",
 			"repositoryHint": "已连接的 GitHub 仓库",
-			"commentTaskLinkTitle": "在新 Issue 上评论 Kaneo 链接",
-			"commentTaskLinkHint": "启用后，Kaneo 会在每个新 GitHub Issue 上发布包含任务链接的评论。",
+			"commentTaskLinkTitle": "在新 Issue 上评论 Basin 链接",
+			"commentTaskLinkHint": "启用后，Basin 会在每个新 GitHub Issue 上发布包含任务链接的评论。",
 			"appStatusTitle": "GitHub App 状态",
 			"appStatusHint": "安装与权限状态",
 			"statusProperlyConfigured": "配置正确",
@@ -1193,7 +1193,7 @@
 				"removeError": "移除 Gitea 集成失败",
 				"issuesImported": "Issues 导入成功",
 				"importError": "导入 Issues 失败",
-				"commentOnEnabled": "Kaneo 将在新 Issue 上评论任务链接",
+				"commentOnEnabled": "Basin 将在新 Issue 上评论任务链接",
 				"commentOnDisabled": "新 Issue 的任务链接评论已关闭",
 				"settingsUpdateError": "更新 Gitea 集成失败",
 				"secretCopied": "已复制",
@@ -1211,8 +1211,8 @@
 			"badgeNotConnected": "未连接",
 			"repository": "仓库",
 			"repositoryHint": "已关联的 Gitea 仓库",
-			"commentTaskLinkTitle": "在新 Issue 上评论 Kaneo 链接",
-			"commentTaskLinkHint": "启用后，Kaneo 会在每个新 Issue 上发布一条包含任务链接的评论。",
+			"commentTaskLinkTitle": "在新 Issue 上评论 Basin 链接",
+			"commentTaskLinkHint": "启用后，Basin 会在每个新 Issue 上发布一条包含任务链接的评论。",
 			"webhookTitle": "Webhook",
 			"webhookHint": "在你的 Gitea 仓库中，添加使用此 URL 和密钥的 Webhook。启用 push、pull request、issues、issue comments 和 create（用于标签）。",
 			"webhookSecretLabel": "密钥（必须与 Gitea 中的 Webhook 密钥一致）",
@@ -1336,15 +1336,15 @@
 				"removeError": "移除通用 Webhook 集成失败"
 			},
 			"connectionTitle": "出站 Webhook 连接",
-			"connectionHint": "将任务事件以 JSON 形式发送到你的端点。配置密钥后会包含带签名的 X-Kaneo-Signature 头。",
+			"connectionHint": "将任务事件以 JSON 形式发送到你的端点。配置密钥后会包含带签名的 X-Basin-Signature 头。",
 			"connected": "已连接",
 			"paused": "已暂停",
 			"webhookLabel": "端点 URL",
-			"webhookPlaceholder": "https://example.com/webhooks/kaneo",
-			"webhookHint": "Kaneo 会为每个已启用的事件发送带 JSON 负载的 POST 请求。",
+			"webhookPlaceholder": "https://example.com/webhooks/basin",
+			"webhookHint": "Basin 会为每个已启用的事件发送带 JSON 负载的 POST 请求。",
 			"secretLabel": "签名密钥",
 			"secretPlaceholder": "可选的共享密钥",
-			"secretHint": "可选。提供后，Kaneo 会对请求体进行签名，并通过 X-Kaneo-Signature 头发送十六进制摘要。",
+			"secretHint": "可选。提供后，Basin 会对请求体进行签名，并通过 X-Basin-Signature 头发送十六进制摘要。",
 			"secretHintConfigured": "已配置签名密钥（{{secret}}），输入新密钥以替换。",
 			"eventsTitle": "事件通知",
 			"eventsHint": "选择哪些项目变更会触发出站 Webhook。",
@@ -1398,7 +1398,7 @@
 			"threadIdHint": "可选。用于 Telegram 群组内的论坛话题。",
 			"chatLabelLabel": "聊天标签",
 			"chatLabelPlaceholder": "工程更新",
-			"chatLabelHint": "在 Kaneo 中作为参考的可选标签。",
+			"chatLabelHint": "在 Basin 中作为参考的可选标签。",
 			"eventsTitle": "事件通知",
 			"eventsHint": "选择应发布到 Telegram 的项目变更。",
 			"events": {
@@ -1479,14 +1479,14 @@
 		},
 		"billingPage": {
 			"title": "计费",
-			"disabledDescription": "此实例未启用计费。自托管 Kaneo 永久免费包含全部功能。",
-			"subtitle": "管理此工作区的 Kaneo Cloud 订阅。",
+			"disabledDescription": "此实例未启用计费。自托管 Basin 永久免费包含全部功能。",
+			"subtitle": "管理此工作区的 Basin Cloud 订阅。",
 			"currentPlan": "当前套餐",
 			"currentPlanSubtitle": "工作区当前生效的套餐与计费状态。",
 			"foundingFree": "创始免费版",
 			"freeBadge": "免费",
-			"foundingFreeDescription": "作为早期支持者，此工作区可免费使用 Kaneo Cloud。感谢你从一开始就与我们同行。",
-			"cloudPlan": "Kaneo Cloud {{plan}}",
+			"foundingFreeDescription": "作为早期支持者，此工作区可免费使用 Basin Cloud。感谢你从一开始就与我们同行。",
+			"cloudPlan": "Basin Cloud {{plan}}",
 			"accessEnds": "访问截止",
 			"renews": "续订",
 			"billingPortalHint": "更新付款方式、查看发票或随时取消。",
@@ -1651,7 +1651,9 @@
 			"members": "成员",
 			"invitations": "邀请",
 			"more": "更多",
-			"backToBoard": "返回看板"
+			"backToBoard": "返回看板",
+			"assistant": "AI 助理",
+			"agents": "Agent"
 		},
 		"projectList": {
 			"viewProject": "查看项目",
@@ -1699,7 +1701,8 @@
 			"projectsTitle": "项目",
 			"settingsTitle": "设置",
 			"backToWorkspace": "返回工作区",
-			"settingsWorkspaceTab": "工作区"
+			"settingsWorkspaceTab": "工作区",
+			"aiSettingsTab": "AI"
 		},
 		"projectSettings": {
 			"projectLabel": "项目"
@@ -2364,14 +2367,14 @@
 	},
 	"invitations": {
 		"email": {
-			"subject": "{{inviterName}} 邀请你加入 Kaneo 上的 {{workspaceName}}",
-			"preview": "你被邀请加入 Kaneo 上的 {{workspaceName}}",
+			"subject": "{{inviterName}} 邀请你加入 Basin 上的 {{workspaceName}}",
+			"preview": "你被邀请加入 Basin 上的 {{workspaceName}}",
 			"title": "加入 {{workspaceName}}",
-			"subtitle": "{{inviterName}}（{{inviterEmail}}）邀请你在 Kaneo 中协作。",
+			"subtitle": "{{inviterName}}（{{inviterEmail}}）邀请你在 Basin 中协作。",
 			"cta": "接受邀请",
 			"sameEmail": "你可以使用收到此邮件的同一邮箱接受。",
 			"ignore": "如果这不是你预期的，可以安全忽略此邮件。",
-			"footer": "Kaneo 工作区邀请"
+			"footer": "Basin 工作区邀请"
 		},
 		"pageTitle": "邀请",
 		"pendingInvitations": "待处理的邀请",
@@ -2727,6 +2730,112 @@
 		},
 		"tree": {
 			"documents": "需求文档"
+		}
+	},
+	"ai": {
+		"assistant": {
+			"pageTitle": "AI 助理",
+			"header": "AI 助理",
+			"newThread": "新对话",
+			"untitledThread": "未命名对话",
+			"noThreads": "还没有对话",
+			"deleteThread": "删除对话",
+			"empty": "向助理提问项目、任务、需求的任何问题。",
+			"thinking": "思考中…",
+			"placeholder": "向工作区提问…",
+			"send": "发送",
+			"sendFailed": "获取回答失败，请重试。",
+			"notConfigured": "本实例尚未配置 AI。管理员可以在 设置 → AI 中完成配置。",
+			"citations": "来源"
+		},
+		"config": {
+			"pageTitle": "AI 设置",
+			"title": "AI 服务商",
+			"subtitle": "配置 Brain 索引与 AI 助理使用的模型服务。API Key 加密存储，API 永远不会返回其内容。",
+			"description": "保存时会用探测请求验证 Embedding 模型，并将检测到的向量维度写入配置。",
+			"provider": "服务商",
+			"baseUrl": "Base URL",
+			"apiKey": "API Key",
+			"apiKeyStored": "已保存密钥 — 留空保持不变",
+			"clearKey": "清除",
+			"chatModel": "对话模型",
+			"embeddingModel": "Embedding 模型",
+			"detectedDimensions": "检测到的向量维度：{{dimensions}}",
+			"save": "保存配置",
+			"saveHint": "保存时会探测 Embedding 模型，可能需要几秒。",
+			"saved": "AI 配置已保存",
+			"saveFailed": "AI 配置保存失败"
+		}
+	},
+	"agents": {
+		"pageTitle": "Agent 自动化",
+		"header": "Agent 自动化",
+		"types": {
+			"event": "事件触发",
+			"cron": "定时触发"
+		},
+		"eventTypes": {
+			"taskStatusChanged": "任务状态变更",
+			"taskDueDateChanged": "任务截止日变更",
+			"requirementUpdated": "需求更新"
+		},
+		"triggerTypes": {
+			"event": "事件",
+			"cron": "定时",
+			"manual": "手动"
+		},
+		"runStatus": {
+			"pending": "等待中",
+			"running": "运行中",
+			"completed": "已完成",
+			"failed": "失败"
+		},
+		"triggers": {
+			"title": "触发器",
+			"new": "新建触发器",
+			"editTrigger": "编辑触发器",
+			"empty": "还没有触发器。创建一个，让 agent 替你处理例行工作。",
+			"runNow": "立即运行",
+			"delete": "删除触发器"
+		},
+		"runs": {
+			"title": "运行记录",
+			"empty": "还没有运行记录。",
+			"output": "输出",
+			"error": "错误",
+			"steps": "工具调用"
+		},
+		"runQueued": "已加入运行队列，稍后查看记录",
+		"runQueuedFailed": "加入队列失败",
+		"triggerSaved": "触发器已保存",
+		"triggerSaveFailed": "触发器保存失败",
+		"fields": {
+			"name": "名称",
+			"type": "类型",
+			"eventType": "事件",
+			"cron": "Cron 表达式",
+			"conditionStatus": "状态变为时触发",
+			"conditionStatusHint": "如 blocked — 留空表示任意状态",
+			"project": "项目范围",
+			"anyProject": "全部项目",
+			"instruction": "Agent 指令",
+			"instructionHint": "触发时 agent 要做什么。它可以搜索任务、读取详情、发表评论。"
+		},
+		"mcp": {
+			"title": "MCP 服务器",
+			"new": "注册 MCP 服务器",
+			"transport": "传输方式",
+			"http": "HTTP",
+			"stdio": "本地进程 (stdio)",
+			"command": "命令",
+			"headers": "请求头 (JSON)",
+			"invalidHeaders": "请求头必须是合法 JSON",
+			"saved": "MCP 服务器已保存",
+			"saveFailed": "MCP 服务器保存失败",
+			"disabled": "已停用",
+			"disable": "停用",
+			"enable": "启用",
+			"delete": "删除 MCP 服务器"
 		}
 	}
 }

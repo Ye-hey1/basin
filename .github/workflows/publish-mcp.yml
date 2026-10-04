@@ -44,8 +44,8 @@ jobs:
 
       - name: Run MCP checks
         run: |
-          pnpm --filter @kaneo/mcp test
-          pnpm --filter @kaneo/mcp build
+          pnpm --filter @basin/mcp test
+          pnpm --filter @basin/mcp build
 
       - name: Validate MCP release tag
         if: ${{ github.event_name == 'release' }}
@@ -63,19 +63,19 @@ jobs:
             exit 1
           fi
 
-      - name: Check whether @kaneo/mcp version is already published
+      - name: Check whether @basin/mcp version is already published
         id: version_check
         run: |
           PACKAGE_VERSION=$(node -p "require('./packages/mcp/package.json').version")
 
-          if npm view "@kaneo/mcp@${PACKAGE_VERSION}" version >/dev/null 2>&1; then
+          if npm view "@basin/mcp@${PACKAGE_VERSION}" version >/dev/null 2>&1; then
             echo "already_published=true" >> "$GITHUB_OUTPUT"
-            echo "@kaneo/mcp@${PACKAGE_VERSION} is already published; skipping publish."
+            echo "@basin/mcp@${PACKAGE_VERSION} is already published; skipping publish."
           else
             echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publish @kaneo/mcp
+      - name: Publish @basin/mcp
         if: ${{ steps.version_check.outputs.already_published == 'false' }}
         run: |
           cd packages/mcp
@@ -84,10 +84,10 @@ jobs:
       - name: Publish to the MCP Registry
         run: |
           PACKAGE_VERSION=$(node -p "require('./packages/mcp/package.json').version")
-          IN_REGISTRY=$(curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.usekaneo/kaneo" \
-            | jq -r --arg v "$PACKAGE_VERSION" '[.servers[]? | (.server // .) | select(.name == "io.github.usekaneo/kaneo" and .version == $v)] | length')
+          IN_REGISTRY=$(curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.usebasin/basin" \
+            | jq -r --arg v "$PACKAGE_VERSION" '[.servers[]? | (.server // .) | select(.name == "io.github.usebasin/basin" and .version == $v)] | length')
           if [ "$IN_REGISTRY" != "0" ]; then
-            echo "io.github.usekaneo/kaneo@${PACKAGE_VERSION} is already in the MCP Registry; skipping."
+            echo "io.github.usebasin/basin@${PACKAGE_VERSION} is already in the MCP Registry; skipping."
             exit 0
           fi
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
@@ -108,8 +108,8 @@ jobs:
 
           gh release create "mcp-v${PACKAGE_VERSION}" \
             --target "${GITHUB_SHA}" \
-            --title "@kaneo/mcp v${PACKAGE_VERSION}" \
-            --notes "Published [@kaneo/mcp@${PACKAGE_VERSION}](https://www.npmjs.com/package/@kaneo/mcp/v/${PACKAGE_VERSION}) to npm." \
+            --title "@basin/mcp v${PACKAGE_VERSION}" \
+            --notes "Published [@basin/mcp@${PACKAGE_VERSION}](https://www.npmjs.com/package/@basin/mcp/v/${PACKAGE_VERSION}) to npm." \
             --latest=false
         env:
           GH_TOKEN: ${{ github.token }}

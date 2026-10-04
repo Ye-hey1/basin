@@ -24,7 +24,7 @@ function createWrapper() {
 }
 
 describe("useTaskFiltersWithLabelsSupport", () => {
-  const storageKey = "kaneo:board-filters:project-1";
+  const storageKey = "basin:board-filters:project-1";
 
   beforeEach(() => {
     window.localStorage.clear();

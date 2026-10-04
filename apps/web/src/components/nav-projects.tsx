@@ -104,7 +104,7 @@ function SortableProjectItem({
     <SidebarMenuItem
       ref={setNodeRef}
       style={style}
-      data-kaneo-sortable=""
+      data-basin-sortable=""
       className={isDragging ? "opacity-0" : undefined}
       {...(canReorder ? listeners : {})}
     >
@@ -179,12 +179,12 @@ export function NavProjects() {
   );
 
   const handleDragStart = (event: DragStartEvent) => {
-    document.body.classList.add("kaneo-dragging");
+    document.body.classList.add("basin-dragging");
     setDraggingProjectId(String(event.active.id));
   };
 
   const endDrag = () => {
-    document.body.classList.remove("kaneo-dragging");
+    document.body.classList.remove("basin-dragging");
     setDraggingProjectId(null);
   };
 

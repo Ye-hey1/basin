@@ -19,8 +19,8 @@ export async function requireWorkspaceEntitlement(workspaceId: string) {
   if (!entitlement.active) {
     throw httpError(
       402,
-      "this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and",
-      "This workspace's Kaneo Cloud plan has expired. Subscribe to continue creating and editing.",
+      "this_workspace_s_basin_cloud_plan_has_expired_subscribe_to_continue_creating_and",
+      "This workspace's Basin Cloud plan has expired. Subscribe to continue creating and editing.",
     );
   }
 }

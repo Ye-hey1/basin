@@ -1,21 +1,21 @@
 ---
 title: Migrating to drim
-description: Move an existing Kaneo deployment onto the drim CLI, or update an older drim deployment to the current single-container layout
+description: Move an existing Basin deployment onto the drim CLI, or update an older drim deployment to the current single-container layout
 ---
 
 Two migrations are covered here. Both reuse your existing Docker volumes, so your database and uploads stay where they are and no data is copied.
 
 ## Updating an older drim deployment
 
-Kaneo used to ship as two images, `api` and `web`, behind a reverse proxy that split traffic between them. It now ships as one container that serves the web app and the API together.
+Basin used to ship as two images, `api` and `web`, behind a reverse proxy that split traffic between them. It now ships as one container that serves the web app and the API together.
 
 `drim upgrade` pulls new images but does not rewrite an existing `docker-compose.yml`, so a deployment created before that change keeps running the old layout indefinitely. Check which one you have:
 
 ```bash
-grep -E 'image:.*usekaneo' docker-compose.yml
+grep -E 'image:.*usebasin' docker-compose.yml
 ```
 
-Two lines with `usekaneo/api` and `usekaneo/web` mean you are on the old layout. A single `usekaneo/kaneo` line means you are already current and there is nothing to do.
+Two lines with `usebasin/api` and `usebasin/web` mean you are on the old layout. A single `usebasin/basin` line means you are already current and there is nothing to do.
 
 ### Steps
 
@@ -30,14 +30,14 @@ cp Caddyfile Caddyfile.bak-$STAMP
 Pull the image first, so the switchover is a quick container swap rather than a download:
 
 ```bash
-docker pull ghcr.io/usekaneo/kaneo:latest
+docker pull ghcr.io/usebasin/basin:latest
 ```
 
-Replace the `api` and `web` services in `docker-compose.yml` with one `kaneo` service. Leave `postgres`, the volumes, and any services you added yourself untouched:
+Replace the `api` and `web` services in `docker-compose.yml` with one `basin` service. Leave `postgres`, the volumes, and any services you added yourself untouched:
 
 ```yaml
-  kaneo:
-    image: ghcr.io/usekaneo/kaneo:latest
+  basin:
+    image: ghcr.io/usebasin/basin:latest
     env_file: .env
     depends_on:
       postgres:
@@ -50,14 +50,14 @@ Replace the `api` and `web` services in `docker-compose.yml` with one `kaneo` se
       start_period: 60s
       retries: 3
     networks:
-      - kaneo
+      - basin
 ```
 
-Update anything that pointed at the old services. In `depends_on` entries elsewhere, replace `api` and `web` with `kaneo`. In your reverse proxy, send everything to the one service instead of splitting on path, because the container routes `/api` internally:
+Update anything that pointed at the old services. In `depends_on` entries elsewhere, replace `api` and `web` with `basin`. In your reverse proxy, send everything to the one service instead of splitting on path, because the container routes `/api` internally:
 
 ```caddyfile
 your-domain.com {
-    reverse_proxy http://kaneo:5173
+    reverse_proxy http://basin:5173
     encode gzip
 }
 ```
@@ -83,7 +83,7 @@ docker compose ps
 curl -s https://your-domain.com/api/health
 ```
 
-You want every service up, the Kaneo container reporting healthy once its start period elapses, and `{"status":"ok"}` from the health endpoint.
+You want every service up, the Basin container reporting healthy once its start period elapses, and `{"status":"ok"}` from the health endpoint.
 
 ### Rollback
 
@@ -95,22 +95,22 @@ cp Caddyfile.bak-$STAMP Caddyfile
 docker compose up -d --force-recreate
 ```
 
-## Moving an existing Kaneo onto drim
+## Moving an existing Basin onto drim
 
-If you deployed Kaneo by hand and want drim to manage it, the goal is to have drim generate its files and then point them at the volumes you already have.
+If you deployed Basin by hand and want drim to manage it, the goal is to have drim generate its files and then point them at the volumes you already have.
 
 Record the names of your existing volumes and your current environment values:
 
 ```bash
-docker volume ls | grep -i kaneo
+docker volume ls | grep -i basin
 ```
 
 Stop the current stack, then install drim and run setup in a new directory:
 
 ```bash
 docker compose down
-curl -fsSL https://assets.kaneo.app/install.sh | sh
-mkdir ~/kaneo && cd ~/kaneo
+curl -fsSL https://assets.basin.app/install.sh | sh
+mkdir ~/basin && cd ~/basin
 drim setup --domain=your-domain.com
 drim stop
 ```
@@ -134,7 +134,7 @@ Then start and verify as above.
 
 ### Using your own reverse proxy
 
-If you already run nginx, Traefik or similar, choose `--no-reverse-proxy` at setup so drim does not start Caddy on ports 80 and 443, and point your proxy at Kaneo on port 5173.
+If you already run nginx, Traefik or similar, choose `--no-reverse-proxy` at setup so drim does not start Caddy on ports 80 and 443, and point your proxy at Basin on port 5173.
 
 ## Common issues
 

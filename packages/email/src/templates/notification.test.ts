@@ -9,11 +9,11 @@ describe("NotificationEmail", () => {
       createElement(NotificationEmail, {
         title: "任务已分配给你",
         message: "请查看设计稿。",
-        actionUrl: "https://kaneo.example/task/1",
+        actionUrl: "https://basin.example/task/1",
         locale: "zh-CN",
       }),
     );
     expect(html).toContain("有一条通知符合你的投递偏好。");
-    expect(html).toContain("在 Kaneo 中打开");
+    expect(html).toContain("在 Basin 中打开");
   });
 });

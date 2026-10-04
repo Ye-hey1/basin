@@ -16,7 +16,7 @@ type BadgeVariant = NonNullable<React.ComponentProps<typeof Badge>["variant"]>;
 /**
  * Requirement priorities are P0–P4 rather than the four task levels, so they get
  * their own icon mapping while reusing the same icon vocabulary and accent
- * colours as task priority in the rest of Kaneo.
+ * colours as task priority in the rest of Basin.
  */
 export function RequirementPriorityIcon({
   priority,

@@ -1,0 +1,10 @@
+{{- $publicExposureEnabled := or .Values.ingress.enabled .Values.gateway.enabled -}}
+{{- if and (not .Values.basin.env.existingSecret.enabled) (or (not .Values.basin.env.authSecret) (lt (len (.Values.basin.env.authSecret | toString)) 32)) -}}
+{{- fail "basin.env.authSecret must be explicitly set to at least 32 characters or provided via basin.env.existingSecret" -}}
+{{- end -}}
+{{- if and $publicExposureEnabled .Values.postgresql.enabled (not .Values.postgresql.auth.existingSecret) (eq .Values.postgresql.auth.password "basin_password") -}}
+{{- fail "postgresql.auth.password must be changed or provided via postgresql.auth.existingSecret before enabling ingress or gateway" -}}
+{{- end -}}
+{{- if and .Values.autoscaling.enabled .Values.autoscaling.targetCPUUtilizationPercentage (not (dig "requests" "cpu" "" .Values.basin.resources)) -}}
+{{- fail "basin.resources.requests.cpu must be set when autoscaling CPU utilization is enabled" -}}
+{{- end -}}

@@ -1,4 +1,4 @@
-import { client } from "@kaneo/libs";
+import { client } from "@basin/libs";
 import type { InferRequestType } from "hono/client";
 
 export type CreateCustomFieldRequest = InferRequestType<

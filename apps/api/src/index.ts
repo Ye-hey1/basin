@@ -15,6 +15,14 @@ import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
 import activity from "./activity";
+import agents from "./agents";
+import { registerAgentTriggerListeners } from "./agents/listeners";
+import {
+  registerAgentCronScheduler,
+  shutdownAgentCronScheduler,
+} from "./agents/scheduler";
+import ai from "./ai";
+import { registerAiIndexListeners } from "./ai/listeners";
 import { auth } from "./auth";
 import { organizationRoutes } from "./auth-openapi";
 import billing from "./billing";
@@ -153,7 +161,7 @@ export function createApp() {
   const { upgradeWebSocket, injectWebSocket } = nodeWs;
   const corsOriginSource = [
     process.env.CORS_ORIGINS,
-    process.env.KANEO_CLIENT_URL,
+    process.env.BASIN_CLIENT_URL,
   ].find((value) => value?.trim());
   const corsOrigins = corsOriginSource
     ?.split(",")
@@ -164,7 +172,7 @@ export function createApp() {
 
   if (!corsOrigins && !reflectUnconfiguredOrigins) {
     console.warn(
-      "[cors] Neither CORS_ORIGINS nor KANEO_CLIENT_URL is set, so cross-origin requests are refused. Same-origin deployments (the bundled image) are unaffected; set KANEO_CLIENT_URL if the web app is served from another origin.",
+      "[cors] Neither CORS_ORIGINS nor BASIN_CLIENT_URL is set, so cross-origin requests are refused. Same-origin deployments (the bundled image) are unaffected; set BASIN_CLIENT_URL if the web app is served from another origin.",
     );
   }
 
@@ -405,17 +413,17 @@ export function createApp() {
     const document = api.getOpenAPI31Document({
       openapi: "3.1.0",
       info: {
-        title: "Kaneo API",
+        title: "Basin API",
         version: "1.0.0",
         description:
-          "Kaneo Project Management API - Manage projects, tasks, labels, and more",
+          "Basin Project Management API - Manage projects, tasks, labels, and more",
       },
       servers: [
         {
           url: normalizeApiServerUrl(
-            process.env.KANEO_API_URL || "https://cloud.kaneo.app",
+            process.env.BASIN_API_URL || "https://cloud.basin.app",
           ),
-          description: "Kaneo API Server",
+          description: "Basin API Server",
         },
       ],
       security: [{ bearerAuth: [] }],
@@ -498,7 +506,7 @@ export function createApp() {
       // Optional `ui=1` forces redirect when Sec-Fetch-* headers are missing (e.g. some clients).
       if (forceUiRedirect || secFetchDest === "document") {
         const clientUrl = (
-          process.env.KANEO_CLIENT_URL || "http://localhost:5173"
+          process.env.BASIN_CLIENT_URL || "http://localhost:5173"
         ).replace(/\/$/, "");
         const deviceUrl = new URL(`${clientUrl}/device`);
         if (userCode) {
@@ -555,7 +563,7 @@ export function createApp() {
       Sentry.setUser(null);
       try {
         await authenticateApiRequest(c);
-        const windowId = c.req.header("X-Kaneo-Window-Id");
+        const windowId = c.req.header("X-Basin-Window-Id");
         const userId = c.get("userId");
         const initiatorId = windowId ? `${userId}:${windowId}` : userId;
         return await eventContext.run({ initiatorId }, next);
@@ -621,11 +629,13 @@ export function createApp() {
   const workspaceApi = api.route("/workspace", workspace);
   const customFieldApi = api.route("/custom-field", customField);
   const userApi = api.route("/user", user);
+  const aiApi = api.route("/ai", ai);
+  const agentsApi = api.route("/agents", agents);
 
   app.route(
     "/",
     mcpWellKnownRoutes(
-      (process.env.KANEO_API_URL || "http://localhost:1337").replace(
+      (process.env.BASIN_API_URL || "http://localhost:1337").replace(
         /\/api\/?$/,
         "",
       ),
@@ -790,6 +800,8 @@ export function createApp() {
     workspaceApi,
     customFieldApi,
     oauthApi,
+    aiApi,
+    agentsApi,
   };
 }
 
@@ -827,6 +839,9 @@ export async function runStartupTasks() {
 
   initializePlugins();
   initializeScheduler();
+  registerAiIndexListeners();
+  registerAgentTriggerListeners();
+  registerAgentCronScheduler();
   await initializeWebSocketAdapter();
 }
 
@@ -850,7 +865,7 @@ export async function startServer(
     },
     () => {
       console.log(
-        `⚡ API is running at ${process.env.KANEO_API_URL || "http://localhost:1337"}`,
+        `⚡ API is running at ${process.env.BASIN_API_URL || "http://localhost:1337"}`,
       );
     },
   );
@@ -863,6 +878,7 @@ export async function startServer(
 
     console.log("🛑 Shutting down gracefully...");
     shutdownScheduler();
+    shutdownAgentCronScheduler();
     await shutdownWebSocketAdapter();
     server.close();
     process.exit(0);
@@ -911,6 +927,8 @@ const {
   workspaceApi,
   customFieldApi,
   oauthApi,
+  aiApi,
+  agentsApi,
 } = createdApp;
 
 const entrypoint = process.argv[1];
@@ -953,6 +971,8 @@ export type AppType =
   | typeof publicProjectApi
   | typeof requirementApi
   | typeof invitationPublicApi
-  | typeof oauthApi;
+  | typeof oauthApi
+  | typeof aiApi
+  | typeof agentsApi;
 
 export default app;

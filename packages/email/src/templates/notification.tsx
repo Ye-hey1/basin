@@ -15,16 +15,16 @@ export type NotificationEmailProps = {
 
 const messages = {
   en: {
-    preview: "You have a new Kaneo notification",
+    preview: "You have a new Basin notification",
     subtitle: "A notification matched your delivery preferences.",
-    footer: "Kaneo notification",
-    actionLabel: "Open in Kaneo",
+    footer: "Basin notification",
+    actionLabel: "Open in Basin",
   },
   zh: {
-    preview: "你有一条新的 Kaneo 通知",
+    preview: "你有一条新的 Basin 通知",
     subtitle: "有一条通知符合你的投递偏好。",
-    footer: "Kaneo 通知",
-    actionLabel: "在 Kaneo 中打开",
+    footer: "Basin 通知",
+    actionLabel: "在 Basin 中打开",
   },
 } as const;
 
@@ -56,7 +56,7 @@ const NotificationEmail = ({
 NotificationEmail.PreviewProps = {
   title: "Task assigned to you",
   message: "You were assigned to Design account notifications.",
-  actionUrl: "https://kaneo.app",
+  actionUrl: "https://basin.app",
 } as NotificationEmailProps;
 
 export default NotificationEmail;

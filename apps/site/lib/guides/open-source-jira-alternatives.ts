@@ -9,7 +9,7 @@ export const openSourceJiraAlternatives: Guide = {
   summary:
     "Five self-hostable trackers that replace Jira, and the Jira features none of them have.",
   answer:
-    "The realistic open-source Jira alternatives are Kaneo, Plane, OpenProject, Redmine, and Taiga. Kaneo is the lightest and is MIT licensed with single sign-on included, Plane is closest in interface to a modern tracker, OpenProject is closest to Jira in scope, Redmine has the deepest plugin ecosystem, and Taiga is the strongest for Scrum. None of them replicate Jira's schemes, marketplace, or Jira Service Management.",
+    "The realistic open-source Jira alternatives are Basin, Plane, OpenProject, Redmine, and Taiga. Basin is the lightest and is MIT licensed with single sign-on included, Plane is closest in interface to a modern tracker, OpenProject is closest to Jira in scope, Redmine has the deepest plugin ecosystem, and Taiga is the strongest for Scrum. None of them replicate Jira's schemes, marketplace, or Jira Service Management.",
   sections: [
     {
       heading: "Why teams leave Jira",
@@ -23,7 +23,7 @@ export const openSourceJiraAlternatives: Guide = {
       heading: "The alternatives, and who each is for",
       items: [
         {
-          name: "Kaneo",
+          name: "Basin",
           meta: "MIT, self-hosted free",
           href: "/jira-alternative",
           body: "For teams who want the board, backlog, workflows, roles, and time tracking and nothing else. One container plus PostgreSQL, SSO through any OIDC provider in the free build, a documented public API, and an MCP server. No Gantt charts, no schemes, no marketplace.",
@@ -66,7 +66,7 @@ export const openSourceJiraAlternatives: Guide = {
       heading: "Moving your issues",
       body: [
         "Jira exports issues to CSV and has a well-documented REST API, so a scripted migration is realistic for anything up to a few thousand issues. The parts that hurt are attachments, comment history with author attribution, and issue links.",
-        "Do a dry run into a scratch project first, check that assignees resolve by email address, and keep the Jira instance readable for a quarter rather than cancelling it the same week. Kaneo has a public API and per-project JSON import, and we are happy to help with a migration script if you open an issue on GitHub.",
+        "Do a dry run into a scratch project first, check that assignees resolve by email address, and keep the Jira instance readable for a quarter rather than cancelling it the same week. Basin has a public API and per-project JSON import, and we are happy to help with a migration script if you open an issue on GitHub.",
       ],
     },
   ],
@@ -84,7 +84,7 @@ export const openSourceJiraAlternatives: Guide = {
     {
       question: "What is the closest open-source tool to Jira?",
       answer:
-        "OpenProject, in scope and structure. If what you liked about Jira was the board and backlog rather than the schemes and reports, Kaneo or Plane will feel closer to what you actually used.",
+        "OpenProject, in scope and structure. If what you liked about Jira was the board and backlog rather than the schemes and reports, Basin or Plane will feel closer to what you actually used.",
     },
     {
       question: "How long does a Jira migration take?",
@@ -93,7 +93,7 @@ export const openSourceJiraAlternatives: Guide = {
     },
   ],
   related: [
-    { label: "Kaneo vs Jira", href: "/jira-alternative" },
+    { label: "Basin vs Jira", href: "/jira-alternative" },
     {
       label: "Best open-source project management software",
       href: "/guides/best-open-source-project-management-software",

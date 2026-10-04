@@ -290,7 +290,7 @@ export default function RequirementFormDialog({
 
 /**
  * Label, control, and an optional hint or error stacked at the rhythm the rest
- * of Kaneo's dialogs use (label→control 8px, field→field 20px).
+ * of Basin's dialogs use (label→control 8px, field→field 20px).
  */
 function FormRow({
   label,

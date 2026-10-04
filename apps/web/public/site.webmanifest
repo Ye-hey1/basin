@@ -1,6 +1,6 @@
 {
-	"name": "Kaneo",
-	"short_name": "Kaneo",
+	"name": "Basin",
+	"short_name": "Basin",
 	"icons": [
 		{
 			"src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
 			"purpose": "maskable"
 		}
 	],
-	"theme_color": "#141414",
-	"background_color": "#141414",
+	"theme_color": "#0E0F12",
+	"background_color": "#0E0F12",
 	"display": "standalone"
 }

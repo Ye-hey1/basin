@@ -11,8 +11,8 @@ import {
   viewer,
 } from "./index";
 
-describe("@kaneo/permissions statement surface", () => {
-  it("exposes Kaneo's resource statements alongside better-auth defaults", () => {
+describe("@basin/permissions statement surface", () => {
+  it("exposes Basin's resource statements alongside better-auth defaults", () => {
     expect(statement.project).toEqual([
       "create",
       "read",
@@ -73,7 +73,7 @@ describe("built-in role privileges", () => {
     expect(admin.statements.workspace).not.toContain("delete");
   });
 
-  it("owner has every Kaneo resource action including workspace:delete", () => {
+  it("owner has every Basin resource action including workspace:delete", () => {
     expect(owner.statements.task).toEqual(
       expect.arrayContaining(["create", "read", "update", "delete", "assign"]),
     );

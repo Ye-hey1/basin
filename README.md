@@ -1,183 +1,51 @@
 <p align="center">
-  <a href="https://kaneo.app">
-    <img src="https://assets.kaneo.app/logo-text.png" alt="Kaneo's logo" width="450" />
-  </a>
+  <img src="apps/web/public/favicon.svg" alt="Basin" width="120" />
 </p>
 
 <div align="center">
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/usekaneo/kaneo/ci.yml?branch=main)](https://github.com/usekaneo/kaneo/actions)
-[![Discord](https://img.shields.io/discord/1326250681530843178?color=7389D8&label=&logo=discord&logoColor=ffffff)](https://discord.gg/rU4tSyhXXU)
-[![Sponsors](https://img.shields.io/github/sponsors/andrejsshell)](https://github.com/sponsors/andrejsshell)
+# Basin
+
+**Where work settles.**
+
+AI-native 项目管理平台：任务流动到完成，完成的工作沉降为团队的知识资产，AI 同事替你清掉例行杂务。
 
 </div>
-
-<div align="center">
-  <h3>
-    <a href="https://kaneo.app/docs/core">Quick Start</a>
-    <span> | </span>
-    <a href="https://kaneo.app">Website</a>
-    <span> | </span>
-    <a href="https://cloud.kaneo.app">Cloud</a>
-    <span> | </span>
-    <a href="https://discord.gg/rU4tSyhXXU">Discord</a>
-  </h3>
-</div>
-
-
-<p align="center">
-  <img src="https://assets.kaneo.app/readme.png" alt="Kaneo Dashboard" />
-</p>
-
-## Why Kaneo?
-
-After years of using bloated, overcomplicated project management platforms that distracted from actual work, we built Kaneo to be different.
-
-The problem with most tools isn't that they lack features, it's that they have **too many**. Every notification, every unnecessary button, every complex workflow pulls your team away from what matters: **building great products**.
-
-We believe the best tools are **invisible**. They should amplify your team's natural workflow, not force you to adapt to theirs. Kaneo is built on the principle that **less is more**: every feature exists because it solves a real problem, not because it looks impressive in a demo.
-
-**What makes it different:**
-- **Clean interface** that focuses on your work, not the tool
-- **Self-hosted** so your data stays yours
-- **Actually fast** because we care about performance
-- **Open source** with a permissive MIT license
-
-Learn more about Kaneo's features and capabilities in our [documentation](https://kaneo.app/docs/core).
-
-## Sponsors
-
-Kaneo is open source. If you find it useful, consider [sponsoring the project](https://github.com/sponsors/andrejsshell) to help support ongoing development.
-
-<!-- sponsors --><a href="https://github.com/danielsada"><img src="https:&#x2F;&#x2F;github.com&#x2F;danielsada.png" width="60px" alt="User avatar: Daniel Sada" /></a><a href="https://github.com/randoneering"><img src="https:&#x2F;&#x2F;github.com&#x2F;randoneering.png" width="60px" alt="User avatar: (justin)randoneering" /></a><a href="https://github.com/floreabogdan"><img src="https:&#x2F;&#x2F;github.com&#x2F;floreabogdan.png" width="60px" alt="User avatar: Bogdan FLOREA" /></a><a href="https://github.com/t0yohei"><img src="https:&#x2F;&#x2F;github.com&#x2F;t0yohei.png" width="60px" alt="User avatar: t0yohei" /></a><!-- sponsors -->
-
-## Getting Started
-
-### One-Click Deployment with drim
-
-For straightforward deployments, use [drim](https://github.com/usekaneo/drim) - a CLI tool that handles everything for you:
-
-```bash
-curl -fsSL https://assets.kaneo.app/install.sh | sh
-drim setup
-```
-
-That's it. Your Kaneo instance will be running with automatic HTTPS, database setup, and all services configured.
-
-Perfect for quick deployments and production setups where you want things to just work.
-
-### Quick Start with Docker Compose
-
-The fastest way to try Kaneo is with Docker Compose. This sets up Kaneo and PostgreSQL with a single Kaneo container:
-
-```yaml
-services:
-  postgres:
-    image: postgres:16-alpine
-    env_file:
-      - .env
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kaneo -d kaneo"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  kaneo:
-    image: ghcr.io/usekaneo/kaneo:latest
-    ports:
-      - "5173:5173"
-    env_file:
-      - .env
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
-```
-
-Save this as `compose.yml`, copy `.env.sample` to `.env`, uncomment `KANEO_CLIENT_URL=http://localhost:5173`, and set `POSTGRES_PASSWORD=<password>` and `AUTH_SECRET=<output of openssl rand -hex 32>`, run `docker compose up -d`, and open [http://localhost:5173](http://localhost:5173).
-
-In Docker Compose, the bundled Kaneo container reaches PostgreSQL at the service hostname `postgres`.
-If you run the API on your host instead of inside Compose, use `localhost` or set `DATABASE_URL` explicitly.
-
-> **Important:** See our [full documentation](https://kaneo.app/docs/core) for detailed setup instructions, environment variable configuration, and troubleshooting guides.
-
-### Deploy on Coolify
-
-Kaneo ships a [Coolify-optimized `compose.coolify.yml`](compose.coolify.yml). In Coolify, create a **Public Repository** resource pointing to `https://github.com/usekaneo/kaneo`, pick the **Docker Compose** build pack (Base Directory `/`, Compose Location `compose.coolify.yml`), assign a domain to the `kaneo` service as `https://your-domain.com:5173`, set `KANEO_CLIENT_URL`, and deploy. `AUTH_SECRET` and the database password are auto-generated by Coolify. Leave `KANEO_API_URL` unset (it is derived from `KANEO_CLIENT_URL`; a `localhost` value breaks the browser API calls). See the [Coolify deployment guide](https://kaneo.app/docs/core/deployments/coolify) for details.
-
-### Development Setup
-
-For development, see our [Environment Setup Guide](ENVIRONMENT_SETUP.md) for detailed instructions on configuring environment variables and troubleshooting common issues like CORS problems.
-
-### Configuration
-
-Kaneo requires several environment variables to be configured. The Docker Compose setup above handles the database automatically, but you'll need to configure environment variables for the API and web services.
-
-For complete configuration instructions, including all required environment variables, database setup for non-Docker deployments, and advanced settings, see the [documentation](https://kaneo.app/docs/core). Advanced deployments can still use the separate `ghcr.io/usekaneo/api` and `ghcr.io/usekaneo/web` images.
-
-## Kubernetes Deployment
-
-If you're running Kubernetes, we provide a comprehensive Helm chart. Check out the [Helm chart documentation](./charts/kaneo/README.md) for detailed installation instructions, production configuration examples, TLS setup, and more.
-
-## Development
-
-Want to hack on Kaneo? See our [Environment Setup Guide](ENVIRONMENT_SETUP.md) for detailed instructions on configuring environment variables and troubleshooting common issues like CORS problems.
-
-Quick start:
-```bash
-# Clone and install dependencies
-git clone https://github.com/usekaneo/kaneo.git
-cd kaneo
-pnpm install
-
-# Create a .env file in the root with required environment variables
-# See ENVIRONMENT_SETUP.md for detailed instructions
-
-# Start development servers
-pnpm dev
-```
-
-For contributing guidelines, code structure, and development best practices, check out our [contributing guide](CONTRIBUTING.md) and [documentation](https://kaneo.app/docs/core).
-
-## MCP Server
-
-Kaneo has an official [MCP (Model Context Protocol) server](https://kaneo.app/docs/core/integrations/mcp), so AI tools like Claude, Cursor, and other MCP clients can manage your tasks, projects, and labels. Every instance ships a built-in HTTP MCP endpoint at `/api/mcp`, and for stdio clients there is the official [@kaneo/mcp](https://www.npmjs.com/package/@kaneo/mcp) package on npm (`npx -y @kaneo/mcp`).
-
-## Community
-
-- **[Discord](https://discord.gg/rU4tSyhXXU)** - Chat with users and contributors
-- **[GitHub Issues](https://github.com/usekaneo/kaneo/issues)** - Bug reports and feature requests
-- **[Documentation](https://kaneo.app/docs/core)** - Detailed guides, API docs, and tutorials
-
-## Contributing
-
-We're always looking for help, whether that's:
-- Reporting bugs or suggesting features
-- Improving documentation
-- Contributing code
-- Helping other users on Discord
-
-Check out [CONTRIBUTING.md](CONTRIBUTING.md) for the details on how to get involved.
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-<div align="center">
-  <img src="https://repobeats.axiom.co/api/embed/3e8367ec2b2350e4fc48662df33c81dac657b833.svg" alt="Repobeats analytics image" />
-</div>
+## 这是什么
 
-<p align="center">
-  Built with ❤️ by the Kaneo team and <a href="#contributors">contributors</a>
-</p>
+Basin 是一个开源（MIT）的 AI-native 项目管理平台：
+
+- **项目管理本体** — 看板、需求管理、工作流规则、自定义字段、时间记录、团队协作
+- **Brain 工作区知识库** — 任务/评论/需求/文档自动索引（pgvector），可被检索、被引用
+- **AI 助理** — 对着项目提问，带引用来源回答，权限严格随用户
+- **自动化 Agent** — 事件/定时触发的 AI 同事：分析阻塞任务、生成站会摘要、自动评论建议，全过程可审计
+- **MCP 生态** — 内置 MCP server（可从 Claude/Cursor 操作任务）+ agent 侧 MCP client（可接外部工具）
+- **桌面端** — Electron 壳（macOS/Windows/Linux），本地自包含运行
+
+## 快速开始
+
+```bash
+./start-basin.sh                # PostgreSQL + Redis + API(1337) + Agent(1338) + Web(5174)
+pnpm --filter @basin/desktop dev  # 打开桌面窗口
+```
+
+浏览器访问 http://localhost:5174，首次打开注册账号（首个注册用户即实例管理员）。
+
+## 技术栈
+
+Hono + Drizzle + PostgreSQL(pgvector) · React + TanStack Router/Query + Vite · Vercel AI SDK（provider 可换：OpenAI/Anthropic/Ollama/任意 OpenAI 兼容端点） · BullMQ + Redis（可选，无 Redis 时 AI 任务内联执行） · Electron
+
+## 品牌图标
+
+「沉降的完成列」：墨黑底上三根胶囊竖条是看板三列，电光蓝的完成列起始更低、延伸最深——**完成的工作沉在最深处**。
+
+## 致谢
+
+Basin 基于 [usekaneo/kaneo](https://github.com/usekaneo/kaneo)（MIT）深度改造而来，AI 内核的设计参考了 [rowboatlabs/rowboat](https://github.com/rowboatlabs/rowboat) 的工程模式。感谢上游项目与社区。
+
+## License
+
+MIT

@@ -12,22 +12,22 @@ export type OtpEmailProps = {
 
 const messages = {
   en: {
-    preview: "Your Kaneo verification code",
+    preview: "Your Basin verification code",
     title: "Your verification code",
     subtitle: "Enter this one-time code to finish signing in.",
-    code: "is your Kaneo verification code.",
+    code: "is your Basin verification code.",
     expiry: "This code expires in 15 minutes.",
     ignore: "If you didn't request this, you can ignore this email.",
-    footer: "Kaneo security email",
+    footer: "Basin security email",
   },
   zh: {
-    preview: "你的 Kaneo 验证码",
+    preview: "你的 Basin 验证码",
     title: "你的验证码",
     subtitle: "输入此一次性验证码以完成登录。",
-    code: "是你的 Kaneo 验证码。",
+    code: "是你的 Basin 验证码。",
     expiry: "此验证码 15 分钟后过期。",
     ignore: "如果你没有发起此请求，可以忽略这封邮件。",
-    footer: "Kaneo 安全邮件",
+    footer: "Basin 安全邮件",
   },
 } as const;
 

@@ -6,58 +6,58 @@ export const youtrack: Comparison = {
   category: "saas",
   title: "Open-source YouTrack alternative",
   description:
-    "Kaneo is an open-source, MIT-licensed YouTrack alternative you can self-host for free with no user cap and no annual server licence.",
+    "Basin is an open-source, MIT-licensed YouTrack alternative you can self-host for free with no user cap and no annual server licence.",
   summary: "No annual server licence and no ten-user ceiling.",
   heading: "The open-source YouTrack alternative",
   subheading:
-    "YouTrack is free until your eleventh teammate, and self-hosting it means buying a JetBrains server licence. Kaneo is MIT licensed, so running it yourself is free at any size.",
+    "YouTrack is free until your eleventh teammate, and self-hosting it means buying a JetBrains server licence. Basin is MIT licensed, so running it yourself is free at any size.",
   verdict:
-    "Kaneo is an open-source alternative to JetBrains YouTrack. YouTrack is proprietary: free for up to 10 users in cloud and server form, then per-user cloud pricing or a paid annual server licence. Kaneo is MIT licensed with no user cap when self-hosted, and its cloud starts at $4 a month.",
+    "Basin is an open-source alternative to JetBrains YouTrack. YouTrack is proprietary: free for up to 10 users in cloud and server form, then per-user cloud pricing or a paid annual server licence. Basin is MIT licensed with no user cap when self-hosted, and its cloud starts at $4 a month.",
   facts: {
     license: "MIT, versus a proprietary JetBrains licence",
     hosting:
       "Self-host free. YouTrack Server needs a paid licence past the free tier",
-    sso: "Free on every Kaneo build",
+    sso: "Free on every Basin build",
     pricing: "$0 self-hosted, cloud from $4 / month",
   },
   rows: [
-    { feature: "Open source (MIT)", kaneo: true, them: false },
+    { feature: "Open source (MIT)", basin: true, them: false },
     {
       feature: "Self-hostable",
-      kaneo: "Free, unlimited",
+      basin: "Free, unlimited",
       them: "Paid licence",
     },
-    { feature: "Own your data", kaneo: true, them: true },
+    { feature: "Own your data", basin: true, them: true },
     {
       feature: "Free tier",
-      kaneo: "Unlimited, self-hosted",
+      basin: "Unlimited, self-hosted",
       them: "Up to 10 users",
     },
-    { feature: "Query language", kaneo: "Search & filters", them: "Advanced" },
-    { feature: "Workflow scripting", kaneo: "Rules", them: "JavaScript" },
-    { feature: "Learning curve", kaneo: "Minutes", them: "Moderate" },
+    { feature: "Query language", basin: "Search & filters", them: "Advanced" },
+    { feature: "Workflow scripting", basin: "Rules", them: "JavaScript" },
+    { feature: "Learning curve", basin: "Minutes", them: "Moderate" },
     {
       feature: "Cloud pricing",
-      kaneo: "From $4/mo",
+      basin: "From $4/mo",
       them: "From $4.50/user/mo",
     },
   ],
   reasons: [
     {
       title: "No licence to renew",
-      body: "Self-hosted Kaneo is MIT licensed with no seat count, no annual renewal, and no licence server. You run the container and that is the arrangement.",
+      body: "Self-hosted Basin is MIT licensed with no seat count, no annual renewal, and no licence server. You run the container and that is the arrangement.",
     },
     {
       title: "Simpler by design",
-      body: "YouTrack is deep: custom fields, a query language, and JavaScript workflows. Kaneo's boards, backlog, and workflow rules are meant to be understood in an afternoon.",
+      body: "YouTrack is deep: custom fields, a query language, and JavaScript workflows. Basin's boards, backlog, and workflow rules are meant to be understood in an afternoon.",
     },
     {
       title: "Everything in every build",
-      body: "SSO, roles, time tracking, integrations, API keys, and MCP access come with Kaneo wherever you run it.",
+      body: "SSO, roles, time tracking, integrations, API keys, and MCP access come with Basin wherever you run it.",
     },
   ],
   honestNote:
-    "YouTrack is a serious issue tracker with an excellent query language, powerful workflow scripting, and tight integration with the rest of the JetBrains toolchain. If your team already lives in JetBrains IDEs and you want that depth, Kaneo will feel small next to it.",
+    "YouTrack is a serious issue tracker with an excellent query language, powerful workflow scripting, and tight integration with the rest of the JetBrains toolchain. If your team already lives in JetBrains IDEs and you want that depth, Basin will feel small next to it.",
   faq: [
     {
       question: "Is YouTrack open source?",
@@ -72,12 +72,12 @@ export const youtrack: Comparison = {
     {
       question: "What is the best open-source YouTrack alternative?",
       answer:
-        "Kaneo if you want something light and MIT licensed, Redmine if you want a mature tracker with a large plugin ecosystem, or Plane if you want a Linear-style interface under AGPL.",
+        "Basin if you want something light and MIT licensed, Redmine if you want a mature tracker with a large plugin ecosystem, or Plane if you want a Linear-style interface under AGPL.",
     },
     {
-      question: "Does Kaneo have a query language?",
+      question: "Does Basin have a query language?",
       answer:
-        "No. Kaneo has search plus filters on boards and the backlog, which covers day-to-day use. It has no equivalent to YouTrack's saved queries and issue-query syntax.",
+        "No. Basin has search plus filters on boards and the backlog, which covers day-to-day use. It has no equivalent to YouTrack's saved queries and issue-query syntax.",
     },
   ],
   related: ["jira", "redmine", "linear", "shortcut"],
@@ -87,6 +87,6 @@ export const youtrack: Comparison = {
       label: "YouTrack pricing",
       href: "https://www.jetbrains.com/youtrack/buy/",
     },
-    { label: "Kaneo pricing", href: "/pricing" },
+    { label: "Basin pricing", href: "/pricing" },
   ],
 };

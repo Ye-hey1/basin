@@ -995,7 +995,7 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
     }
 
     const apiBaseUrl = normalizeApiServerUrl(
-      process.env.KANEO_API_URL || new URL(c.req.url).origin,
+      process.env.BASIN_API_URL || new URL(c.req.url).origin,
     );
     return c.json(
       {

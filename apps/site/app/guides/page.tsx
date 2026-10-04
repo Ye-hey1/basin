@@ -24,7 +24,7 @@ export default function Page() {
     <>
       <JsonLd
         data={breadcrumbJsonLd([
-          { name: "Kaneo", path: "/" },
+          { name: "Basin", path: "/" },
           { name: "Guides", path: "/guides" },
         ])}
       />
@@ -32,12 +32,12 @@ export default function Page() {
         data={{
           "@context": "https://schema.org",
           "@type": "ItemList",
-          name: "Kaneo guides",
+          name: "Basin guides",
           itemListElement: guideList.map((guide, index) => ({
             "@type": "ListItem",
             position: index + 1,
             name: guide.question,
-            url: `https://kaneo.app${guidePath(guide.slug)}`,
+            url: `https://basin.app${guidePath(guide.slug)}`,
           })),
         }}
       />
@@ -57,7 +57,7 @@ export default function Page() {
               <FadeIn delay={120}>
                 <p className="mt-5 text-balance text-foreground/70 text-lg leading-relaxed">
                   The questions people actually ask before choosing a project
-                  manager, answered without pretending Kaneo is the answer to
+                  manager, answered without pretending Basin is the answer to
                   all of them.
                 </p>
               </FadeIn>

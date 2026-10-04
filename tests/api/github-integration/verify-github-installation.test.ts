@@ -44,7 +44,7 @@ const originalAppName = process.env.GITHUB_APP_NAME;
 beforeEach(() => {
   vi.clearAllMocks();
   mockGetGithubApp.mockReturnValue(mockApp);
-  process.env.GITHUB_APP_NAME = "kaneo-app";
+  process.env.GITHUB_APP_NAME = "basin-app";
 });
 
 afterEach(() => {
@@ -61,8 +61,8 @@ describe("verifyGithubInstallation", () => {
 
     await expect(
       verifyGithubInstallation({
-        repositoryOwner: "usekaneo",
-        repositoryName: "kaneo",
+        repositoryOwner: "usebasin",
+        repositoryName: "basin",
       }),
     ).rejects.toMatchObject({
       status: 500,
@@ -81,12 +81,12 @@ describe("verifyGithubInstallation", () => {
     });
     mockGetInstallationOctokit.mockResolvedValue(makeInstallationOctokit());
     mockReposGet.mockResolvedValue({
-      data: { id: 99, private: false, owner: { id: 555, login: "usekaneo" } },
+      data: { id: 99, private: false, owner: { id: 555, login: "usebasin" } },
     });
 
     const result = await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(result).toEqual({
@@ -101,18 +101,18 @@ describe("verifyGithubInstallation", () => {
         "GitHub App is properly installed and has all required permissions",
       settingsUrl: "https://github.com/settings/installations/4242",
       installationUrl:
-        "https://github.com/apps/kaneo-app/installations/new/permissions?target_id=555",
+        "https://github.com/apps/basin-app/installations/new/permissions?target_id=555",
     });
 
     expect(mockGetRepoInstallation).toHaveBeenCalledWith({
-      owner: "usekaneo",
-      repo: "kaneo",
+      owner: "usebasin",
+      repo: "basin",
     });
     expect(mockGetInstallationOctokit).toHaveBeenCalledWith(4242);
     expect(mockReposGet).toHaveBeenCalledTimes(1);
     expect(mockReposGet).toHaveBeenCalledWith({
-      owner: "usekaneo",
-      repo: "kaneo",
+      owner: "usebasin",
+      repo: "basin",
     });
   });
 
@@ -125,12 +125,12 @@ describe("verifyGithubInstallation", () => {
     });
     mockGetInstallationOctokit.mockResolvedValue(makeInstallationOctokit());
     mockReposGet.mockResolvedValue({
-      data: { id: 12, private: true, owner: { id: 888, login: "usekaneo" } },
+      data: { id: 12, private: true, owner: { id: 888, login: "usebasin" } },
     });
 
     const result = await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(result.isInstalled).toBe(true);
@@ -150,8 +150,8 @@ describe("verifyGithubInstallation", () => {
     mockGetRepoInstallation.mockRejectedValue(error);
 
     const result = await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(result).toEqual({
@@ -165,8 +165,8 @@ describe("verifyGithubInstallation", () => {
       message:
         "GitHub App is not installed on this repository or the repository is not accessible",
       installationUrl:
-        "https://github.com/apps/kaneo-app/installations/new/permissions",
-      settingsUrl: "https://github.com/apps/kaneo-app",
+        "https://github.com/apps/basin-app/installations/new/permissions",
+      settingsUrl: "https://github.com/apps/basin-app",
     });
 
     expect(mockReposGet).not.toHaveBeenCalled();
@@ -178,8 +178,8 @@ describe("verifyGithubInstallation", () => {
     mockGetRepoInstallation.mockRejectedValue(error);
 
     await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(mockReposGet).not.toHaveBeenCalled();
@@ -192,8 +192,8 @@ describe("verifyGithubInstallation", () => {
 
     await expect(
       verifyGithubInstallation({
-        repositoryOwner: "usekaneo",
-        repositoryName: "kaneo",
+        repositoryOwner: "usebasin",
+        repositoryName: "basin",
       }),
     ).rejects.toMatchObject({
       status: 500,
@@ -210,8 +210,8 @@ describe("verifyGithubInstallation", () => {
 
     await expect(
       verifyGithubInstallation({
-        repositoryOwner: "usekaneo",
-        repositoryName: "kaneo",
+        repositoryOwner: "usebasin",
+        repositoryName: "basin",
       }),
     ).rejects.toMatchObject({
       status: 500,
@@ -230,8 +230,8 @@ describe("verifyGithubInstallation", () => {
     );
 
     const result = await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(result).toEqual({
@@ -245,7 +245,7 @@ describe("verifyGithubInstallation", () => {
       message:
         "GitHub App is installed but the repository is no longer accessible",
       settingsUrl: "https://github.com/settings/installations/4242",
-      installationUrl: "https://github.com/apps/kaneo-app",
+      installationUrl: "https://github.com/apps/basin-app",
     });
   });
 
@@ -260,8 +260,8 @@ describe("verifyGithubInstallation", () => {
 
     await expect(
       verifyGithubInstallation({
-        repositoryOwner: "usekaneo",
-        repositoryName: "kaneo",
+        repositoryOwner: "usebasin",
+        repositoryName: "basin",
       }),
     ).rejects.toMatchObject({
       status: 500,
@@ -274,8 +274,8 @@ describe("verifyGithubInstallation", () => {
     mockGetRepoInstallation.mockRejectedValue(error);
 
     const result = await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(result.isInstalled).toBe(false);
@@ -290,12 +290,12 @@ describe("verifyGithubInstallation", () => {
     });
     mockGetInstallationOctokit.mockResolvedValue(makeInstallationOctokit());
     mockReposGet.mockResolvedValue({
-      data: { id: 99, private: false, owner: { id: 555, login: "usekaneo" } },
+      data: { id: 99, private: false, owner: { id: 555, login: "usebasin" } },
     });
 
     const result = await verifyGithubInstallation({
-      repositoryOwner: "usekaneo",
-      repositoryName: "kaneo",
+      repositoryOwner: "usebasin",
+      repositoryName: "basin",
     });
 
     expect(result.permissions).toBeNull();
@@ -329,14 +329,14 @@ describe("verifyGithubInstallation", () => {
     });
     mockGetInstallationOctokit.mockResolvedValue(makeInstallationOctokit());
     mockReposGet.mockResolvedValue({
-      data: { id: 2, private: false, owner: { id: 100, login: "usekaneo" } },
+      data: { id: 2, private: false, owner: { id: 100, login: "usebasin" } },
     });
     scenarios.push({
       name: "happy path",
       mock: () =>
         verifyGithubInstallation({
-          repositoryOwner: "usekaneo",
-          repositoryName: "kaneo",
+          repositoryOwner: "usebasin",
+          repositoryName: "basin",
         }),
     });
 
@@ -348,14 +348,14 @@ describe("verifyGithubInstallation", () => {
     });
     mockGetInstallationOctokit.mockResolvedValue(makeInstallationOctokit());
     mockReposGet.mockResolvedValue({
-      data: { id: 3, private: true, owner: { id: 200, login: "usekaneo" } },
+      data: { id: 3, private: true, owner: { id: 200, login: "usebasin" } },
     });
     scenarios.push({
       name: "missing permissions",
       mock: () =>
         verifyGithubInstallation({
-          repositoryOwner: "usekaneo",
-          repositoryName: "kaneo",
+          repositoryOwner: "usebasin",
+          repositoryName: "basin",
         }),
     });
 
@@ -366,8 +366,8 @@ describe("verifyGithubInstallation", () => {
       name: "missing installation",
       mock: () =>
         verifyGithubInstallation({
-          repositoryOwner: "usekaneo",
-          repositoryName: "kaneo",
+          repositoryOwner: "usebasin",
+          repositoryName: "basin",
         }),
     });
 
@@ -382,8 +382,8 @@ describe("verifyGithubInstallation", () => {
       name: "installed but repo inaccessible",
       mock: () =>
         verifyGithubInstallation({
-          repositoryOwner: "usekaneo",
-          repositoryName: "kaneo",
+          repositoryOwner: "usebasin",
+          repositoryName: "basin",
         }),
     });
 

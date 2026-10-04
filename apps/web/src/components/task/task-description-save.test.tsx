@@ -43,8 +43,8 @@ vi.mock("./extensions/embed-block", () => ({
 vi.mock("./extensions/attachment-card", () => ({
   AttachmentCard: inert("attachmentCardStub"),
 }));
-vi.mock("./extensions/kaneo-issue-link", () => ({
-  KaneoIssueLink: inert("kaneoIssueLinkStub"),
+vi.mock("./extensions/basin-issue-link", () => ({
+  BasinIssueLink: inert("basinIssueLinkStub"),
 }));
 vi.mock("./extensions/task-item-with-checkbox", () => ({
   TaskItemWithCheckbox: TaskItem,

@@ -5,11 +5,11 @@ export const selfHostProjectManagementDocker: Guide = {
   question: "How do I self-host a project management tool with Docker?",
   title: "How to self-host a project management tool with Docker",
   description:
-    "A practical guide to self-hosting a project manager with Docker Compose: what you need, how to run Kaneo, and what to get right on backups, TLS, and updates.",
+    "A practical guide to self-hosting a project manager with Docker Compose: what you need, how to run Basin, and what to get right on backups, TLS, and updates.",
   summary:
     "What self-hosting actually involves, and a working Docker Compose setup you can copy.",
   answer:
-    "You need a small Linux server, Docker with the Compose plugin, a domain pointed at it, and a reverse proxy for TLS. For Kaneo, that means a compose file with two services, the Kaneo container and PostgreSQL, an environment file, and a proxy such as Caddy or Traefik in front. Budget an hour for the first install and a recurring ten minutes a month for updates and backup checks.",
+    "You need a small Linux server, Docker with the Compose plugin, a domain pointed at it, and a reverse proxy for TLS. For Basin, that means a compose file with two services, the Basin container and PostgreSQL, an environment file, and a proxy such as Caddy or Traefik in front. Budget an hour for the first install and a recurring ten minutes a month for updates and backup checks.",
   sections: [
     {
       heading: "What you need",
@@ -22,9 +22,9 @@ export const selfHostProjectManagementDocker: Guide = {
     {
       heading: "The compose file",
       body: [
-        "Kaneo runs as one application container alongside PostgreSQL. The container serves both the API and the web app on port 5173, so the reverse proxy has a single upstream.",
-        "Create a compose.yml with a postgres service using the postgres:16-alpine image and a named volume, and a kaneo service using ghcr.io/usekaneo/kaneo:latest that depends on Postgres being healthy. Put your secrets in a .env file next to it and load it with env_file. The full file, with health checks and every environment variable explained, is in the installation guide.",
-        "If you would rather not write it yourself, the drim CLI sets up Kaneo, PostgreSQL, and HTTPS in one step: run drim setup on a fresh server and answer the prompts.",
+        "Basin runs as one application container alongside PostgreSQL. The container serves both the API and the web app on port 5173, so the reverse proxy has a single upstream.",
+        "Create a compose.yml with a postgres service using the postgres:16-alpine image and a named volume, and a basin service using ghcr.io/usebasin/basin:latest that depends on Postgres being healthy. Put your secrets in a .env file next to it and load it with env_file. The full file, with health checks and every environment variable explained, is in the installation guide.",
+        "If you would rather not write it yourself, the drim CLI sets up Basin, PostgreSQL, and HTTPS in one step: run drim setup on a fresh server and answer the prompts.",
       ],
       items: [
         {
@@ -49,21 +49,21 @@ export const selfHostProjectManagementDocker: Guide = {
       body: [
         "TLS as an afterthought. Put Caddy, Traefik, or nginx in front from the first day, not after someone has typed a password over plain HTTP. Caddy needs about four lines for automatic certificates.",
         "No backups of the database volume. A weekly pg_dump to object storage, and one restore test, is the entire discipline. Test the restore, or you have a backup of unknown quality.",
-        "Pinning to latest and never updating, or updating blind. Pin a version tag, read the release notes, and take a database dump before upgrading. Kaneo's migrations run automatically on start and are written to work on existing installations, but a dump costs nothing.",
-        "Skipping single sign-on because it looks like work. Connecting Google, GitHub, Discord, or your own OIDC provider takes minutes in Kaneo and is free on every build, and it removes an entire class of password problems.",
+        "Pinning to latest and never updating, or updating blind. Pin a version tag, read the release notes, and take a database dump before upgrading. Basin's migrations run automatically on start and are written to work on existing installations, but a dump costs nothing.",
+        "Skipping single sign-on because it looks like work. Connecting Google, GitHub, Discord, or your own OIDC provider takes minutes in Basin and is free on every build, and it removes an entire class of password problems.",
       ],
     },
     {
       heading: "Is self-hosting worth it?",
       body: [
         "It is worth it when data control genuinely matters to you, when per-user pricing has stopped making sense, or when you simply prefer owning the thing your team depends on. A small VPS costs a few dollars a month and will comfortably run a tracker for a team of twenty.",
-        "It is not worth it if nobody wants to own updates and backups. That is a real job, small but recurring. If no one wants it, a managed cloud is the honest answer, and Kaneo Cloud is $4 a month for one person or $5 per user a month for a team, running the same MIT-licensed software you could host yourself.",
+        "It is not worth it if nobody wants to own updates and backups. That is a real job, small but recurring. If no one wants it, a managed cloud is the honest answer, and Basin Cloud is $4 a month for one person or $5 per user a month for a team, running the same MIT-licensed software you could host yourself.",
       ],
     },
   ],
   faq: [
     {
-      question: "What are the minimum requirements to self-host Kaneo?",
+      question: "What are the minimum requirements to self-host Basin?",
       answer:
         "A Linux server with Docker and the Compose plugin, roughly 1 to 2GB of RAM, and PostgreSQL, which the compose file provides. Redis is optional and only needed to coordinate realtime updates across multiple API instances.",
     },
@@ -73,9 +73,9 @@ export const selfHostProjectManagementDocker: Guide = {
         "Yes, for a small team. The requirements are modest. Put it behind a tunnel or a reverse proxy with TLS rather than exposing ports directly, and keep backups somewhere other than the same SD card.",
     },
     {
-      question: "Does Kaneo run on Kubernetes?",
+      question: "Does Basin run on Kubernetes?",
       answer:
-        "Yes. There is an official Helm chart in the repository under charts/kaneo, which covers the API, web app, database configuration, and ingress.",
+        "Yes. There is an official Helm chart in the repository under charts/basin, which covers the API, web app, database configuration, and ingress.",
     },
     {
       question: "How do updates work?",

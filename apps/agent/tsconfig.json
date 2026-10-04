@@ -1,0 +1,14 @@
+{
+	"extends": "@basin/typescript-config/base.json",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"declaration": true,
+		"declarationMap": false,
+		"emitDeclarationOnly": false,
+		"noEmit": true,
+		"types": ["node"],
+		"types": ["node"]
+	},
+	"include": ["src/**/*.ts"]
+}

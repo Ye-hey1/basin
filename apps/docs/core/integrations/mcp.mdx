@@ -1,26 +1,26 @@
 ---
-title: Kaneo MCP Server
-description: Connect Kaneo to MCP clients like Cursor and Claude Desktop using the official Kaneo MCP server.
+title: Basin MCP Server
+description: Connect Basin to MCP clients like Cursor and Claude Desktop using the official Basin MCP server.
 ---
 
-Kaneo supports the Model Context Protocol (MCP) in two ways:
+Basin supports the Model Context Protocol (MCP) in two ways:
 
-1. **Built-in HTTP endpoint**: every Kaneo instance exposes `/api/mcp` out of the box. No extra setup, no extra process.
-2. **Stdio package** ([`@kaneo/mcp`](https://www.npmjs.com/package/@kaneo/mcp)): the official Kaneo MCP package on npm, a local stdio server for clients that prefer stdio transport.
+1. **Built-in HTTP endpoint**: every Basin instance exposes `/api/mcp` out of the box. No extra setup, no extra process.
+2. **Stdio package** ([`@basin/mcp`](https://www.npmjs.com/package/@basin/mcp)): the official Basin MCP package on npm, a local stdio server for clients that prefer stdio transport.
 
 Both offer the same tools for managing workspaces, projects, tasks, comments, and labels.
 
 ## Built-in HTTP endpoint
 
-Every Kaneo API instance ships with a Streamable HTTP MCP endpoint. This is the recommended approach for self-hosted deployments.
+Every Basin API instance ships with a Streamable HTTP MCP endpoint. This is the recommended approach for self-hosted deployments.
 
 Point your MCP client at:
 
 ```
-https://your-kaneo-instance.com/api/mcp
+https://your-basin-instance.com/api/mcp
 ```
 
-On first connect, you will be redirected to Kaneo to sign in and explicitly approve the MCP client. After approval, all MCP tools run as your authenticated user.
+On first connect, you will be redirected to Basin to sign in and explicitly approve the MCP client. After approval, all MCP tools run as your authenticated user.
 
 The endpoint implements OAuth 2.1 with PKCE for authentication. Discovery metadata is available at:
 
@@ -34,22 +34,22 @@ for the exact contract, tests, Codex configuration, limitations, and rollback.
 
 ## Stdio package
 
-The `@kaneo/mcp` package runs a local stdio MCP server and authenticates with Kaneo using device authorization. Use this when your MCP client requires stdio transport.
+The `@basin/mcp` package runs a local stdio MCP server and authenticates with Basin using device authorization. Use this when your MCP client requires stdio transport.
 
 ### Prerequisites
 
 - Node.js 24 or newer
-- A running Kaneo API
-- Access to the Kaneo web app to approve device login
+- A running Basin API
+- Access to the Basin web app to approve device login
 
-By default, self-hosted Kaneo allows both `kaneo-cli` and `kaneo-mcp` as device auth client IDs.
+By default, self-hosted Basin allows both `basin-cli` and `basin-mcp` as device auth client IDs.
 
 ### Install and register
 
 Use the recommended interactive installer:
 
 ```bash
-npx @kaneo/mcp
+npx @basin/mcp
 ```
 
 The installer lets you choose where to register the server configuration:
@@ -62,41 +62,41 @@ The installer lets you choose where to register the server configuration:
 You can also run the explicit install command:
 
 ```bash
-kaneo-mcp install --target cursor-user -y
+basin-mcp install --target cursor-user -y
 ```
 
 Use `--help` to see all available targets and flags:
 
 ```bash
-kaneo-mcp install --help
+basin-mcp install --help
 ```
 
 ### Point to a self-hosted instance
 
-When generating config, pass your Kaneo base URL:
+When generating config, pass your Basin base URL:
 
 ```bash
-kaneo-mcp install --target cursor-user -y --api-url https://kaneo.example.com
+basin-mcp install --target cursor-user -y --api-url https://basin.example.com
 ```
 
 Or set it via environment variable:
 
 | Variable | Description |
 | --- | --- |
-| `KANEO_API_URL` | Kaneo API origin. Default: `http://localhost:1337`. Do not include `/api`. |
-| `KANEO_MCP_CLIENT_ID` | Device auth client ID. Default: `kaneo-mcp`. |
+| `BASIN_API_URL` | Basin API origin. Default: `http://localhost:1337`. Do not include `/api`. |
+| `BASIN_MCP_CLIENT_ID` | Device auth client ID. Default: `basin-mcp`. |
 
-If you override `KANEO_MCP_CLIENT_ID`, make sure it is included in [`DEVICE_AUTH_CLIENT_IDS`](/core/installation/environment-variables).
+If you override `BASIN_MCP_CLIENT_ID`, make sure it is included in [`DEVICE_AUTH_CLIENT_IDS`](/core/installation/environment-variables).
 
 ### Authentication flow
 
-On the first tool call that needs Kaneo access, the MCP server:
+On the first tool call that needs Basin access, the MCP server:
 
-1. Requests a device code from Kaneo
+1. Requests a device code from Basin
 2. Prints a verification URL and user code
 3. Opens the browser when possible
 4. Polls until you approve sign-in
-5. Stores credentials in `~/.config/kaneo-mcp/credentials.json`
+5. Stores credentials in `~/.config/basin-mcp/credentials.json`
 
 ## Available tools
 
@@ -122,12 +122,12 @@ tools expect. Time entries have no delete endpoint on the API, so there is no
 To run the stdio server directly:
 
 ```bash
-npx @kaneo/mcp serve
+npx @basin/mcp serve
 ```
 
 When running from source in this monorepo:
 
 ```bash
-pnpm --filter @kaneo/mcp run build
-pnpm --filter @kaneo/mcp run start
+pnpm --filter @basin/mcp run build
+pnpm --filter @basin/mcp run start
 ```

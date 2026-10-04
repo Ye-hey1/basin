@@ -1,3 +1,4 @@
+import type { AiCitation } from "@basin/ai";
 import { createId } from "@paralleldrive/cuid2";
 import { relations, sql } from "drizzle-orm";
 import {
@@ -1442,4 +1443,318 @@ export const requirementDocumentVersionTable = pgTable(
       table.version,
     ),
   ],
+);
+
+// --- AI (Brain index + assistant) -------------------------------------------
+// Owned by the AI-native initiative; additive only so upstream merges stay
+// clean. Requires the `vector` extension (pgvector).
+
+// pgvector column without a typmod: rows may carry different dimensionalities
+// while an instance migrates between embedding models, and retrieval filters
+// on embedding_dimensions before any distance comparison. node-postgres has no
+// built-in vector parser, so the driver value is pgvector's text literal.
+const vector = customType<{ data: number[]; driverData: string }>({
+  dataType() {
+    return "vector";
+  },
+  toDriver(value) {
+    return `[${value.join(",")}]`;
+  },
+});
+
+export const aiProviderConfigTable = pgTable("ai_provider_config", {
+  id: text("id")
+    .$defaultFn(() => createId())
+    .primaryKey(),
+  provider: text("provider").notNull(),
+  baseUrl: text("base_url"),
+  apiKeyEncrypted: text("api_key_encrypted"),
+  chatModel: text("chat_model").notNull(),
+  embeddingModel: text("embedding_model").notNull(),
+  embeddingDimensions: integer("embedding_dimensions").notNull().default(1536),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const brainDocumentTable = pgTable(
+  "brain_document",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    sourceType: text("source_type").notNull(),
+    sourceId: text("source_id").notNull(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    title: text("title").notNull(),
+    content: text("content").notNull(),
+    contentHash: text("content_hash").notNull(),
+    indexedAt: timestamp("indexed_at", { mode: "date" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique("brain_document_source_unique").on(table.sourceType, table.sourceId),
+    index("brain_document_workspaceId_idx").on(table.workspaceId),
+    index("brain_document_projectId_idx").on(table.projectId),
+  ],
+);
+
+export const brainChunkTable = pgTable(
+  "brain_chunk",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    documentId: text("document_id")
+      .notNull()
+      .references(() => brainDocumentTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    // Denormalized from brain_document so retrieval filters permissions
+    // without a join.
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    chunkIndex: integer("chunk_index").notNull(),
+    content: text("content").notNull(),
+    tokenCount: integer("token_count").notNull(),
+    embedding: vector("embedding"),
+    embeddingDimensions: integer("embedding_dimensions"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("brain_chunk_documentId_idx").on(table.documentId),
+    index("brain_chunk_workspaceId_idx").on(table.workspaceId),
+    index("brain_chunk_projectId_idx").on(table.projectId),
+  ],
+);
+
+export const aiThreadTable = pgTable(
+  "ai_thread",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    title: text("title"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("ai_thread_userId_idx").on(table.userId),
+    index("ai_thread_workspaceId_idx").on(table.workspaceId),
+  ],
+);
+
+export const aiMessageTable = pgTable(
+  "ai_message",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    threadId: text("thread_id")
+      .notNull()
+      .references(() => aiThreadTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    role: text("role").notNull(),
+    content: text("content").notNull(),
+    citations: jsonb("citations").$type<AiCitation[]>(),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [index("ai_message_threadId_idx").on(table.threadId)],
+);
+
+// --- Agents (automation) -----------------------------------------------------
+// Owned by the AI-native initiative, phase 2. Additive only.
+
+export const agentTriggerTable = pgTable(
+  "agent_trigger",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    // "event" fires on a domain event; "cron" fires on a croner pattern.
+    type: text("type").notNull(),
+    eventType: text("event_type"),
+    // Optional payload filter, e.g. { "newStatus": ["blocked"] }. Values may
+    // be scalars (exact match) or arrays (membership match).
+    condition: jsonb("condition").$type<Record<string, unknown>>(),
+    cron: text("cron"),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    instruction: text("instruction").notNull(),
+    enabled: boolean("enabled").default(true).notNull(),
+    // The agent acts with this user's workspace permissions; deleting the
+    // user removes their triggers rather than orphaning an actor.
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    lastFiredAt: timestamp("last_fired_at", { mode: "date" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("agent_trigger_workspaceId_idx").on(table.workspaceId),
+    index("agent_trigger_type_idx").on(table.type),
+  ],
+);
+
+export const agentRunTable = pgTable(
+  "agent_run",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    // set null: runs are audit records and survive trigger deletion.
+    triggerId: text("trigger_id").references(() => agentTriggerTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    projectId: text("project_id").references(() => projectTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    // "event" | "cron" | "manual"
+    triggerType: text("trigger_type").notNull(),
+    // "pending" | "running" | "completed" | "failed"
+    status: text("status").notNull().default("pending"),
+    input: jsonb("input").$type<Record<string, unknown>>(),
+    prompt: text("prompt").notNull(),
+    output: text("output"),
+    error: text("error"),
+    promptTokens: integer("prompt_tokens"),
+    completionTokens: integer("completion_tokens"),
+    durationMs: integer("duration_ms"),
+    startedAt: timestamp("started_at", { mode: "date" }),
+    finishedAt: timestamp("finished_at", { mode: "date" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("agent_run_workspaceId_idx").on(table.workspaceId),
+    index("agent_run_triggerId_idx").on(table.triggerId),
+    index("agent_run_status_idx").on(table.status),
+  ],
+);
+
+export const agentRunStepTable = pgTable(
+  "agent_run_step",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    runId: text("run_id")
+      .notNull()
+      .references(() => agentRunTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    stepIndex: integer("step_index").notNull(),
+    toolName: text("tool_name").notNull(),
+    args: jsonb("args").$type<Record<string, unknown>>(),
+    resultSummary: text("result_summary"),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [index("agent_run_step_runId_idx").on(table.runId)],
+);
+
+export const mcpServerTable = pgTable(
+  "mcp_server",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    name: text("name").notNull(),
+    // "http" (streamable HTTP) | "stdio" (local process, admin-gated in UI)
+    transport: text("transport").notNull(),
+    url: text("url"),
+    command: text("command"),
+    args: jsonb("args").$type<string[]>(),
+    // env and headers carry credentials; they are stored for execution but
+    // never returned by the API (only presence flags).
+    env: jsonb("env").$type<Record<string, string>>(),
+    headers: jsonb("headers").$type<Record<string, string>>(),
+    enabled: boolean("enabled").default(true).notNull(),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [index("mcp_server_workspaceId_idx").on(table.workspaceId)],
 );

@@ -2,8 +2,8 @@
 import { writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import prompts from "prompts";
-import { DEFAULT_KANEO_URL, HELP_TEXT, parseArgs } from "./args.js";
-import { KaneoClient } from "./kaneo.js";
+import { DEFAULT_BASIN_URL, HELP_TEXT, parseArgs } from "./args.js";
+import { BasinClient } from "./basin.js";
 import { type BoardReport, type BoardTarget, migrate } from "./migrate.js";
 import { PlankaClient } from "./planka.js";
 
@@ -98,26 +98,26 @@ async function main(): Promise<number> {
     return 0;
   }
 
-  const kaneoApiKey = args.kaneoApiKey ?? process.env.KANEO_API_KEY;
-  if (!kaneoApiKey && !args.dryRun) {
+  const basinApiKey = args.basinApiKey ?? process.env.BASIN_API_KEY;
+  if (!basinApiKey && !args.dryRun) {
     throw new Error(
-      "A Kaneo API key is required. Pass --kaneo-api-key or set KANEO_API_KEY.",
+      "A Basin API key is required. Pass --basin-api-key or set BASIN_API_KEY.",
     );
   }
 
-  const kaneo = new KaneoClient({
-    baseUrl: args.kaneoUrl ?? DEFAULT_KANEO_URL,
-    apiKey: kaneoApiKey ?? "",
+  const basin = new BasinClient({
+    baseUrl: args.basinUrl ?? DEFAULT_BASIN_URL,
+    apiKey: basinApiKey ?? "",
   });
 
   let workspaceId = args.workspace ?? "";
   if (!args.dryRun && !workspaceId) {
-    workspaceId = await selectWorkspace(kaneo, interactive);
+    workspaceId = await selectWorkspace(basin, interactive);
   }
 
   const preview = await migrate({
     planka,
-    kaneo,
+    basin,
     workspaceId,
     targets,
     dryRun: true,
@@ -129,14 +129,14 @@ async function main(): Promise<number> {
 
   if (args.dryRun) {
     await writeReport(args.report, preview);
-    log("Dry run. Nothing was written to Kaneo.");
+    log("Dry run. Nothing was written to Basin.");
     return 0;
   }
 
   if (!args.yes) {
     const confirmed = await confirm(
       interactive,
-      `Import ${targets.length} board(s) into Kaneo workspace ${workspaceId}?`,
+      `Import ${targets.length} board(s) into Basin workspace ${workspaceId}?`,
     );
     if (!confirmed) {
       log("Aborted.");
@@ -146,7 +146,7 @@ async function main(): Promise<number> {
 
   const reports = await migrate({
     planka,
-    kaneo,
+    basin,
     workspaceId,
     targets,
     dryRun: false,
@@ -203,13 +203,13 @@ async function selectTargets(
 }
 
 async function selectWorkspace(
-  kaneo: KaneoClient,
+  basin: BasinClient,
   interactive: boolean,
 ): Promise<string> {
-  const workspaces = await kaneo.listWorkspaces();
+  const workspaces = await basin.listWorkspaces();
 
   if (workspaces.length === 0) {
-    throw new Error("This Kaneo account has no workspaces.");
+    throw new Error("This Basin account has no workspaces.");
   }
 
   const first = workspaces[0];
@@ -226,7 +226,7 @@ async function selectWorkspace(
   const answer = await prompts({
     type: "select",
     name: "value",
-    message: "Target Kaneo workspace",
+    message: "Target Basin workspace",
     choices: workspaces.map((workspace) => ({
       title: workspace.name,
       value: workspace.id,

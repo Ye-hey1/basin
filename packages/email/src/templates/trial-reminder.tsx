@@ -30,9 +30,9 @@ const messages = {
       return "Choose a plan to keep creating and editing when the trial ends.";
     },
     cta: "Choose a plan",
-    body: "Kaneo is also free forever if you host it yourself, with every feature included. You can export your data at any time and move it to your own server.",
+    body: "Basin is also free forever if you host it yourself, with every feature included. You can export your data at any time and move it to your own server.",
     footer:
-      "You are receiving this because you own this workspace on Kaneo Cloud.",
+      "You are receiving this because you own this workspace on Basin Cloud.",
   },
   zh: {
     title: (workspaceName: string, daysLeft: number) => {
@@ -51,8 +51,8 @@ const messages = {
       return "选择一个套餐，以便在试用结束后继续创建和编辑。";
     },
     cta: "选择套餐",
-    body: "如果你自己托管 Kaneo，同样可以永久免费使用全部功能。你可以随时导出数据并迁移到自己的服务器。",
-    footer: "你收到这封邮件，是因为你是 Kaneo Cloud 上此工作区的所有者。",
+    body: "如果你自己托管 Basin，同样可以永久免费使用全部功能。你可以随时导出数据并迁移到自己的服务器。",
+    footer: "你收到这封邮件，是因为你是 Basin Cloud 上此工作区的所有者。",
   },
 } as const;
 

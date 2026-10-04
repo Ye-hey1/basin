@@ -14,6 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { authClient } from "@/lib/auth-client";
 
 export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/settings",
@@ -28,6 +29,8 @@ function SettingsLayout() {
   const isMobile = useIsMobile();
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const { data: workspace } = useActiveWorkspace();
+  const { data: session } = authClient.useSession();
+  const isAdmin = session?.user?.role === "admin";
   const { data: projects } = useGetProjects({
     workspaceId: workspace?.id ?? "",
   });
@@ -42,6 +45,9 @@ function SettingsLayout() {
     }
     if (pathname.includes("/dashboard/settings/projects")) {
       return "project";
+    }
+    if (pathname.includes("/dashboard/settings/ai")) {
+      return "ai";
     }
     return "account";
   };
@@ -150,6 +156,19 @@ function SettingsLayout() {
                 >
                   {t("navigation:sidebar.projects")}
                 </TabsTrigger>
+                {isAdmin && (
+                  <TabsTrigger
+                    value="ai"
+                    className="[&[data-state=active]]:rounded-md [&[data-state=active]]:border [&[data-state=active]]:border-border [&[data-state=active]]:bg-card"
+                    onClick={() =>
+                      navigate({
+                        to: "/dashboard/settings/ai",
+                      })
+                    }
+                  >
+                    {t("navigation:page.aiSettingsTab")}
+                  </TabsTrigger>
+                )}
               </TabsList>
             </Tabs>
           </div>

@@ -10,7 +10,7 @@ export type Comparison = {
   summary: string;
   heading: string;
   subheading: string;
-  /** Two or three sentences that answer "is Kaneo a good X alternative" outright. */
+  /** Two or three sentences that answer "is Basin a good X alternative" outright. */
   verdict: string;
   facts: {
     license: string;
@@ -18,7 +18,7 @@ export type Comparison = {
     sso: string;
     pricing: string;
   };
-  rows: { feature: string; kaneo: Cell; them: Cell }[];
+  rows: { feature: string; basin: Cell; them: Cell }[];
   reasons: { title: string; body: string }[];
   honestNote: string;
   migration?: { body: string; href: string; linkText: string };

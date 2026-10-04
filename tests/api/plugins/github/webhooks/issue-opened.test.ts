@@ -113,8 +113,8 @@ const integration = {
   isActive: true,
   type: "github",
   config: JSON.stringify({
-    repositoryOwner: "usekaneo",
-    repositoryName: "kaneo",
+    repositoryOwner: "usebasin",
+    repositoryName: "basin",
     installationId: 123,
     commentTaskLinkOnGitHubIssue: true,
     branchPattern: "{slug}-{number}",
@@ -134,14 +134,14 @@ function issueOpenedPayload(labels: Array<string | { name?: string }>) {
       number: 42,
       title: "Fix the login bug",
       body: "Steps to reproduce",
-      html_url: "https://github.com/usekaneo/kaneo/issues/42",
+      html_url: "https://github.com/usebasin/basin/issues/42",
       labels,
       user: { login: "octocat" },
     },
     repository: {
-      owner: { login: "usekaneo" },
-      name: "kaneo",
-      full_name: "usekaneo/kaneo",
+      owner: { login: "usebasin" },
+      name: "basin",
+      full_name: "usebasin/basin",
     },
   };
 }
@@ -159,7 +159,7 @@ beforeEach(() => {
   mocks.mockProjectFindFirst.mockResolvedValue({
     id: "project-1",
     workspaceId: "workspace-1",
-    slug: "kaneo",
+    slug: "basin",
   });
   mocks.mockGetInstallationOctokit.mockResolvedValue(mocks.mockOctokit);
   mocks.mockCreateExternalLink.mockResolvedValue({ id: "link-1" });

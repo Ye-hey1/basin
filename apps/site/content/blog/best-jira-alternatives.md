@@ -19,7 +19,7 @@ This is a comparison of the 11 tools that genuinely replace Jira for a small or 
 
 ## TL;DR: the 11 best Jira alternatives
 
-1. **[Kaneo](/jira-alternative)** for teams who want boards, backlog, and workflows with nothing to administer. MIT licensed and free to self-host.
+1. **[Basin](/jira-alternative)** for teams who want boards, backlog, and workflows with nothing to administer. MIT licensed and free to self-host.
 2. **[Linear](/linear-alternative)** for product teams who want the most polished cloud tracker and do not need to host it.
 3. **[Plane](/plane-alternative)** for teams who want a Linear-shaped product they can run themselves.
 4. **[OpenProject](/openproject-alternative)** for organisations that actually used Jira's structure, including Gantt charts and budgets.
@@ -45,7 +45,7 @@ Three patterns come up again and again.
 
 | Tool | Open source | Self-host | SSO included | Starting price |
 | --- | --- | --- | --- | --- |
-| Kaneo | Yes (MIT) | Yes | Yes, on every plan | Cloud from $4/mo, self-host free |
+| Basin | Yes (MIT) | Yes | Yes, on every plan | Cloud from $4/mo, self-host free |
 | Linear | No | No | Paid plans | Per user, cloud only |
 | Plane | Community edition (AGPL-3.0) | Yes | Pro tier and above | $0 Community, paid cloud tiers |
 | OpenProject | Community edition (GPLv3) | Yes | Enterprise add-on | $0 Community, Enterprise priced separately |
@@ -60,7 +60,7 @@ Three patterns come up again and again.
 
 ## How we evaluated these tools
 
-We are the team behind Kaneo, which is one of the tools on this list. Rather than pretend otherwise, here is exactly what we measured, so you can check the claims yourself.
+We are the team behind Basin, which is one of the tools on this list. Rather than pretend otherwise, here is exactly what we measured, so you can check the claims yourself.
 
 1. **Licence.** Is it open source, source-available, or proprietary? Which licence specifically, since AGPL and MIT have very different implications if you plan to modify it.
 2. **Self-hosting.** Can you run it yourself, and is that free? An "open core" edition that withholds authentication is not the same as a complete free build.
@@ -69,15 +69,15 @@ We are the team behind Kaneo, which is one of the tools on this list. Rather tha
 5. **What it actually does.** Boards, backlog, workflows, roles, time tracking, and whether reporting exists.
 6. **Data portability.** Export, import, and a documented public API, so you are not locked in a second time.
 7. **Pricing shape.** Per user, flat rate, seat minimums, and where the cliff is.
-8. **Who it is genuinely better for than Kaneo.** Every entry below has a section saying so.
+8. **Who it is genuinely better for than Basin.** Every entry below has a section saying so.
 
 ## The 11 best Jira alternatives in 2026
 
-### 1. Kaneo
+### 1. Basin
 
-Kaneo covers the parts of Jira that teams actually use every day: boards, backlog planning, configurable workflow columns, labels, priorities, task relations, comments, attachments, time tracking, and workspace roles. It deliberately leaves out the configuration layer that turns Jira into somebody's part-time job.
+Basin covers the parts of Jira that teams actually use every day: boards, backlog planning, configurable workflow columns, labels, priorities, task relations, comments, attachments, time tracking, and workspace roles. It deliberately leaves out the configuration layer that turns Jira into somebody's part-time job.
 
-Most teams run it on Kaneo Cloud, which is hosted in the EU and starts at $4 a month, with automatic backups, automatic updates, single sign-on, and email support. Kaneo is also open source under the MIT licence, which matters less for how you use it day to day and more for what happens if you ever want out: you can export everything or move the whole thing onto your own server, so the switching cost that keeps teams stuck on Jira does not apply here.
+Most teams run it on Basin Cloud, which is hosted in the EU and starts at $4 a month, with automatic backups, automatic updates, single sign-on, and email support. Basin is also open source under the MIT licence, which matters less for how you use it day to day and more for what happens if you ever want out: you can export everything or move the whole thing onto your own server, so the switching cost that keeps teams stuck on Jira does not apply here.
 
 **Key features**
 
@@ -86,7 +86,7 @@ Most teams run it on Kaneo Cloud, which is hosted in the EU and starts at $4 a m
 - Workspace roles and permissions, labels, priorities, and task relations
 - Time tracking, comments, and attachments
 - Single sign-on with Google, GitHub, Discord, or any OIDC provider, on every plan
-- Automatic backups, updates, and email support on Kaneo Cloud
+- Automatic backups, updates, and email support on Basin Cloud
 - Documented public REST API, API keys, webhooks, and an MCP server for AI agents
 - GitHub, Gitea, Slack, Discord, and Telegram integrations
 - Per-project JSON export and import
@@ -95,11 +95,11 @@ Most teams run it on Kaneo Cloud, which is hosted in the EU and starts at $4 a m
 
 **Cons:** No Gantt charts, no sprints with story points, no marketplace, no service desk. It is deliberately smaller than Jira.
 
-**Pricing:** Kaneo Cloud is $4 a month for a single user and $5 per user a month for teams, billed on exact headcount, with a 14-day trial and no credit card required. Annual billing works out at $3.33 and $4.17 a month. Self-hosting under MIT is available if you would rather run it yourself.
+**Pricing:** Basin Cloud is $4 a month for a single user and $5 per user a month for teams, billed on exact headcount, with a 14-day trial and no credit card required. Annual billing works out at $3.33 and $4.17 a month. Self-hosting under MIT is available if you would rather run it yourself.
 
 **Best for:** Small and mid-sized teams who want to plan and ship work without administering a tool.
 
-**Why choose it over Jira:** A ten-person team is $50 a month on Kaneo Cloud, against Jira's per-user pricing plus an Atlassian Guard subscription to get single sign-on, and there is no admin console for anyone to own. You keep the board, the backlog, the workflows, and the roles, and lose the schemes.
+**Why choose it over Jira:** A ten-person team is $50 a month on Basin Cloud, against Jira's per-user pricing plus an Atlassian Guard subscription to get single sign-on, and there is no admin console for anyone to own. You keep the board, the backlog, the workflows, and the roles, and lose the schemes.
 
 ### 2. Linear
 
@@ -115,7 +115,7 @@ Linear is the cloud tracker that set the current bar for speed and polish. Cycle
 
 **Best for:** Product and engineering teams committed to SaaS who want the most refined tracker available.
 
-**Why choose it over Jira:** It is dramatically faster to use and requires no administration. See our [Kaneo vs Linear comparison](/linear-alternative) if you want the same feel but self-hosted.
+**Why choose it over Jira:** It is dramatically faster to use and requires no administration. See our [Basin vs Linear comparison](/linear-alternative) if you want the same feel but self-hosted.
 
 ### 3. Plane
 
@@ -131,7 +131,7 @@ Plane is the closest open-source product to Linear in shape. Cycles, modules, in
 
 **Best for:** Teams who want a Linear-shaped product they can host, and do not mind a bigger install.
 
-**Why choose it over Jira:** Same modern tracker experience, without Jira's admin console, and you can run it yourself. Full breakdown in our [Kaneo vs Plane comparison](/plane-alternative).
+**Why choose it over Jira:** Same modern tracker experience, without Jira's admin console, and you can run it yourself. Full breakdown in our [Basin vs Plane comparison](/plane-alternative).
 
 ### 4. OpenProject
 
@@ -147,7 +147,7 @@ OpenProject is the closest thing on this list to Jira in scope. Work-package hie
 
 **Best for:** Organisations that genuinely used Jira's structure and need Gantt charts, budgets, and cost reporting.
 
-**Why choose it over Jira:** You get comparable structure under an open licence, on your own servers, with no Data Center subscription. See [Kaneo vs OpenProject](/openproject-alternative) for the lighter side of that trade.
+**Why choose it over Jira:** You get comparable structure under an open licence, on your own servers, with no Data Center subscription. See [Basin vs OpenProject](/openproject-alternative) for the lighter side of that trade.
 
 ### 5. Redmine
 
@@ -179,7 +179,7 @@ Taiga is MPL-2.0, self-hostable, and organised around agile ceremonies. If your 
 
 **Best for:** Teams committed to Scrum who want sprint mechanics as first-class features.
 
-**Why choose it over Jira:** Jira's agile features come wrapped in configuration. Taiga's do not. See [Kaneo vs Taiga](/taiga-alternative) if you want the board without adopting a methodology first.
+**Why choose it over Jira:** Jira's agile features come wrapped in configuration. Taiga's do not. See [Basin vs Taiga](/taiga-alternative) if you want the board without adopting a methodology first.
 
 ### 7. Asana
 
@@ -195,7 +195,7 @@ Asana is not an engineering tracker and does not pretend to be. It is built for 
 
 **Best for:** Program managers who need fifty projects to roll up into one view.
 
-**Why choose it over Jira:** Far less configuration and a much better fit for non-engineering work. Compare with [Kaneo vs Asana](/asana-alternative).
+**Why choose it over Jira:** Far less configuration and a much better fit for non-engineering work. Compare with [Basin vs Asana](/asana-alternative).
 
 ### 8. ClickUp
 
@@ -211,7 +211,7 @@ ClickUp is the maximalist option: docs, whiteboards, chat, dashboards, goals, an
 
 **Best for:** Teams who actually want the docs, whiteboards, and chat, not just the tasks.
 
-**Why choose it over Jira:** More capability for less money, and no admin console. Compare with [Kaneo vs ClickUp](/clickup-alternative) if the breadth is the part you would turn off.
+**Why choose it over Jira:** More capability for less money, and no admin console. Compare with [Basin vs ClickUp](/clickup-alternative) if the breadth is the part you would turn off.
 
 ### 9. Shortcut
 
@@ -227,7 +227,7 @@ Shortcut is built for software teams who want a board, a backlog, and epics roll
 
 **Best for:** Software teams who want epics and iterations plus reporting, and are happy in the cloud.
 
-**Why choose it over Jira:** Same shape of workflow with a fraction of the configuration. See [Kaneo vs Shortcut](/shortcut-alternative) for the self-hosted comparison.
+**Why choose it over Jira:** Same shape of workflow with a fraction of the configuration. See [Basin vs Shortcut](/shortcut-alternative) for the self-hosted comparison.
 
 ### 10. YouTrack
 
@@ -243,7 +243,7 @@ JetBrains YouTrack is a serious issue tracker with an excellent query language, 
 
 **Best for:** Teams already living in JetBrains IDEs who want that depth.
 
-**Why choose it over Jira:** Comparable power with a much better query and automation story, at a lower price for small teams. See [Kaneo vs YouTrack](/youtrack-alternative).
+**Why choose it over Jira:** Comparable power with a much better query and automation story, at a lower price for small teams. See [Basin vs YouTrack](/youtrack-alternative).
 
 ### 11. Azure DevOps Boards
 
@@ -259,17 +259,17 @@ If your organisation is already on Microsoft Entra and uses Azure Repos, Pipelin
 
 **Best for:** Organisations already standardised on Microsoft.
 
-**Why choose it over Jira:** One vendor, one identity provider, and traceability across the whole delivery pipeline. See [Kaneo vs Azure DevOps Boards](/azure-devops-alternative) if you want a tracker with no tenant requirement.
+**Why choose it over Jira:** One vendor, one identity provider, and traceability across the whole delivery pipeline. See [Basin vs Azure DevOps Boards](/azure-devops-alternative) if you want a tracker with no tenant requirement.
 
 ## How to choose
 
 A short decision guide, since eleven options is a lot.
 
-- **You want the least to administer.** Kaneo, Linear, or Shortcut.
-- **You must self-host.** Kaneo, Plane, OpenProject, Redmine, or Taiga.
+- **You want the least to administer.** Basin, Linear, or Shortcut.
+- **You must self-host.** Basin, Plane, OpenProject, Redmine, or Taiga.
 - **You need Gantt charts and budgets.** OpenProject. Nothing else here does it properly.
 - **You run Scrum with story points.** Taiga.
-- **Single sign-on without an Enterprise contract.** Kaneo includes it on every plan. Taiga and Redmine (with a plugin) also manage it. Check our [free SSO guide](/guides/project-management-tools-with-free-sso) before committing.
+- **Single sign-on without an Enterprise contract.** Basin includes it on every plan. Taiga and Redmine (with a plugin) also manage it. Check our [free SSO guide](/guides/project-management-tools-with-free-sso) before committing.
 - **Your work is not engineering work.** Asana or ClickUp.
 - **You are already deep in a vendor ecosystem.** Azure DevOps if Microsoft, YouTrack if JetBrains.
 
@@ -289,13 +289,13 @@ Being honest about this saves you a painful quarter.
 
 Jira exports issues to CSV and has a well-documented REST API, so a scripted migration is realistic for anything up to a few thousand issues. The parts that hurt are attachments, comment history with author attribution, and issue links.
 
-Do a dry run into a scratch project first, check that assignees resolve by email address, and keep the Jira instance readable for a quarter rather than cancelling it the same week. Kaneo has a public API and per-project JSON import, and we are happy to help with a migration script if you open an issue on [GitHub](https://github.com/usekaneo/kaneo).
+Do a dry run into a scratch project first, check that assignees resolve by email address, and keep the Jira instance readable for a quarter rather than cancelling it the same week. Basin has a public API and per-project JSON import, and we are happy to help with a migration script if you open an issue on [GitHub](https://github.com/usebasin/basin).
 
 ## Frequently asked questions
 
 ### What is the best free alternative to Jira?
 
-If you want to run it yourself, Kaneo is MIT licensed and self-hostable, OpenProject's Community edition is the better choice when you need Gantt charts, and Taiga is the one to pick for Scrum. Worth being honest about the trade: "free" means you take on the server, the upgrades, and the backups. Kaneo Cloud starts at $4 a month and hands all of that back to us, which is why most teams end up there.
+If you want to run it yourself, Basin is MIT licensed and self-hostable, OpenProject's Community edition is the better choice when you need Gantt charts, and Taiga is the one to pick for Scrum. Worth being honest about the trade: "free" means you take on the server, the upgrades, and the backups. Basin Cloud starts at $4 a month and hands all of that back to us, which is why most teams end up there.
 
 ### Can Jira be self-hosted for free?
 
@@ -303,15 +303,15 @@ No. Atlassian ended new Jira Server licence sales, so on-premise means Jira Data
 
 ### Is there an open-source Jira alternative?
 
-Several. Kaneo (MIT), Plane (AGPL-3.0 Community edition), OpenProject (GPLv3 Community edition), Redmine (GPLv2), and Taiga (MPL-2.0) are all open source and self-hostable. They differ mostly in scope and in what the free build withholds. We go deeper in our guide to [open-source Jira alternatives](/guides/open-source-jira-alternatives).
+Several. Basin (MIT), Plane (AGPL-3.0 Community edition), OpenProject (GPLv3 Community edition), Redmine (GPLv2), and Taiga (MPL-2.0) are all open source and self-hostable. They differ mostly in scope and in what the free build withholds. We go deeper in our guide to [open-source Jira alternatives](/guides/open-source-jira-alternatives).
 
 ### Which Jira alternatives include SSO for free?
 
-Kaneo, Taiga, and Redmine (through a plugin) include single sign-on without a paid tier. OpenProject reserves it for the Enterprise add-on, and Plane starts it at the Pro tier. Among hosted tools it is almost always an Enterprise-tier feature.
+Basin, Taiga, and Redmine (through a plugin) include single sign-on without a paid tier. OpenProject reserves it for the Enterprise add-on, and Plane starts it at the Pro tier. Among hosted tools it is almost always an Enterprise-tier feature.
 
 ### How much cheaper are Jira alternatives?
 
-Hosted alternatives mostly sit in the $5 to $11 per user a month range, so a ten-person team pays roughly $50 to $110 a month. Kaneo Cloud is at the bottom of that range at $5 per user a month with single sign-on included, where Jira would add an Atlassian Guard subscription on top to get the same thing. Self-hosting an open-source option costs the price of a small VPS, plus the time someone spends keeping it running.
+Hosted alternatives mostly sit in the $5 to $11 per user a month range, so a ten-person team pays roughly $50 to $110 a month. Basin Cloud is at the bottom of that range at $5 per user a month with single sign-on included, where Jira would add an Atlassian Guard subscription on top to get the same thing. Self-hosting an open-source option costs the price of a small VPS, plus the time someone spends keeping it running.
 
 ### Do I need to move everything at once?
 
@@ -323,4 +323,4 @@ If you need Jira's full scope, keep Jira. It earns its complexity at the scale i
 
 If you are a team of five to fifty who wants a board, a backlog, workflows you can change yourself, and single sign-on that is not a separate line item, most of that complexity is working against you.
 
-Kaneo Cloud gives you all of that, hosted in the EU from $4 a month, with backups and updates handled and nothing for anyone to administer. There is a 14-day trial and no credit card, and because Kaneo is open source you can export everything or move it onto your own server whenever you like.
+Basin Cloud gives you all of that, hosted in the EU from $4 a month, with backups and updates handled and nothing for anyone to administer. There is a 14-day trial and no credit card, and because Basin is open source you can export everything or move it onto your own server whenever you like.

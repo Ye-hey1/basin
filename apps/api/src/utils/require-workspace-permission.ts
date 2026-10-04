@@ -1,4 +1,4 @@
-import { type BuiltInRoleName, builtInRoles } from "@kaneo/permissions";
+import { type BuiltInRoleName, builtInRoles } from "@basin/permissions";
 import { and, eq } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import db, { schema } from "../database";

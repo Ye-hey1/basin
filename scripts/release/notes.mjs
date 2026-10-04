@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // semantic-release generateNotes plugin.
 //
-// Kaneo merges most pull requests with merge commits, so a release range contains
+// Basin merges most pull requests with merge commits, so a release range contains
 // every branch-internal commit rather than one commit per PR. Each commit is mapped
 // back to its pull request through the commit-association endpoint, which resolves
 // merge-commit branches as well as squashes, and the range is then collapsed to one
@@ -69,7 +69,7 @@ async function resolvePullRequests(commits, { repo, token, logger }) {
             headers: {
               accept: "application/vnd.github+json",
               authorization: `Bearer ${token}`,
-              "user-agent": "kaneo-release-notes",
+              "user-agent": "basin-release-notes",
             },
           },
         );
@@ -185,7 +185,7 @@ export async function generateNotes(_pluginConfig, context) {
   return build({
     from: lastRelease?.gitTag || lastRelease?.gitHead,
     to: nextRelease.gitHead || "HEAD",
-    repo: env.GITHUB_REPOSITORY || "usekaneo/kaneo",
+    repo: env.GITHUB_REPOSITORY || "usebasin/basin",
     token: env.GITHUB_TOKEN || env.GH_TOKEN,
     logger,
   });
@@ -211,7 +211,7 @@ if (invokedDirectly) {
     await build({
       from,
       to,
-      repo: "usekaneo/kaneo",
+      repo: "usebasin/basin",
       token,
       logger: { log: () => {} },
     }),

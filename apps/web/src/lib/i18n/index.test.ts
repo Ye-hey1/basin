@@ -40,7 +40,7 @@ describe("resolveLocale", () => {
     expect(resolveLocale("zh-TW", null)).toBe("zh-CN");
   });
 
-  it("falls back to the default locale for a language Kaneo dropped", () => {
+  it("falls back to the default locale for a language Basin dropped", () => {
     expect(resolveLocale("ja-JP", null)).toBe("en-US");
     expect(resolveLocale("de-DE", null)).toBe("en-US");
   });

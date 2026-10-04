@@ -11,7 +11,7 @@ import { breadcrumbJsonLd, JsonLd } from "./json-ld";
 import { Navbar } from "./navbar";
 import { SectionSeparator } from "./section-separator";
 
-const SITE = "https://kaneo.app";
+const SITE = "https://basin.app";
 
 /**
  * Splits the rendered body just before the nth <h2> so a call to action can sit
@@ -42,7 +42,7 @@ export function BlogPostPage({
     <>
       <JsonLd
         data={breadcrumbJsonLd([
-          { name: "Kaneo", path: "/" },
+          { name: "Basin", path: "/" },
           { name: "Blog", path: "/blog" },
           {
             name: post.category.name,
@@ -72,7 +72,7 @@ export function BlogPostPage({
           },
           publisher: {
             "@type": "Organization",
-            name: "Kaneo",
+            name: "Basin",
             url: SITE,
             logo: `${SITE}/logo-512.png`,
           },

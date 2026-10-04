@@ -2,7 +2,7 @@ import {
   DEFAULT_ROLE_NAMES,
   type DefaultRoleName,
   defaultRolePayloads,
-} from "@kaneo/permissions";
+} from "@basin/permissions";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import db, { schema } from "../database";
 
@@ -21,7 +21,7 @@ import db, { schema } from "../database";
  *
  * The merge matters for the same reason one level down: the permission
  * check reads a workspace's stored payload before falling back to the
- * compiled defaults, so a resource added to `@kaneo/permissions` after a
+ * compiled defaults, so a resource added to `@basin/permissions` after a
  * row was written would never be granted on that workspace.
  *
  * Idempotent: only inserts rows that aren't already present, and only

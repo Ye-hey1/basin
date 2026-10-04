@@ -11,7 +11,7 @@ import {
   SidebarHeader,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { VersionDisplay } from "@/components/version-display";
+import { UserAvatar } from "@/components/user-avatar";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import { shortcuts } from "@/constants/shortcuts";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
@@ -46,7 +46,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <TrialCard />
         <div className="flex items-center justify-between">
-          <VersionDisplay />
+          <UserAvatar />
           <ThemeToggleDropdown />
         </div>
       </SidebarFooter>

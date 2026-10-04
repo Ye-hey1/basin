@@ -87,14 +87,14 @@ const navigationLinks: NavigationLink[] = [
   },
   {
     items: [
-      { href: "#why", label: "Why Kaneo" },
-      { href: "https://github.com/usekaneo/kaneo", label: "Open Source" },
+      { href: "#why", label: "Why Basin" },
+      { href: "https://github.com/usebasin/basin", label: "Open Source" },
       {
-        href: "https://cloud.kaneo.app/public-project/vlu4ak2w8rs9rn1r4lirj2u1",
+        href: "https://cloud.basin.app/public-project/vlu4ak2w8rs9rn1r4lirj2u1",
         label: "Roadmap",
       },
       {
-        href: "https://github.com/usekaneo/kaneo/blob/main/CONTRIBUTING.md",
+        href: "https://github.com/usebasin/basin/blob/main/CONTRIBUTING.md",
         label: "Contributing",
       },
     ],
@@ -200,7 +200,7 @@ export function Navbar() {
             <a
               className="flex h-8 items-center text-primary hover:text-primary"
               href="/"
-              aria-label="Kaneo home"
+              aria-label="Basin home"
             >
               <Logo />
             </a>
@@ -282,7 +282,7 @@ export function Navbar() {
             size="sm"
             variant="ghost"
             onClick={() => {
-              window.location.href = "https://cloud.kaneo.app/auth/sign-in";
+              window.location.href = "https://cloud.basin.app/auth/sign-in";
             }}
           >
             Sign In
@@ -291,7 +291,7 @@ export function Navbar() {
             className="text-sm"
             size="sm"
             onClick={() => {
-              window.location.href = "https://cloud.kaneo.app";
+              window.location.href = "https://cloud.basin.app";
             }}
           >
             Get Started

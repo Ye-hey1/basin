@@ -1,4 +1,4 @@
-import { client } from "@kaneo/libs";
+import { client } from "@basin/libs";
 import { HttpError } from "@/lib/http-error";
 import type { CreateRequirementInput, Requirement } from "@/types/requirement";
 

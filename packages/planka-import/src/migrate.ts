@@ -1,5 +1,5 @@
+import type { BasinClient } from "./basin.js";
 import { labelColorToHex } from "./colors.js";
-import type { KaneoClient } from "./kaneo.js";
 import { toProjectKey, uniqueKey } from "./keys.js";
 import {
   boardProjectName,
@@ -30,7 +30,7 @@ export type BoardReport = {
   project: string;
   projectName: string;
   projectKey: string | null;
-  kaneoProjectId: string | null;
+  basinProjectId: string | null;
   columns: number;
   tasks: number;
   labels: number;
@@ -47,7 +47,7 @@ export type BoardReport = {
 
 export type MigrateOptions = {
   planka: PlankaClient;
-  kaneo: KaneoClient;
+  basin: BasinClient;
   workspaceId: string;
   targets: BoardTarget[];
   dryRun: boolean;
@@ -59,7 +59,7 @@ export type MigrateOptions = {
 export async function migrate(options: MigrateOptions): Promise<BoardReport[]> {
   const {
     planka,
-    kaneo,
+    basin,
     workspaceId,
     targets,
     dryRun,
@@ -72,10 +72,10 @@ export async function migrate(options: MigrateOptions): Promise<BoardReport[]> {
   const membersByEmail = new Map<string, string>();
 
   if (!dryRun) {
-    for (const project of await kaneo.listProjects(workspaceId)) {
+    for (const project of await basin.listProjects(workspaceId)) {
       if (project.slug) takenKeys.add(project.slug);
     }
-    for (const member of await kaneo.listMembers(workspaceId)) {
+    for (const member of await basin.listMembers(workspaceId)) {
       if (member.email)
         membersByEmail.set(member.email.toLowerCase(), member.id);
     }
@@ -95,7 +95,7 @@ export async function migrate(options: MigrateOptions): Promise<BoardReport[]> {
       project: target.project.name,
       projectName,
       projectKey: null,
-      kaneoProjectId: null,
+      basinProjectId: null,
       columns: 0,
       tasks: 0,
       labels: 0,
@@ -112,7 +112,7 @@ export async function migrate(options: MigrateOptions): Promise<BoardReport[]> {
     try {
       await migrateBoard({
         planka,
-        kaneo,
+        basin,
         workspaceId,
         target,
         projectName,
@@ -137,7 +137,7 @@ export async function migrate(options: MigrateOptions): Promise<BoardReport[]> {
 
 async function migrateBoard(context: {
   planka: PlankaClient;
-  kaneo: KaneoClient;
+  basin: BasinClient;
   workspaceId: string;
   target: BoardTarget;
   projectName: string;
@@ -151,7 +151,7 @@ async function migrateBoard(context: {
 }): Promise<void> {
   const {
     planka,
-    kaneo,
+    basin,
     workspaceId,
     target,
     projectName,
@@ -180,7 +180,7 @@ async function migrateBoard(context: {
   for (const column of columns) {
     if (column.renamedFrom) {
       report.warnings.push(
-        `List "${column.renamedFrom}" was imported as column "${column.name}" to avoid a naming conflict in Kaneo.`,
+        `List "${column.renamedFrom}" was imported as column "${column.name}" to avoid a naming conflict in Basin.`,
       );
     }
   }
@@ -229,21 +229,21 @@ async function migrateBoard(context: {
   report.projectKey = projectKey;
 
   onProgress(`Creating project "${projectName}" (${projectKey})`);
-  const project = await kaneo.createProject({
+  const project = await basin.createProject({
     name: projectName,
     workspaceId,
     icon: projectIcon,
     slug: projectKey,
   });
-  report.kaneoProjectId = project.id;
+  report.basinProjectId = project.id;
 
-  // Kaneo seeds four default columns on create; drop them while still empty.
-  for (const existing of await kaneo.listColumns(project.id)) {
-    await kaneo.deleteColumn(existing.id);
+  // Basin seeds four default columns on create; drop them while still empty.
+  for (const existing of await basin.listColumns(project.id)) {
+    await basin.deleteColumn(existing.id);
   }
 
   for (const column of columns) {
-    await kaneo.createColumn(project.id, {
+    await basin.createColumn(project.id, {
       name: column.name,
       isFinal: column.isFinal,
     });
@@ -255,7 +255,7 @@ async function migrateBoard(context: {
 
     const name = label.name?.trim() || label.color;
     const color = labelColorToHex(label.color);
-    await kaneo.createLabel({ name, color, workspaceId });
+    await basin.createLabel({ name, color, workspaceId });
     labelIdByPlankaId.set(label.id, { name, color });
   }
 
@@ -292,7 +292,7 @@ async function migrateBoard(context: {
 
     const dueDate = toDueDate(card);
 
-    const task = await kaneo.createTask(project.id, {
+    const task = await basin.createTask(project.id, {
       title: card.name,
       description,
       status,
@@ -308,7 +308,7 @@ async function migrateBoard(context: {
       const label = labelIdByPlankaId.get(link.labelId);
       if (!label) continue;
 
-      await kaneo.createLabel({
+      await basin.createLabel({
         name: label.name,
         color: label.color,
         workspaceId,
@@ -323,7 +323,7 @@ async function migrateBoard(context: {
 
     for (const comment of comments) {
       const author = comment.userId ? usersById.get(comment.userId) : undefined;
-      await kaneo.createComment(
+      await basin.createComment(
         task.id,
         formatComment(comment),
         displayName(author),
@@ -348,7 +348,7 @@ async function migrateBoard(context: {
     }
 
     try {
-      await kaneo.createTaskRelation({
+      await basin.createTaskRelation({
         sourceTaskId,
         targetTaskId,
         relationType: "subtask",
@@ -370,7 +370,7 @@ async function migrateBoard(context: {
   }
   if (notAWorkspaceMember > 0) {
     report.warnings.push(
-      `${notAWorkspaceMember} card assignment(s) were skipped because no member of this Kaneo workspace has a matching email. Invite those people to the workspace first, then re-run.`,
+      `${notAWorkspaceMember} card assignment(s) were skipped because no member of this Basin workspace has a matching email. Invite those people to the workspace first, then re-run.`,
     );
   }
 }
@@ -386,7 +386,7 @@ function resolveAssignee(
   usersById: Map<string, PlankaUser>,
   membersByEmail: Map<string, string>,
 ): AssigneeResolution {
-  // Kaneo has a single assignee; take the first member present in the workspace.
+  // Basin has a single assignee; take the first member present in the workspace.
   let reason: AssigneeResolution["reason"];
 
   for (const membership of memberships) {
@@ -398,8 +398,8 @@ function resolveAssignee(
       continue;
     }
 
-    const kaneoUserId = membersByEmail.get(email);
-    if (kaneoUserId) return { userId: kaneoUserId };
+    const basinUserId = membersByEmail.get(email);
+    if (basinUserId) return { userId: basinUserId };
     reason = "not_a_member";
   }
 

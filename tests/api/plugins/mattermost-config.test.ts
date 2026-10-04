@@ -2,20 +2,20 @@ import { afterEach, describe, expect, it } from "vitest";
 import { validateMattermostConfig } from "../../../apps/api/src/plugins/mattermost/config";
 
 const originalAllowPrivateDestinations =
-  process.env.KANEO_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS;
+  process.env.BASIN_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS;
 
 afterEach(() => {
   if (originalAllowPrivateDestinations === undefined) {
-    delete process.env.KANEO_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS;
+    delete process.env.BASIN_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS;
   } else {
-    process.env.KANEO_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS =
+    process.env.BASIN_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS =
       originalAllowPrivateDestinations;
   }
 });
 
 describe("validateMattermostConfig", () => {
   it("rejects private webhook destinations by default", async () => {
-    delete process.env.KANEO_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS;
+    delete process.env.BASIN_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS;
 
     const result = await validateMattermostConfig({
       webhookUrl: "https://127.0.0.1/hooks/example",
@@ -26,7 +26,7 @@ describe("validateMattermostConfig", () => {
   });
 
   it("allows private destinations when the self-hosting override is enabled", async () => {
-    process.env.KANEO_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS = "true";
+    process.env.BASIN_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS = "true";
 
     const result = await validateMattermostConfig({
       webhookUrl: "https://127.0.0.1/hooks/example",

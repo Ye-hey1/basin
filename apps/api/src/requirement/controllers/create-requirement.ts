@@ -1,5 +1,6 @@
 import { and, eq, isNull } from "drizzle-orm";
 import db, { schema } from "../../database";
+import { publishEvent } from "../../events";
 import type { z } from "../../openapi";
 import { httpError } from "../../utils/http-error";
 import {
@@ -94,6 +95,10 @@ async function createRequirement(
   }
 
   await replaceProjectLinks(inserted.id, links);
+
+  await publishEvent("requirement.created", {
+    requirementId: inserted.id,
+  });
 
   const [hydrated] = await hydrateRequirements([
     await loadCreated(inserted.id),

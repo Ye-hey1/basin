@@ -1,6 +1,6 @@
 {
 	"common": {
-		"appName": "Kaneo",
+		"appName": "Basin",
 		"actions": {
 			"cancel": "Cancel",
 			"close": "Close",
@@ -213,7 +213,7 @@
 				"telegram_integration_not_found": "Telegram integration not found",
 				"the_time_range_is_too_long_to_record": "The time range is too long to record.",
 				"this_relation_already_exists": "This relation already exists",
-				"this_workspace_s_kaneo_cloud_plan_has_expired_subscribe_to_continue_creating_and": "This workspace's Kaneo Cloud plan has expired. Subscribe to continue creating and editing.",
+				"this_workspace_s_basin_cloud_plan_has_expired_subscribe_to_continue_creating_and": "This workspace's Basin Cloud plan has expired. Subscribe to continue creating and editing.",
 				"time_entry_not_found": "Time entry not found",
 				"unauthorized": "Unauthorized",
 				"unknown_bulk_operation": "Unknown operation",
@@ -251,7 +251,7 @@
 				"errorToast": "Failed to create project"
 			},
 			"createWorkspace": {
-				"breadcrumbKaneo": "KANEO",
+				"breadcrumbBasin": "BASIN",
 				"title": "Create a new workspace",
 				"description": "Create a new workspace by providing a name for your workspace.",
 				"namePlaceholder": "Workspace name",
@@ -383,7 +383,7 @@
 			"toggleMessage": "Already have an account?",
 			"toggleLink": "Sign in",
 			"instanceStatusError": "Couldn't reach the server. Please retry in a moment.",
-			"instanceAdminTitle": "Set up your Kaneo instance",
+			"instanceAdminTitle": "Set up your Basin instance",
 			"instanceAdminSubtitle": "This account becomes the instance administrator with full access."
 		},
 		"verifyOtp": {
@@ -441,7 +441,7 @@
 			"workspaceLabel": "Workspace: {{workspaceName}}",
 			"joinWorkspace": "Join {{workspaceName}}",
 			"inviteBodySignedIn": "<inviter>{{inviterName}}</inviter> has invited you to join their workspace.",
-			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> has invited you to join their workspace on Kaneo.",
+			"inviteBodySignedOut": "<inviter>{{inviterName}}</inviter> has invited you to join their workspace on Basin.",
 			"createAccountOrSignIn": "Create an account to accept this invitation, or sign in if you already have one.",
 			"createAccount": "Create Account",
 			"accepting": "Accepting...",
@@ -457,7 +457,7 @@
 			}
 		},
 		"onboarding": {
-			"pageTitle": "Welcome to Kaneo",
+			"pageTitle": "Welcome to Basin",
 			"workspacePageTitle": "Create Workspace",
 			"createWorkspaceTitle": "Create workspace",
 			"createWorkspaceSubtitle": "Set up your workspace to start managing projects",
@@ -510,7 +510,7 @@
 			"signInTitle": "Sign in to continue",
 			"signInSubtitle": "Sign in to approve or deny this device request.",
 			"signIn": "Sign in",
-			"approveSubtitle": "A device is requesting access to your Kaneo account.",
+			"approveSubtitle": "A device is requesting access to your Basin account.",
 			"approve": "Approve",
 			"deny": "Deny",
 			"connected": "Device connected",
@@ -528,7 +528,7 @@
 			"signInTitle": "Sign in to continue",
 			"signInSubtitle": "Sign in before approving this MCP client.",
 			"signIn": "Sign in",
-			"reviewSubtitle": "Review this request before granting access to your Kaneo account.",
+			"reviewSubtitle": "Review this request before granting access to your Basin account.",
 			"accessWarning": "This client will be able to act as you and access your workspaces. Only continue if you initiated this connection.",
 			"clientNameLabel": "Client name (self-reported)",
 			"clientFallback": "MCP client",
@@ -589,7 +589,7 @@
 		"notificationsPage": {
 			"pageTitle": "Notifications",
 			"title": "Notifications",
-			"subtitle": "Choose how Kaneo delivers your account notifications and which channels to use.",
+			"subtitle": "Choose how Basin delivers your account notifications and which channels to use.",
 			"statusConnected": "Connected",
 			"statusPaused": "Paused",
 			"emailTitle": "Email",
@@ -622,10 +622,10 @@
 			"webhookDescription": "Send account notifications to your own endpoint as JSON.",
 			"endpointUrl": "Endpoint URL",
 			"signingSecret": "Signing secret",
-			"webhookUrlPlaceholder": "https://example.com/webhooks/kaneo",
+			"webhookUrlPlaceholder": "https://example.com/webhooks/basin",
 			"webhookSecretPlaceholder": "Optional shared secret",
 			"webhookSecretHintConfigured": "A signing secret is already configured ({{masked}}). Enter a new one to replace it.",
-			"webhookSecretHintOptional": "Optional. Kaneo signs the request body when a secret is set.",
+			"webhookSecretHintOptional": "Optional. Basin signs the request body when a secret is set.",
 			"connectWebhook": "Connect webhook",
 			"workspaceRulesTitle": "Workspace delivery rules",
 			"workspaceRulesDescription": "Reuse your global channels, then decide which workspaces and projects are allowed to send account notifications.",
@@ -690,7 +690,7 @@
 		},
 		"preferencesPage": {
 			"title": "Preferences",
-			"subtitle": "Customize your Kaneo experience.",
+			"subtitle": "Customize your Basin experience.",
 			"appearanceTitle": "Appearance",
 			"appearanceSubtitle": "Visual settings and layout preferences.",
 			"theme": "Theme",
@@ -734,7 +734,7 @@
 			"title": "Developer Settings",
 			"subtitle": "Manage your API keys and developer resources.",
 			"apiKeysCardTitle": "API Keys",
-			"apiKeysCardDescription": "Create and manage API keys for programmatic access to Kaneo.",
+			"apiKeysCardDescription": "Create and manage API keys for programmatic access to Basin.",
 			"createApiKey": "Create API Key",
 			"unnamedKey": "Unnamed Key"
 		},
@@ -773,7 +773,7 @@
 			},
 			"createDialog": {
 				"title": "Create API Key",
-				"description": "Create a new API key to access the Kaneo API programmatically.",
+				"description": "Create a new API key to access the Basin API programmatically.",
 				"nameLabel": "Name",
 				"namePlaceholder": "My API Key",
 				"nameDescription": "A descriptive name for this API key",
@@ -1131,7 +1131,7 @@
 				"removeError": "Failed to remove GitHub integration",
 				"issuesImported": "Issues imported successfully",
 				"importError": "Failed to import issues",
-				"commentOnEnabled": "Kaneo will comment with a task link on new issues",
+				"commentOnEnabled": "Basin will comment with a task link on new issues",
 				"commentOnDisabled": "Task link comments on new issues are turned off",
 				"settingsUpdateError": "Failed to update GitHub integration"
 			},
@@ -1142,8 +1142,8 @@
 			"badgeNotConnected": "Not Connected",
 			"repository": "Repository",
 			"repositoryHint": "Connected GitHub repository",
-			"commentTaskLinkTitle": "Comment Kaneo link on new issues",
-			"commentTaskLinkHint": "When enabled, Kaneo posts a comment on each new GitHub issue with a link to the task.",
+			"commentTaskLinkTitle": "Comment Basin link on new issues",
+			"commentTaskLinkHint": "When enabled, Basin posts a comment on each new GitHub issue with a link to the task.",
 			"appStatusTitle": "GitHub App Status",
 			"appStatusHint": "Installation and permissions status",
 			"statusProperlyConfigured": "Properly configured",
@@ -1196,7 +1196,7 @@
 				"removeError": "Failed to remove Gitea integration",
 				"issuesImported": "Issues imported successfully",
 				"importError": "Failed to import issues",
-				"commentOnEnabled": "Kaneo will comment with a task link on new issues",
+				"commentOnEnabled": "Basin will comment with a task link on new issues",
 				"commentOnDisabled": "Task link comments on new issues are turned off",
 				"settingsUpdateError": "Failed to update Gitea integration",
 				"secretCopied": "Copied",
@@ -1212,8 +1212,8 @@
 			"badgeNotConnected": "Not connected",
 			"repository": "Repository",
 			"repositoryHint": "Linked Gitea repository",
-			"commentTaskLinkTitle": "Comment Kaneo link on new issues",
-			"commentTaskLinkHint": "When enabled, Kaneo posts a comment on each new issue with a link to the task.",
+			"commentTaskLinkTitle": "Comment Basin link on new issues",
+			"commentTaskLinkHint": "When enabled, Basin posts a comment on each new issue with a link to the task.",
 			"webhookTitle": "Webhook",
 			"webhookHint": "In your Gitea repository, add a webhook with this URL and secret. Enable push, pull request, issues, issue comments, and create (for labels).",
 			"webhookSecretLabel": "Secret (must match the webhook secret in Gitea)",
@@ -1337,15 +1337,15 @@
 				"removeError": "Failed to remove generic webhook integration"
 			},
 			"connectionTitle": "Outgoing webhook connection",
-			"connectionHint": "Send task events to your own endpoint as JSON. A signed X-Kaneo-Signature header is included when a secret is configured.",
+			"connectionHint": "Send task events to your own endpoint as JSON. A signed X-Basin-Signature header is included when a secret is configured.",
 			"connected": "Connected",
 			"paused": "Paused",
 			"webhookLabel": "Endpoint URL",
-			"webhookPlaceholder": "https://example.com/webhooks/kaneo",
-			"webhookHint": "Kaneo sends POST requests with a JSON payload for each enabled event.",
+			"webhookPlaceholder": "https://example.com/webhooks/basin",
+			"webhookHint": "Basin sends POST requests with a JSON payload for each enabled event.",
 			"secretLabel": "Signing secret",
 			"secretPlaceholder": "Optional shared secret",
-			"secretHint": "Optional. If provided, Kaneo signs the request body and sends the hex digest in the X-Kaneo-Signature header.",
+			"secretHint": "Optional. If provided, Basin signs the request body and sends the hex digest in the X-Basin-Signature header.",
 			"secretHintConfigured": "A signing secret is already configured ({{secret}}). Enter a new one to replace it.",
 			"eventsTitle": "Event notifications",
 			"eventsHint": "Choose which project changes should trigger outgoing webhooks.",
@@ -1399,7 +1399,7 @@
 			"threadIdHint": "Optional. Use this for forum topics inside Telegram groups.",
 			"chatLabelLabel": "Chat label",
 			"chatLabelPlaceholder": "Engineering Updates",
-			"chatLabelHint": "Optional label for your reference inside Kaneo.",
+			"chatLabelHint": "Optional label for your reference inside Basin.",
 			"eventsTitle": "Event notifications",
 			"eventsHint": "Choose which project changes should post to Telegram.",
 			"events": {
@@ -1480,14 +1480,14 @@
 		},
 		"billingPage": {
 			"title": "Billing",
-			"disabledDescription": "Billing isn't enabled on this instance. Self-hosted Kaneo includes every feature, free forever.",
-			"subtitle": "Manage the Kaneo Cloud subscription for this workspace.",
+			"disabledDescription": "Billing isn't enabled on this instance. Self-hosted Basin includes every feature, free forever.",
+			"subtitle": "Manage the Basin Cloud subscription for this workspace.",
 			"currentPlan": "Current plan",
 			"currentPlanSubtitle": "Your workspace's active plan and billing status.",
 			"foundingFree": "Founding Free",
 			"freeBadge": "Free",
-			"foundingFreeDescription": "This workspace has free access to Kaneo Cloud as an early supporter. Thank you for being here from the start.",
-			"cloudPlan": "Kaneo Cloud {{plan}}",
+			"foundingFreeDescription": "This workspace has free access to Basin Cloud as an early supporter. Thank you for being here from the start.",
+			"cloudPlan": "Basin Cloud {{plan}}",
 			"accessEnds": "Access ends",
 			"renews": "Renews",
 			"billingPortalHint": "Update payment method, view invoices, or cancel anytime.",
@@ -1654,7 +1654,9 @@
 			"members": "Members",
 			"invitations": "Invitations",
 			"more": "More",
-			"backToBoard": "Back to board"
+			"backToBoard": "Back to board",
+			"assistant": "AI Assistant",
+			"agents": "Agents"
 		},
 		"projectList": {
 			"viewProject": "View Project",
@@ -1702,7 +1704,8 @@
 			"projectsTitle": "Projects",
 			"settingsTitle": "Settings",
 			"backToWorkspace": "Back to Workspace",
-			"settingsWorkspaceTab": "Workspace"
+			"settingsWorkspaceTab": "Workspace",
+			"aiSettingsTab": "AI"
 		},
 		"projectSettings": {
 			"projectLabel": "Project"
@@ -2372,14 +2375,14 @@
 	},
 	"invitations": {
 		"email": {
-			"subject": "{{inviterName}} invited you to join {{workspaceName}} on Kaneo",
-			"preview": "You're invited to {{workspaceName}} on Kaneo",
+			"subject": "{{inviterName}} invited you to join {{workspaceName}} on Basin",
+			"preview": "You're invited to {{workspaceName}} on Basin",
 			"title": "Join {{workspaceName}}",
-			"subtitle": "{{inviterName}} ({{inviterEmail}}) invited you to collaborate in Kaneo.",
+			"subtitle": "{{inviterName}} ({{inviterEmail}}) invited you to collaborate in Basin.",
 			"cta": "Accept invitation",
 			"sameEmail": "You can accept with the same email that received this message.",
 			"ignore": "If this wasn't expected, you can safely ignore this email.",
-			"footer": "Kaneo workspace invitation"
+			"footer": "Basin workspace invitation"
 		},
 		"pageTitle": "Invitations",
 		"pendingInvitations": "Pending Invitations",
@@ -2736,6 +2739,112 @@
 		},
 		"tree": {
 			"documents": "Documents"
+		}
+	},
+	"ai": {
+		"assistant": {
+			"pageTitle": "AI Assistant",
+			"header": "AI Assistant",
+			"newThread": "New conversation",
+			"untitledThread": "Untitled conversation",
+			"noThreads": "No conversations yet",
+			"deleteThread": "Delete conversation",
+			"empty": "Ask anything about your projects, tasks, and requirements.",
+			"thinking": "Thinking…",
+			"placeholder": "Ask about your workspace…",
+			"send": "Send message",
+			"sendFailed": "Failed to get an answer. Please try again.",
+			"notConfigured": "AI is not configured on this instance yet. An admin can set it up under Settings → AI.",
+			"citations": "Sources"
+		},
+		"config": {
+			"pageTitle": "AI Settings",
+			"title": "AI provider",
+			"subtitle": "Configure the AI provider used by the Brain index and the assistant. The key is stored encrypted and is never returned by the API.",
+			"description": "The embedding model is validated with a probe call on save, and the detected dimensions are stored with the configuration.",
+			"provider": "Provider",
+			"baseUrl": "Base URL",
+			"apiKey": "API key",
+			"apiKeyStored": "A key is stored — leave blank to keep it",
+			"clearKey": "Clear",
+			"chatModel": "Chat model",
+			"embeddingModel": "Embedding model",
+			"detectedDimensions": "Detected embedding dimensions: {{dimensions}}",
+			"save": "Save configuration",
+			"saveHint": "Saving probes the embedding model and may take a few seconds.",
+			"saved": "AI configuration saved",
+			"saveFailed": "Failed to save AI configuration"
+		}
+	},
+	"agents": {
+		"pageTitle": "Agent Automation",
+		"header": "Agent Automation",
+		"types": {
+			"event": "Event",
+			"cron": "Schedule"
+		},
+		"eventTypes": {
+			"taskStatusChanged": "Task status changed",
+			"taskDueDateChanged": "Task due date changed",
+			"requirementUpdated": "Requirement updated"
+		},
+		"triggerTypes": {
+			"event": "event",
+			"cron": "schedule",
+			"manual": "manual"
+		},
+		"runStatus": {
+			"pending": "Pending",
+			"running": "Running",
+			"completed": "Completed",
+			"failed": "Failed"
+		},
+		"triggers": {
+			"title": "Triggers",
+			"new": "New trigger",
+			"editTrigger": "Edit trigger",
+			"empty": "No triggers yet. Create one to let the agent handle routine work.",
+			"runNow": "Run now",
+			"delete": "Delete trigger"
+		},
+		"runs": {
+			"title": "Run history",
+			"empty": "No runs yet.",
+			"output": "Output",
+			"error": "Error",
+			"steps": "Tool calls"
+		},
+		"runQueued": "Run queued — check the history in a moment",
+		"runQueuedFailed": "Failed to queue the run",
+		"triggerSaved": "Trigger saved",
+		"triggerSaveFailed": "Failed to save the trigger",
+		"fields": {
+			"name": "Name",
+			"type": "Type",
+			"eventType": "Event",
+			"cron": "Cron expression",
+			"conditionStatus": "Trigger when status becomes",
+			"conditionStatusHint": "e.g. blocked — leave empty for any status",
+			"project": "Project scope",
+			"anyProject": "All projects",
+			"instruction": "Agent instruction",
+			"instructionHint": "What the agent should do when this fires. It can search tasks, read details, and post comments."
+		},
+		"mcp": {
+			"title": "MCP servers",
+			"new": "Register MCP server",
+			"transport": "Transport",
+			"http": "HTTP",
+			"stdio": "Local process (stdio)",
+			"command": "Command",
+			"headers": "Headers (JSON)",
+			"invalidHeaders": "Headers must be valid JSON",
+			"saved": "MCP server saved",
+			"saveFailed": "Failed to save the MCP server",
+			"disabled": "disabled",
+			"disable": "Disable",
+			"enable": "Enable",
+			"delete": "Delete MCP server"
 		}
 	}
 }

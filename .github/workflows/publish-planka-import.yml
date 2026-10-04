@@ -46,8 +46,8 @@ jobs:
 
       - name: Run PLANKA import checks
         run: |
-          pnpm --filter @kaneo/planka-import test
-          pnpm --filter @kaneo/planka-import build
+          pnpm --filter @basin/planka-import test
+          pnpm --filter @basin/planka-import build
 
       - name: Validate PLANKA import release tag
         if: ${{ github.event_name == 'release' }}
@@ -65,19 +65,19 @@ jobs:
             exit 1
           fi
 
-      - name: Check whether @kaneo/planka-import version is already published
+      - name: Check whether @basin/planka-import version is already published
         id: version_check
         run: |
           PACKAGE_VERSION=$(node -p "require('./packages/planka-import/package.json').version")
 
-          if npm view "@kaneo/planka-import@${PACKAGE_VERSION}" version >/dev/null 2>&1; then
+          if npm view "@basin/planka-import@${PACKAGE_VERSION}" version >/dev/null 2>&1; then
             echo "already_published=true" >> "$GITHUB_OUTPUT"
-            echo "@kaneo/planka-import@${PACKAGE_VERSION} is already published; skipping publish."
+            echo "@basin/planka-import@${PACKAGE_VERSION} is already published; skipping publish."
           else
             echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Publish @kaneo/planka-import
+      - name: Publish @basin/planka-import
         if: ${{ steps.version_check.outputs.already_published == 'false' }}
         run: |
           cd packages/planka-import
@@ -95,8 +95,8 @@ jobs:
 
           gh release create "planka-import-v${PACKAGE_VERSION}" \
             --target "${GITHUB_SHA}" \
-            --title "@kaneo/planka-import v${PACKAGE_VERSION}" \
-            --notes "Published [@kaneo/planka-import@${PACKAGE_VERSION}](https://www.npmjs.com/package/@kaneo/planka-import/v/${PACKAGE_VERSION}) to npm." \
+            --title "@basin/planka-import v${PACKAGE_VERSION}" \
+            --notes "Published [@basin/planka-import@${PACKAGE_VERSION}](https://www.npmjs.com/package/@basin/planka-import/v/${PACKAGE_VERSION}) to npm." \
             --latest=false
         env:
           GH_TOKEN: ${{ github.token }}

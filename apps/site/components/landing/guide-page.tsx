@@ -10,7 +10,7 @@ import { SectionSeparator } from "@/components/landing/section-separator";
 import type { Guide } from "@/lib/guides";
 import { guidePath } from "@/lib/guides";
 
-const SIGN_UP = "https://cloud.kaneo.app/auth/sign-up";
+const SIGN_UP = "https://cloud.basin.app/auth/sign-up";
 
 function formatUpdatedOn(value: string) {
   return new Date(`${value}T00:00:00Z`).toLocaleDateString("en-GB", {
@@ -29,7 +29,7 @@ export function GuidePage({ data }: { data: Guide }) {
       <JsonLd data={faqJsonLd(data.faq)} />
       <JsonLd
         data={breadcrumbJsonLd([
-          { name: "Kaneo", path: "/" },
+          { name: "Basin", path: "/" },
           { name: "Guides", path: "/guides" },
           { name: data.question, path },
         ])}
@@ -42,9 +42,9 @@ export function GuidePage({ data }: { data: Guide }) {
           description: data.description,
           dateModified: data.updatedOn,
           inLanguage: "en",
-          mainEntityOfPage: `https://kaneo.app${path}`,
-          author: { "@type": "Organization", name: "Kaneo" },
-          publisher: { "@type": "Organization", name: "Kaneo" },
+          mainEntityOfPage: `https://basin.app${path}`,
+          author: { "@type": "Organization", name: "Basin" },
+          publisher: { "@type": "Organization", name: "Basin" },
         }}
       />
       <Navbar />
@@ -69,7 +69,7 @@ export function GuidePage({ data }: { data: Guide }) {
             </FadeIn>
             <p className="mt-4 text-foreground/50 text-xs">
               Last updated {formatUpdatedOn(data.updatedOn)}. Written by the
-              Kaneo team, who also build one of the tools mentioned.
+              Basin team, who also build one of the tools mentioned.
             </p>
           </div>
         </section>
@@ -166,7 +166,7 @@ export function GuidePage({ data }: { data: Guide }) {
                   className="inline-flex h-10 items-center justify-center rounded-lg border border-transparent bg-primary px-4 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
                   href={SIGN_UP}
                 >
-                  Try Kaneo Cloud free
+                  Try Basin Cloud free
                 </a>
                 <a
                   className="inline-flex h-10 items-center justify-center rounded-lg border border-border bg-transparent px-4 font-medium text-sm transition-colors hover:bg-accent"

@@ -12,22 +12,22 @@ export type MagicLinkEmailProps = {
 
 const messages = {
   en: {
-    preview: "Sign in to Kaneo",
+    preview: "Sign in to Basin",
     title: "Your secure sign-in link",
-    subtitle: "Use this link to continue to your Kaneo workspace.",
-    cta: "Sign in to Kaneo",
+    subtitle: "Use this link to continue to your Basin workspace.",
+    cta: "Sign in to Basin",
     expiry: "This link expires in 5 minutes for your security.",
     ignore: "If you didn't request this, you can ignore this email.",
-    footer: "Kaneo security email",
+    footer: "Basin security email",
   },
   zh: {
-    preview: "登录 Kaneo",
+    preview: "登录 Basin",
     title: "你的安全登录链接",
-    subtitle: "使用此链接继续前往你的 Kaneo 工作区。",
-    cta: "登录 Kaneo",
+    subtitle: "使用此链接继续前往你的 Basin 工作区。",
+    cta: "登录 Basin",
     expiry: "出于安全考虑，此链接 5 分钟后过期。",
     ignore: "如果你没有发起此请求，可以忽略这封邮件。",
-    footer: "Kaneo 安全邮件",
+    footer: "Basin 安全邮件",
   },
 } as const;
 
@@ -54,7 +54,7 @@ const MagicLinkEmail = ({ magicLink, locale }: MagicLinkEmailProps) => {
 };
 
 MagicLinkEmail.PreviewProps = {
-  magicLink: "https://kaneo.app",
+  magicLink: "https://basin.app",
   locale: "en-US",
 } as MagicLinkEmailProps;
 

@@ -21,20 +21,20 @@ function AttachmentCardView({ node }: NodeViewProps) {
   const size = Number(node.attrs.size || 0);
 
   return (
-    <NodeViewWrapper as="span" className="kaneo-attachment-node">
+    <NodeViewWrapper as="span" className="basin-attachment-node">
       <a
         href={url || undefined}
         target="_blank"
         rel="noopener noreferrer"
-        className="kaneo-attachment-card"
+        className="basin-attachment-card"
         title={filename}
       >
-        <span className="kaneo-attachment-card-icon">
+        <span className="basin-attachment-card-icon">
           <FileText className="size-4" />
         </span>
-        <span className="kaneo-attachment-card-content">
-          <span className="kaneo-attachment-card-title">{filename}</span>
-          <span className="kaneo-attachment-card-meta">
+        <span className="basin-attachment-card-content">
+          <span className="basin-attachment-card-title">{filename}</span>
+          <span className="basin-attachment-card-meta">
             {formatBytes(size)}
             {mimeType ? ` · ${mimeType}` : ""}
           </span>
@@ -62,14 +62,14 @@ export const AttachmentCard = Node.create({
 
   parseHTML() {
     return [
-      { tag: "kaneo-attachment[url]" },
+      { tag: "basin-attachment[url]" },
       { tag: "span[data-type='attachment-card'][data-url]" },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "kaneo-attachment",
+      "basin-attachment",
       mergeAttributes(HTMLAttributes, {
         "data-type": "attachment-card",
         "data-url": HTMLAttributes.url,
@@ -104,6 +104,6 @@ export const AttachmentCard = Node.create({
 
     if (!url) return "";
 
-    return `\n<kaneo-attachment url="${escapeHtml(url)}" filename="${escapeHtml(filename)}" mime-type="${escapeHtml(mimeType)}" size="${size}" />\n`;
+    return `\n<basin-attachment url="${escapeHtml(url)}" filename="${escapeHtml(filename)}" mime-type="${escapeHtml(mimeType)}" size="${size}" />\n`;
   },
 });

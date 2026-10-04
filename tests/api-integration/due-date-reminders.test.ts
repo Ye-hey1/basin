@@ -184,7 +184,7 @@ describe("project webhook due date reminders", () => {
         type: "generic-webhook",
         isActive: true,
         config: JSON.stringify({
-          webhookUrl: "https://hooks.example.com/kaneo",
+          webhookUrl: "https://hooks.example.com/basin",
           events: { dueDateReminder: true },
         }),
       })

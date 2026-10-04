@@ -19,7 +19,7 @@ const webhookUrl = "https://127.0.0.1/hooks/mattermost-secret-token";
 describe("API integration: Mattermost", () => {
   beforeEach(async () => {
     await resetTestDatabase();
-    vi.stubEnv("KANEO_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS", "true");
+    vi.stubEnv("BASIN_ALLOW_PRIVATE_WEBHOOK_DESTINATIONS", "true");
   });
 
   afterEach(() => {
