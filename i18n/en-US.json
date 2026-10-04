@@ -1656,7 +1656,13 @@
 			"more": "More",
 			"backToBoard": "Back to board",
 			"assistant": "AI Assistant",
-			"agents": "Agents"
+			"agents": "Agents",
+			"newChat": "New conversation",
+			"conversations": "Conversations",
+			"today": "Today",
+			"yesterday": "Yesterday",
+			"last7": "Previous 7 days",
+			"earlier": "Earlier"
 		},
 		"projectList": {
 			"viewProject": "View Project",

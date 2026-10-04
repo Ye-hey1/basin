@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Assistant } from "@/components/ai/assistant";
 import Layout from "@/components/common/layout";
@@ -10,11 +10,16 @@ import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/assistant",
 )({
+  validateSearch: (search: Record<string, unknown>): { threadId?: string } => ({
+    threadId: typeof search.threadId === "string" ? search.threadId : undefined,
+  }),
   component: AssistantPage,
 });
 
 function AssistantPage() {
   const { t } = useTranslation();
+  const { threadId } = Route.useSearch();
+  const navigate = useNavigate();
   const { data: workspace } = useActiveWorkspace();
 
   return (
@@ -35,7 +40,18 @@ function AssistantPage() {
         </Layout.Header>
         <Layout.Content>
           <div className="h-[calc(100%-0.5rem)] p-4">
-            {workspace?.id ? <Assistant workspaceId={workspace.id} /> : null}
+            {workspace?.id ? (
+              <Assistant
+                workspaceId={workspace.id}
+                threadId={threadId ?? null}
+                onThreadCreated={(id) =>
+                  void navigate({
+                    to: "/dashboard/assistant",
+                    search: { threadId: id },
+                  })
+                }
+              />
+            ) : null}
           </div>
         </Layout.Content>
       </Layout>

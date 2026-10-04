@@ -1653,7 +1653,13 @@
 			"more": "更多",
 			"backToBoard": "返回看板",
 			"assistant": "AI 助理",
-			"agents": "Agent"
+			"agents": "Agent",
+			"newChat": "新对话",
+			"conversations": "对话",
+			"today": "今天",
+			"yesterday": "昨天",
+			"last7": "7 天内",
+			"earlier": "更早"
 		},
 		"projectList": {
 			"viewProject": "查看项目",

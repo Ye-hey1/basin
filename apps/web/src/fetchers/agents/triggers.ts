@@ -87,7 +87,7 @@ export async function deleteAgentTrigger(id: string, workspaceId: string) {
 }
 
 export async function runAgentTrigger(id: string, workspaceId: string) {
-  const response = await client.agents.triggers[":id"]["run"].$post({
+  const response = await client.agents.triggers[":id"].run.$post({
     param: { id },
     json: { workspaceId },
   });
