@@ -22,7 +22,7 @@
 		"@ai-sdk/openai": "^2.0.0",
 		"@ai-sdk/openai-compatible": "^1.0.0",
 		"@basin/api": "workspace:*",
-		"ai": "^5.0.0",
+		"ai": "^7.0.126",
 		"bullmq": "^6.3.11",
 		"dotenv-mono": "^1.5.1",
 		"drizzle-orm": "^0.45.2",

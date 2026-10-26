@@ -60,7 +60,7 @@
     "@paralleldrive/cuid2": "^3.3.0",
     "@sentry/node": "^10.70.0",
     "@sentry/profiling-node": "^10.70.0",
-    "ai": "^5.0.271",
+    "ai": "^7.0.126",
     "bcryptjs": "^3.0.2",
     "better-auth": "^1.6.26",
     "bullmq": "^6.3.11",
