@@ -18,7 +18,7 @@
 	"devDependencies": {
 		"@basin/typescript-config": "workspace:*",
 		"@types/node": "^24.0.0",
-		"electron": "^39.2.7",
+		"electron": "^44.5.1",
 		"esbuild": "0.28.1",
 		"tsx": "^4.23.9"
 	},
